@@ -24,6 +24,12 @@ Baseline plan, agreed 23 Oct 2026:
 
 ## Log
 
+### 23 Oct 2026 — Cowork, owner idea: lessons file
+
+- Owner's idea: the first time Claude is active during the install, it creates a lessons-learnt file that stays in the installed system. It records findings and pitfalls with the hardware and software, in logical sections, so Claude can later read only the section it needs when building or troubleshooting.
+- Cowork's suggestion, for the owner to confirm: a short index file (the system's CLAUDE.md) that points to one file per section, such as hardware, build settings and failed packages, kernel, boot, desktop, audio and network. Claude Code reads CLAUDE.md in full every session, so it must stay short. A copy goes into the repo, so the install can be repeated.
+- To do next Cowork session: add it to the Stage 1 spec, Claude Doc first, then the repo copy.
+
 ### 23 Oct 2026 — Cowork, baseline plan
 
 - The owner chose: results on a USB stick, 5 boots per system with the median, and Ubuntu measured as a second reference.
