@@ -25,14 +25,14 @@ Each decision has a recommendation. The owner can accept it or choose otherwise.
 
 | # | Decision | Recommendation | Why | Answer |
 |---|---|---|---|---|
-| 1 | How Stage 1 installs | Claude Code runs from a live image and installs by the Gentoo Handbook. The graphical installer waits for Stage 2 | Proves the sidekick can do the install before building a screen around it | Open |
-| 2 | Start-up system | systemd | Its built-in timing tool splits boot time into firmware, loader, kernel and desktop, which the measurements need | Open |
-| 3 | Disk encryption | None | Matches the owner's choice for the Ubuntu drive, and keeps a passphrase out of the boot-time numbers | Open |
-| 4 | Display card | If the Radeon Pro WX 3200 is fitted, the desktop runs on it and the RTX 4090 stays for compute | Hyprland runs most smoothly on AMD graphics | Open |
-| 5 | Sidekick key | One key opens or hides a Claude Code window | Simple for Stage 1. The in-terminal switch comes later | Open |
-| 6 | Starting apps | A terminal and Firefox only | Everything else is requested from the sidekick, which tests it | Open |
-| 7 | Protecting the other drives | Pick the Crucial drive by its serial number, and add a guard that blocks Claude from writing to any other disk | The same "storage bodyguard" idea that worked on GermOS | Open |
-| 8 | Repository and licence | A new public GitHub repo, GPL-2 | Matches Gentoo's licence, so package recipes can move both ways | Open |
+| 1 | How Stage 1 installs | Claude Code runs from Gentoo's LiveGUI image and installs by the Gentoo Handbook. The graphical installer waits for Stage 2 | Proves the sidekick can do the install before building a screen around it. LiveGUI has Firefox, so the Claude sign-in happens on mlrig itself | Accepted, with LiveGUI added. Decided 23 Oct 2026 |
+| 2 | Start-up system | systemd | Its built-in timing tool splits boot time into firmware, loader, kernel and desktop, which the measurements need | Accepted. Decided 23 Oct 2026 |
+| 3 | Disk encryption | None | Matches the owner's choice for the Ubuntu drive, and keeps a passphrase out of the boot-time numbers | Accepted. Decided 23 Oct 2026 |
+| 4 | Display card | The desktop runs on the Radeon Pro WX 3200, to be fitted 26 Oct 2026, and the RTX 4090 stays for compute | Hyprland runs most smoothly on AMD graphics | Accepted. Decided 23 Oct 2026 |
+| 5 | Sidekick key | One key opens or hides a Claude Code window, and the chat keeps running while hidden. The exact key is picked when the desktop is built, and the owner approves it | Simple for Stage 1. The in-terminal switch comes later | Accepted. Decided 23 Oct 2026 |
+| 6 | Starting apps | A terminal and Firefox. On the first boot after install, a pop-up offers to install the Claude desktop app so Cowork can run on Kiln. It says in one line that Cowork's virtual machine software comes with it. Yes installs it; No leaves it for later | Testing on mlrig needs no reboot into Ubuntu for Cowork. Everything else is requested from the sidekick, which tests it. Gentoo has no ready package for the desktop app, so Kiln needs its own recipe that downloads it from Anthropic, never bundled. Check at kickoff that this works and that Anthropic's terms allow it | Owner's change to the recommendation. Decided 23 Oct 2026 |
+| 7 | Protecting the other drives | Pick the Crucial drive by its serial number, never by device name, and add a guard that blocks Claude from writing to any other disk | The same "storage bodyguard" idea that worked on GermOS | Accepted. Decided 23 Oct 2026 |
+| 8 | Repository and licence | A public GitHub repo, IndyWH/kiln, licence GPL-2 | Matches Gentoo's licence, so package recipes can move both ways | Chosen by the owner. Repo created and first pushed 23 Oct 2026 |
 | 9 | Working name | Decided: Kiln Linux. Repo folder ~/Projects/kiln | Chosen by the owner on 23 Oct 2026. No distribution uses it | Kiln Linux. Decided 23 Oct 2026 |
 
 ## The machine and its boundaries
@@ -48,7 +48,7 @@ The target is mlrig. The install goes only on the Crucial P2 1 TB drive.
 | Samsung 990 PRO, DIMM.2_1 (fastdata) | Models and datasets. Never touched |
 | SATA drives | Never touched |
 | RTX 4090 | NVIDIA driver for compute |
-| Radeon Pro WX 3200, if fitted | Drives the display (decision 4) |
+| Radeon Pro WX 3200, to be fitted 26 Oct 2026 | Drives the display (decision 4) |
 | Philips 49-inch ultrawide OLED | Always connected by HDMI, never DisplayPort, for live images |
 
 The install makes its own boot partition on the Crucial drive and adds one firmware boot entry. Ubuntu's boot entry stays as it is.
@@ -58,7 +58,7 @@ Firmware start-up on mlrig already takes about 15.6 seconds before any operating
 ## What Stage 1 builds, in order
 
 1. **Baseline.** Before the wipe, measure Omarchy on the same Crucial drive (see Measuring the gain).
-2. **Live start.** Boot a Gentoo live image from the Ventoy drive, connect to the network, install Claude Code and sign in.
+2. **Live start.** Boot Gentoo's LiveGUI image from the Ventoy drive, connect to the network, install Claude Code, and sign in to Claude through Firefox on the live desktop.
 3. **Guards first.** Before any disk work, install the guard that blocks writes to every disk except the Crucial drive. Prove it refuses a test write to another disk.
 4. **Hardware analysis.** Claude reads the CPU, graphics, audio, storage and network, and writes a plain-English hardware report into the repo.
 5. **Disk layout.** A boot partition and a btrfs root, with snapshots set up from the start.
@@ -94,7 +94,7 @@ The fair comparison is Omarchy, because it runs on the same machine and the same
 | Responsiveness under load | How quickly the system reacts to a waiting task while every core is busy building |
 | CPU speed | The existing benchmark script on mlrig: sysbench and 7-Zip |
 
-The benchmark script writes test files on every drive mounted under its media folder. Check what is mounted before running it on either system.
+The benchmark script writes test files on every drive mounted under its media folder. Check what is mounted before running it on either system. Both systems are measured with the WX 3200 driving the screen.
 
 Input lag is left out of Stage 1. Measuring it properly needs a high-speed camera or special hardware.
 
