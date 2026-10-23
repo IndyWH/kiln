@@ -11,14 +11,24 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Next session: plan the Omarchy baseline measurement. It must happen before the Crucial drive is wiped.
+Survey Omarchy, looking only. Claude Code on Omarchy reads how the drive is unlocked at boot, what is mounted, which measuring tools are installed, and what Hyprland needs for the WX 3200 to drive the screen. It changes nothing and writes one report to the USB stick. That report decides how the passphrase wait comes out of Omarchy's boot time.
 
-Points for that plan:
+Baseline plan, agreed 23 Oct 2026:
 
-- Omarchy on the Crucial drive is LUKS-encrypted. Its boot time includes typing the passphrase, and Kiln will have no encryption (decision 3). The plan must take the unlock time out of Omarchy's numbers, or the comparison is unfair.
-- The WX 3200 is fitted on 26 Oct 2026. Measure the baseline after that, with the WX 3200 driving the screen. Omarchy stays on the Crucial drive for at least three more weeks from 23 Oct 2026.
+- One measurement script in the repo, run the same way on Omarchy, Kiln and Ubuntu, with the same fixed workload on each.
+- Boot time over 5 boots per system, median reported. Firmware reported separately.
+- The passphrase typing time comes out of Omarchy's numbers. The cost of decrypting the disk stays in, and the report says so.
+- Results travel from Omarchy to the repo on a USB stick. No GitHub sign-in on Omarchy.
+- Ubuntu 26.10 is measured too, as a second reference. Its disk numbers are left out.
+- Measure after the WX 3200 is fitted on 26 Oct 2026, with it driving the screen. Omarchy stays on the Crucial drive for at least three weeks from 23 Oct 2026.
 
 ## Log
+
+### 23 Oct 2026 — Cowork, baseline plan
+
+- The owner chose: results on a USB stick, 5 boots per system with the median, and Ubuntu measured as a second reference.
+- First step is a look-only survey of Omarchy. The fair way to remove the passphrase wait depends on whether Omarchy unlocks the drive inside systemd, so it is decided after the survey.
+- In this session the mlrig file tools worked, and Cowork wrote to the repo directly.
 
 ### 23 Oct 2026 — Cowork, owner decisions
 
