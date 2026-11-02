@@ -5,9 +5,10 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 ## Current state
 
 - Stage: Stage 1 planning. No install work has started.
-- Target: mlrig, Crucial P2 1 TB drive only. Omarchy is on it now, in its cooling-off period.
-- Work starts in about a month from 23 Oct 2026.
-- Owner decisions: all nine decided on 23 Oct 2026. See the Answer column in docs/STAGE1_SPEC.md.
+- Target: mlrig, Crucial P2 1 TB drive only. Omarchy is still on it, but the owner has copied what he needs, so the drive is free to wipe (2 Nov 2026).
+- Work can start now.
+- Owner decisions: nine decided on 23 Oct 2026. Decision 10, the lessons file layout, waits for the owner. See the Answer column in docs/STAGE1_SPEC.md.
+- Screen: mini DisplayPort from the WX 3200, live images included. HDMI into the RTX 4090 is the fallback if a live image shows a black screen.
 
 ## Next step
 
@@ -20,9 +21,17 @@ Baseline plan, agreed 23 Oct 2026:
 - The passphrase typing time comes out of Omarchy's numbers. The cost of decrypting the disk stays in, and the report says so.
 - Results travel from Omarchy to the repo on a USB stick. No GitHub sign-in on Omarchy.
 - Ubuntu 26.10 is measured too, as a second reference. Its disk numbers are left out.
-- Measure after the WX 3200 is fitted on 26 Oct 2026, with it driving the screen. Omarchy stays on the Crucial drive for at least three weeks from 23 Oct 2026.
+- Measure with the WX 3200 driving the screen (fitted on 24 Oct 2026). The cooling-off period ended early on 2 Nov 2026.
 
 ## Log
+
+### 2 Nov 2026 — Cowork, spec fixes
+
+- Owner: Omarchy's contents are copied, so the Crucial drive is free to wipe. The cooling-off period is over.
+- Owner decided: the screen uses mini DisplayPort from the WX 3200, not HDMI. The WX 3200 has only mini DisplayPort sockets. HDMI into the RTX 4090 is the fallback for a black screen on a live image.
+- Fixed the WX 3200 date: fitted on 24 Oct 2026, not 26 Oct.
+- Added the lessons file to the spec, as a new section and as decision 10, waiting for the owner.
+- Changed in the Claude Doc first, then in docs/STAGE1_SPEC.md.
 
 ### 23 Oct 2026 — Cowork, owner idea: lessons file
 

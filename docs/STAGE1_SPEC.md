@@ -1,12 +1,12 @@
 # Stage 1 spec: the personal prototype
 
-23 Oct 2026 · Herath Herath
+2 Nov 2026 · Herath Herath
 
 Copied from the Claude Doc, which is the source of truth: https://claude.ai/artifact/HWbM9gx3AcJzjfq5tVZEae
 
 ## Goal and done-when
 
-Stage 1 proves the core idea on one real machine: Claude installs and tunes a Gentoo system for mlrig, with the owner only approving each step. Work starts in about a month, once Omarchy's cooling-off period on the Crucial drive ends.
+Stage 1 proves the core idea on one real machine: Claude installs and tunes a Gentoo system for mlrig, with the owner only approving each step. The owner freed the Crucial drive on 2 Nov 2026, so work can start.
 
 Stage 1 is done when:
 
@@ -28,12 +28,13 @@ Each decision has a recommendation. The owner can accept it or choose otherwise.
 | 1 | How Stage 1 installs | Claude Code runs from Gentoo's LiveGUI image and installs by the Gentoo Handbook. The graphical installer waits for Stage 2 | Proves the sidekick can do the install before building a screen around it. LiveGUI has Firefox, so the Claude sign-in happens on mlrig itself | Accepted, with LiveGUI added. Decided 23 Oct 2026 |
 | 2 | Start-up system | systemd | Its built-in timing tool splits boot time into firmware, loader, kernel and desktop, which the measurements need | Accepted. Decided 23 Oct 2026 |
 | 3 | Disk encryption | None | Matches the owner's choice for the Ubuntu drive, and keeps a passphrase out of the boot-time numbers | Accepted. Decided 23 Oct 2026 |
-| 4 | Display card | The desktop runs on the Radeon Pro WX 3200, to be fitted 26 Oct 2026, and the RTX 4090 stays for compute | Hyprland runs most smoothly on AMD graphics | Accepted. Decided 23 Oct 2026 |
+| 4 | Display card | The desktop runs on the Radeon Pro WX 3200, fitted on 24 Oct 2026, and the RTX 4090 stays for compute | Hyprland runs most smoothly on AMD graphics | Accepted. Decided 23 Oct 2026 |
 | 5 | Sidekick key | One key opens or hides a Claude Code window, and the chat keeps running while hidden. The exact key is picked when the desktop is built, and the owner approves it | Simple for Stage 1. The in-terminal switch comes later | Accepted. Decided 23 Oct 2026 |
 | 6 | Starting apps | A terminal and Firefox. On the first boot after install, a pop-up offers to install the Claude desktop app so Cowork can run on Kiln. It says in one line that Cowork's virtual machine software comes with it. Yes installs it; No leaves it for later | Testing on mlrig needs no reboot into Ubuntu for Cowork. Everything else is requested from the sidekick, which tests it. Gentoo has no ready package for the desktop app, so Kiln needs its own recipe that downloads it from Anthropic, never bundled. Check at kickoff that this works and that Anthropic's terms allow it | Owner's change to the recommendation. Decided 23 Oct 2026 |
 | 7 | Protecting the other drives | Pick the Crucial drive by its serial number, never by device name, and add a guard that blocks Claude from writing to any other disk | The same "storage bodyguard" idea that worked on GermOS | Accepted. Decided 23 Oct 2026 |
 | 8 | Repository and licence | A public GitHub repo, IndyWH/kiln, licence GPL-2 | Matches Gentoo's licence, so package recipes can move both ways | Chosen by the owner. Repo created and first pushed 23 Oct 2026 |
 | 9 | Working name | Decided: Kiln Linux. Repo folder ~/Projects/kiln | Chosen by the owner on 23 Oct 2026. No distribution uses it | Kiln Linux. Decided 23 Oct 2026 |
+| 10 | Lessons file layout | A short index, the system's CLAUDE.md, pointing to one file per section, with a copy in the repo | Claude reads only the section it needs, and CLAUDE.md stays short because Claude Code reads it in full every session | Waiting for the owner |
 
 ## The machine and its boundaries
 
@@ -43,13 +44,13 @@ The target is mlrig. The install goes only on the Crucial P2 1 TB drive.
 |---|---|
 | Intel i9-13900K | Builds every program for it. It mixes fast and efficient cores, so the kernel must place work on the right kind of core |
 | 96 GB DDR5 | Plenty of room to build several programs at once |
-| Crucial P2 1 TB (DIMM.2_2, serial 2128E5B7DBBC) | The only disk Stage 1 may write to. Wiped after Omarchy's cooling-off period |
+| Crucial P2 1 TB (DIMM.2_2, serial 2128E5B7DBBC) | The only disk Stage 1 may write to. Free to wipe. The owner copied what he needed from Omarchy by 2 Nov 2026 |
 | Samsung 990 PRO, M.2_1 | Ubuntu 26.10. Never touched |
 | Samsung 990 PRO, DIMM.2_1 (fastdata) | Models and datasets. Never touched |
 | SATA drives | Never touched |
 | RTX 4090 | NVIDIA driver for compute |
-| Radeon Pro WX 3200, to be fitted 26 Oct 2026 | Drives the display (decision 4) |
-| Philips 49-inch ultrawide OLED | Always connected by HDMI, never DisplayPort, for live images |
+| Radeon Pro WX 3200, fitted on 24 Oct 2026 | Drives the display (decision 4) |
+| Philips 49-inch ultrawide OLED | Connected by mini DisplayPort to the WX 3200, live images included. Owner's decision, 2 Nov 2026. If a live image shows a black screen, an HDMI cable into the RTX 4090 is the fallback for that session |
 
 The install makes its own boot partition on the Crucial drive and adds one firmware boot entry. Ubuntu's boot entry stays as it is.
 
@@ -58,7 +59,7 @@ Firmware start-up on mlrig already takes about 15.6 seconds before any operating
 ## What Stage 1 builds, in order
 
 1. **Baseline.** Before the wipe, measure Omarchy on the same Crucial drive (see Measuring the gain).
-2. **Live start.** Boot Gentoo's LiveGUI image from the Ventoy drive, connect to the network, install Claude Code, and sign in to Claude through Firefox on the live desktop.
+2. **Live start.** Boot Gentoo's LiveGUI image from the Ventoy drive, connect to the network, install Claude Code, and sign in to Claude through Firefox on the live desktop. From this point Claude keeps the lessons file (see below).
 3. **Guards first.** Before any disk work, install the guard that blocks writes to every disk except the Crucial drive. Prove it refuses a test write to another disk.
 4. **Hardware analysis.** Claude reads the CPU, graphics, audio, storage and network, and writes a plain-English hardware report into the repo.
 5. **Disk layout.** A boot partition and a btrfs root, with snapshots set up from the start.
@@ -69,6 +70,16 @@ Firmware start-up on mlrig already takes about 15.6 seconds before any operating
 10. **The sidekick.** Claude Code on one key, with a rules file that tells it the four rules, and hooks that enforce them (see below).
 11. **Full rebuild.** In the background, rebuild every ready-built package for the i9-13900K, starting with the kernel, graphics and audio. Any package that fails gets safer settings, and the reason is written down.
 12. **Measure again** and compare with the baseline.
+
+## The lessons file
+
+The owner's idea, 23 Oct 2026. From the live start onward, Claude writes down what it learns about this machine: findings, pitfalls, and the fixes that worked. The file stays in the installed system, so Claude can read it later when it builds or troubleshoots.
+
+It is kept in sections, so Claude reads only the section it needs. Suggested shape, for the owner to confirm (decision 10):
+
+- A short index, the system's CLAUDE.md, that points to one file per section. Claude Code reads CLAUDE.md in full every session, so it must stay short.
+- One file per section: hardware, build settings and failed packages, kernel, boot, desktop, audio, network.
+- A copy goes into the repo, so the install can be repeated.
 
 ## The four rules as tests
 
@@ -85,7 +96,7 @@ One more test sits under all four. With Claude switched off, the system still bo
 
 ## Measuring the gain
 
-The fair comparison is Omarchy, because it runs on the same machine and the same Crucial drive. So the baseline must be measured **before** the wipe. That is the one job to do during the cooling-off month.
+The fair comparison is Omarchy, because it runs on the same machine and the same Crucial drive. So the baseline must be measured **before** the wipe. That is the one job left before the wipe.
 
 | Measure | How |
 |---|---|
@@ -122,4 +133,4 @@ One difference: in Stage 1, Claude Code is both the builder and the product bein
 - Every settings file Claude writes is saved in the repo, so the install can be repeated.
 - GitHub pushes are done by the owner's own hand.
 
-First action, during the cooling-off month: measure the Omarchy baseline.
+First action: measure the Omarchy baseline, before the wipe.
