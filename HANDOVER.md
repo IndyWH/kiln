@@ -13,7 +13,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Live start (spec step 2). The Gentoo LiveGUI image is not on the Ventoy drive yet, so it comes first.
+Live start (spec step 2). The Gentoo LiveGUI image is on the Ventoy drive and verified. Follow docs/LIVE_START.md.
 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
@@ -25,7 +25,8 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 - Boot: 1 of 5 saved. The owner decided the rest can wait, because Kiln is the priority.
 - For the comparison: use the 99.9% wake-up figure, in responsiveness.csv. The median is mostly the kernel's fixed 0.05 ms timer slack.
 - Kickoff check: Gentoo offers ready-built packages at x86-64-v3 (23.0/x86-64-v3, updated 2 Nov 2026). The i9-13900K supports v3 but not v4, so v3 is the right level.
-- Newest LiveGUI image: livegui-amd64-20260913T163055Z.iso. The Ventoy drive has no Gentoo image.
+- Live image: livegui-amd64-20260913T163055Z.iso, the newest offered. Downloaded to the Ventoy drive with the owner's approval. Checksum matches, and the checksum file is signed by Gentoo's weekly release key.
+- Added docs/LIVE_START.md, so the owner can copy the steps in Firefox on the live desktop.
 
 ### 2 Nov 2026 — Claude Code, measurement script
 
