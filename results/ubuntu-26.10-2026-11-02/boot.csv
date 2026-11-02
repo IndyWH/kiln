@@ -1,0 +1,2 @@
+boot,time,boot_id,kernel_version,firmware,loader,kernel,initrd,userspace,login_screen,total_no_firmware
+1,2026-11-02 20:29:11,8dc0f714-1162-455c-a0ab-35803cd510ae,7.3.0-10-generic,16.843,1.812,4.626,5.424,6.251,6.251,18.113

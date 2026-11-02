@@ -1,0 +1,7 @@
+Kiln measurement: ubuntu-26.10, 2026-11-02
+Audio: smallest clean buffer 256 samples (5.33 ms), every core 99.7% busy. Worst timing 0.32 wait, 0.07 busy, as a share of the buffer.
+Audio, not clean: 128=dropouts
+Responsiveness: wake-up delay median 0.06 ms, 99% 0.06 ms, worst 11.03 ms, every core 99.6% busy.
+CPU: sysbench 1708 (1 thread), 39181 (32 threads) events per second. 7-Zip 10490 (1 thread), 210923 (32 threads) MIPS.
+Setup: power mode performance, screen on card2-DP-7 1002:6981 
+Details: results/ubuntu-26.10-2026-11-02

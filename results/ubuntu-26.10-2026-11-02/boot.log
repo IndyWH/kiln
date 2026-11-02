@@ -1,0 +1,51 @@
+=== Boot 1, 2026-11-02 20:29:11
+Startup finished in 16.843s (firmware) + 1.812s (loader) + 4.626s (kernel) + 5.424s (initrd) + 6.251s (userspace) = 34.957s 
+graphical.target reached after 6.251s in userspace.
+The time when unit became active or started is printed after the "@" character.
+The time the unit took to start is printed after the "+" character.
+
+graphical.target @6.251s
+`-power-profiles-daemon.service @6.228s +23ms
+  `-multi-user.target @6.226s
+    `-plymouth-quit-wait.service @3.619s +2.606s
+      `-systemd-user-sessions.service @3.613s +4ms
+        `-network.target @3.611s
+          `-NetworkManager.service @3.500s +110ms
+            `-basic.target @3.500s
+              `-dbus-broker.service @3.481s +18ms
+                `-dbus.socket @3.468s +29us
+                  `-sysinit.target @3.465s
+                    `-snapd.apparmor.service @3.443s +22ms
+                      `-apparmor.service @3.372s +69ms
+                        `-local-fs.target @3.371s
+                          `-run-snapd-ns-snapd\x2ddesktop\x2dintegration.mnt.mount @4.936s
+                            `-run-snapd-ns.mount @4.178s
+                              `-local-fs-pre.target @944ms
+                                `-systemd-tmpfiles-setup-dev.service @940ms +4ms
+                                  `-systemd-tmpfiles-setup-dev-early.service @920ms +8ms
+                                    `-kmod-static-nodes.service @915ms +4ms
+                                      `-systemd-journald.socket
+                                        `-system.slice
+                                          `--.slice
+30.070s apport-autoreport.service
+21.616s fstrim.service
+ 4.984s dev-rfkill.device
+ 4.984s sys-devices-virtual-misc-rfkill.device
+ 4.980s sys-devices-platform-MSFT0101:00-tpm-tpm0.device
+ 4.980s dev-tpm0.device
+ 4.932s sys-devices-platform-MSFT0101:00-tpmrm-tpmrm0.device
+ 4.932s dev-tpmrm0.device
+ 4.922s dev-ttyS1.device
+ 4.922s sys-devices-platform-serial8250-serial8250:0-serial8250:0.1-tty-ttyS1.device
+ 4.920s sys-devices-platform-serial8250-serial8250:0-serial8250:0.0-tty-ttyS0.device
+ 4.920s dev-ttyS0.device
+ 4.920s dev-ttyS2.device
+ 4.920s sys-devices-platform-serial8250-serial8250:0-serial8250:0.2-tty-ttyS2.device
+ 4.920s dev-ttyS3.device
+ 4.920s sys-devices-platform-serial8250-serial8250:0-serial8250:0.3-tty-ttyS3.device
+ 4.920s sys-devices-virtual-tty-ttyprintk.device
+ 4.920s dev-ttyprintk.device
+ 4.886s sys-module-configfs.device
+ 4.882s sys-module-fuse.device
+System state: degraded
+
