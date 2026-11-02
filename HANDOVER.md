@@ -13,9 +13,17 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Write one measurement script in the repo and measure Ubuntu 26.10 on mlrig. It measures boot time (5 boots, median, firmware separate), audio latency, responsiveness under load, and CPU speed. The same script runs on Kiln later. Omarchy is not measured.
+Measure Ubuntu 26.10 on mlrig with scripts/measure.sh: `run` once, about 30 minutes, then `boot` after each of 5 reboots. The same script runs on Kiln later. Omarchy is not measured.
 
 ## Log
+
+### 2 Nov 2026 — Claude Code, measurement script
+
+- Added scripts/measure.sh. Modes: `run`, `boot`, `new`. `--short` is a quick test, kept out of git.
+- Results go to results/<os>-<date>/, with summary.txt as the short result.
+- run-bench.sh was not found on any mounted drive. The owner chose fresh settings: sysbench CPU test, 30 seconds, and 7-Zip benchmark at 32 MB, each on 1 and on all threads, median of 3. Cowork: the spec still calls it the existing script and warns about its test files, so it needs updating, Claude Doc first.
+- Short test passed. Audio dropouts appeared at buffer 64 under compile load, but not at any size down to 32 with no load. Freezing the test playback for 1 second was counted as dropouts. These were short runs, not results.
+- Kiln needs a login screen that reaches graphical.target and the same audio output, for a fair comparison.
 
 ### 2 Nov 2026 — Cowork, owner answers
 
