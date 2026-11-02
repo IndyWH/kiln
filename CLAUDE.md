@@ -28,6 +28,7 @@ If the repo copy and the Claude Doc disagree, the Claude Doc wins. Tell the owne
 5. With every prompt for Claude Code, say whether it is a new session, /clear first, or the current session, and which model and effort. Give the owner the exact words to type whenever Claude Code needs an answer.
 6. Be brief. The owner is not a seasoned developer, so use plain words.
 7. GitHub pushes are done by the owner's own hand.
+8. Keep repo docs concise. Kiln is just another Linux distro.
 
 ## Stage 1 boundary
 

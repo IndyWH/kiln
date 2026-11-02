@@ -7,23 +7,21 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 - Stage: Stage 1 planning. No install work has started.
 - Target: mlrig, Crucial P2 1 TB drive only. Omarchy is still on it, but the owner has copied what he needs, so the drive is free to wipe (2 Nov 2026).
 - Work can start now.
-- Owner decisions: nine decided on 23 Oct 2026. Decision 10, the lessons file layout, waits for the owner. See the Answer column in docs/STAGE1_SPEC.md.
+- Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
+- Baseline: Ubuntu 26.10 on mlrig only. Omarchy is skipped.
 - Screen: mini DisplayPort from the WX 3200, live images included. HDMI into the RTX 4090 is the fallback if a live image shows a black screen.
 
 ## Next step
 
-Survey Omarchy, looking only. Claude Code on Omarchy reads how the drive is unlocked at boot, what is mounted, which measuring tools are installed, and what Hyprland needs for the WX 3200 to drive the screen. It changes nothing and writes one report to the USB stick. That report decides how the passphrase wait comes out of Omarchy's boot time.
-
-Baseline plan, agreed 23 Oct 2026:
-
-- One measurement script in the repo, run the same way on Omarchy, Kiln and Ubuntu, with the same fixed workload on each.
-- Boot time over 5 boots per system, median reported. Firmware reported separately.
-- The passphrase typing time comes out of Omarchy's numbers. The cost of decrypting the disk stays in, and the report says so.
-- Results travel from Omarchy to the repo on a USB stick. No GitHub sign-in on Omarchy.
-- Ubuntu 26.10 is measured too, as a second reference. Its disk numbers are left out.
-- Measure with the WX 3200 driving the screen (fitted on 24 Oct 2026). The cooling-off period ended early on 2 Nov 2026.
+Write one measurement script in the repo and measure Ubuntu 26.10 on mlrig. It measures boot time (5 boots, median, firmware separate), audio latency, responsiveness under load, and CPU speed. The same script runs on Kiln later. Omarchy is not measured.
 
 ## Log
+
+### 2 Nov 2026 — Cowork, owner answers
+
+- Baseline: skip Omarchy. Compare Kiln with Ubuntu 26.10 on mlrig only.
+- Decision 10, the lessons file layout, accepted.
+- Repo docs stay concise. Added as a standing rule in CLAUDE.md.
 
 ### 2 Nov 2026 — Cowork, spec fixes
 

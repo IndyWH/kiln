@@ -14,7 +14,7 @@ Stage 1 is done when:
 - mlrig boots into a Hyprland desktop from the Crucial drive.
 - Every program is built for the i9-13900K, apart from a recorded list of fallbacks.
 - All four rules pass their tests (see below).
-- The measured gains against the Omarchy baseline are written down, good or bad.
+- The measured gains against Ubuntu 26.10 on mlrig are written down, good or bad.
 - The owner has asked the sidekick for three things in plain words and got them. One of them is the cursor test: make the cursor a little bigger, with an amber outline.
 
 Vision: [docs/VISION.md](VISION.md)
@@ -34,7 +34,7 @@ Each decision has a recommendation. The owner can accept it or choose otherwise.
 | 7 | Protecting the other drives | Pick the Crucial drive by its serial number, never by device name, and add a guard that blocks Claude from writing to any other disk | The same "storage bodyguard" idea that worked on GermOS | Accepted. Decided 23 Oct 2026 |
 | 8 | Repository and licence | A public GitHub repo, IndyWH/kiln, licence GPL-2 | Matches Gentoo's licence, so package recipes can move both ways | Chosen by the owner. Repo created and first pushed 23 Oct 2026 |
 | 9 | Working name | Decided: Kiln Linux. Repo folder ~/Projects/kiln | Chosen by the owner on 23 Oct 2026. No distribution uses it | Kiln Linux. Decided 23 Oct 2026 |
-| 10 | Lessons file layout | A short index, the system's CLAUDE.md, pointing to one file per section, with a copy in the repo | Claude reads only the section it needs, and CLAUDE.md stays short because Claude Code reads it in full every session | Waiting for the owner |
+| 10 | Lessons file layout | Decided: a short index, the system's CLAUDE.md, pointing to one file per section, with a copy in the repo | Claude reads only the section it needs, and CLAUDE.md stays short because Claude Code reads it in full every session | Accepted. Decided 2 Nov 2026 |
 
 ## The machine and its boundaries
 
@@ -58,7 +58,7 @@ Firmware start-up on mlrig already takes about 15.6 seconds before any operating
 
 ## What Stage 1 builds, in order
 
-1. **Baseline.** Before the wipe, measure Omarchy on the same Crucial drive (see Measuring the gain).
+1. **Baseline.** Measure Ubuntu 26.10 on mlrig (see Measuring the gain).
 2. **Live start.** Boot Gentoo's LiveGUI image from the Ventoy drive, connect to the network, install Claude Code, and sign in to Claude through Firefox on the live desktop. From this point Claude keeps the lessons file (see below).
 3. **Guards first.** Before any disk work, install the guard that blocks writes to every disk except the Crucial drive. Prove it refuses a test write to another disk.
 4. **Hardware analysis.** Claude reads the CPU, graphics, audio, storage and network, and writes a plain-English hardware report into the repo.
@@ -75,7 +75,7 @@ Firmware start-up on mlrig already takes about 15.6 seconds before any operating
 
 The owner's idea, 23 Oct 2026. From the live start onward, Claude writes down what it learns about this machine: findings, pitfalls, and the fixes that worked. The file stays in the installed system, so Claude can read it later when it builds or troubleshoots.
 
-It is kept in sections, so Claude reads only the section it needs. Suggested shape, for the owner to confirm (decision 10):
+It is kept in sections, so Claude reads only the section it needs. The layout, accepted by the owner on 2 Nov 2026 (decision 10):
 
 - A short index, the system's CLAUDE.md, that points to one file per section. Claude Code reads CLAUDE.md in full every session, so it must stay short.
 - One file per section: hardware, build settings and failed packages, kernel, boot, desktop, audio, network.
@@ -96,7 +96,7 @@ One more test sits under all four. With Claude switched off, the system still bo
 
 ## Measuring the gain
 
-The fair comparison is Omarchy, because it runs on the same machine and the same Crucial drive. So the baseline must be measured **before** the wipe. That is the one job left before the wipe.
+The comparison is Ubuntu 26.10 on mlrig. The owner chose this on 2 Nov 2026 and skipped Omarchy. Ubuntu stays on mlrig, so it can be measured at any time.
 
 | Measure | How |
 |---|---|
@@ -109,7 +109,7 @@ The benchmark script writes test files on every drive mounted under its media fo
 
 Input lag is left out of Stage 1. Measuring it properly needs a high-speed camera or special hardware.
 
-Ubuntu 26.10 on the 990 PRO is a useful second reference, because it uses ready-built x86-64-v3 packages. Its disk numbers are not comparable, because it is on a faster drive.
+Ubuntu uses ready-built x86-64-v3 packages, so it shows what building for the exact CPU gains. Its disk numbers are left out, because it is on a faster drive.
 
 ## Out of scope for Stage 1
 
@@ -133,4 +133,4 @@ One difference: in Stage 1, Claude Code is both the builder and the product bein
 - Every settings file Claude writes is saved in the repo, so the install can be repeated.
 - GitHub pushes are done by the owner's own hand.
 
-First action: measure the Omarchy baseline, before the wipe.
+First action: write the measurement script and measure Ubuntu.
