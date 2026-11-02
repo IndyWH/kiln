@@ -4,7 +4,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1, step 3 (guards first). No install work has started. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live. One check is left: the owner runs the installed-rule test in a terminal.
+- Stage: Stage 1. Step 3 (guards first) is complete. No install work has started. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
 - Target: mlrig, Crucial P2 1 TB drive only. Omarchy is still on it, but the owner has copied what he needs, so the drive is free to wipe (2 Nov 2026).
 - Work can start now.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
@@ -13,13 +13,19 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Finish spec step 3: the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal and saves the log to results/guard-proof-2026-11-02/installed-rule.log. The hook blocks Claude from running it, as it should. Then step 4, hardware analysis, once the owner approves.
+Spec step 4, hardware analysis, once the owner approves the plan. To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
 
 After any restart of the live system, the guard is gone. Clone the repo and run `sudo guard/install.sh` again before any disk work. The work is on branch stage1-guards until the owner merges it, so use `git clone -b stage1-guards`.
 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 2 Nov 2026 — Claude Code, step 3 complete
+
+- The owner ran the installed-rule test: 32 passed, 0 failed. A new fake disk locked itself, using the rule as installed. Log: results/guard-proof-2026-11-02/installed-rule.log.
+- Known gap: the hook crashing on start has not been tested live. It relies on `onFailure: block`.
+- The hook sometimes blocks harmless commands, such as `which nvme`, because it reads command text. See lessons/hardware.md. Review this when the hooks are built in step 10.
 
 ### 2 Nov 2026 — Claude Code, disk guard installed
 

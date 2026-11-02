@@ -25,6 +25,7 @@ Disks, the disk guard, and what the tools really do on this machine.
 - After `guard/install.sh`, restart Claude Code so it loads the hook. `/etc/claude-code` did not exist when the session began.
 - Disk commands must name the Crucial in full under `/dev/disk/by-id/`, on one line, with no variables or wildcards. Otherwise the hook blocks them.
 - The hook blocks Claude from running `tests/guard/fake_disks.sh`, because the script names raw devices. The owner runs it in a terminal. Do not try to get round this.
+- The hook sometimes blocks harmless commands, because it reads text. Seen so far: `which nvme`, where the word counts as a disk tool, and a `sed` pattern containing `/sys/block`. Use a simpler read-only command, such as `ls` or `grep`. If a command is blocked, re-check what it does before rewording it.
 
 ## Tool pitfalls
 

@@ -1,7 +1,8 @@
 Kiln disk guard: proof, 2 Nov 2026, mlrig, Gentoo LiveGUI
 
-STATUS: installed. Every disk except the Crucial is locked. The hook is live.
-One check is left: the installed udev rule, which the owner runs by hand.
+STATUS: step 3 complete. Every disk except the Crucial is locked. The hook is
+live. Proved on the live system only: the guard must be installed and proved
+again on the installed system, which uses systemd.
 
 Hook rules (hook-tests.log): 18 tests, all passed
   115 commands that must be blocked, 65 that must be allowed.
@@ -42,4 +43,7 @@ Not tested live: the hook failing outright, such as a crash on start. Its own
 errors are tested to end in a block, and onFailure is set to block, as the
 Claude Code docs describe.
 
-Still to do: installed-rule.log, from the owner's terminal.
+Installed udev rule (installed-rule.log), run by the owner in a terminal: 32
+checks, all passed. A new fake disk was locked as soon as it appeared, using the
+rule as installed, and refused dd, direct writes and mkfs. Real disks' write
+counts and lock flags did not change.
