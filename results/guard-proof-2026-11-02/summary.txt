@@ -1,0 +1,31 @@
+Kiln disk guard: proof on fake disks, 2 Nov 2026, mlrig, Gentoo LiveGUI
+
+STATUS: proved on fake disks. Not yet installed. No real disk is locked yet.
+
+Hook rules (hook-tests.log): 18 tests, all passed
+  115 commands that must be blocked, 65 that must be allowed.
+  They are only read as text, on made-up disks. None is ever run.
+
+Kernel lock (fake-disks.log): 35 checks, all passed. Run twice, same result.
+  - Fake disks accept writes before the lock, so the test can see a write.
+  - Locking opens the device read-only and sends no write.
+  - After the lock, dd, direct writes, blkdiscard, mkfs, wipefs, sgdisk and a
+    read-write mount were all refused, and the data was unchanged.
+  - A new fake disk locked itself when it appeared, using the real udev rule
+    with one added line that limits it to fake disks.
+
+Real disks: write counts, sectors, discards, flushes and lock flags were the
+same before and after. The Crucial's 3 writes were there before the test: they
+are empty cache flushes, with 0 sectors of data.
+
+Earlier runs that failed, each one a fault in the test, not in the lock:
+  1. A test write damaged the fake disk's partition table, and dd then made a
+     plain file in /dev, in memory. Removed. Writes now avoid the table.
+  2. sgdisk exits 0 even when the kernel refuses its writes. It is now judged
+     by the kernel's answers and the data.
+  3. A fake disk's lock flag carried over to the next run. Now cleared.
+
+Still to prove, after the owner approves the install:
+  - The kernel flag is set on every real disk except the Crucial.
+  - The hook blocks a zero-byte dd aimed at a real disk, in a live session.
+  - The installed udev rule locks a new fake disk.

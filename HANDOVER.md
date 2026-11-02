@@ -4,7 +4,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1 planning. No install work has started.
+- Stage: Stage 1, step 3 (guards first). No install work has started. The guard is built and proved on fake disks, but it is not installed. No real disk is locked yet.
 - Target: mlrig, Crucial P2 1 TB drive only. Omarchy is still on it, but the owner has copied what he needs, so the drive is free to wipe (2 Nov 2026).
 - Work can start now.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
@@ -13,11 +13,24 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Live start (spec step 2). The Gentoo LiveGUI image is on the Ventoy drive and verified. Follow docs/LIVE_START.md.
+Finish spec step 3, once the owner approves: run `sudo guard/install.sh`, restart Claude Code, then run the real-disk checks. No disk work before that.
+
+After any restart of the live system, the guard is gone. Clone the repo and run `sudo guard/install.sh` again before any disk work. The work is on branch stage1-guards until the owner merges it, so use `git clone -b stage1-guards`.
 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 2 Nov 2026 — Claude Code, disk guard built and lessons file started
+
+- Live start done: Claude Code runs on the LiveGUI image on mlrig. The repo copy of step 3 matches the Claude Doc.
+- Added guard/: a kernel read-only lock, a udev rule for new disks, and a Claude Code hook. Finds the Crucial by serial. Any doubt means locked or blocked.
+- Proved on fake disks in memory: results/guard-proof-2026-11-02/, with summary.txt as the short result. Real disks' write counts and lock flags did not change.
+- Not yet done: install on the real system, and the real-disk checks. That is the rest of step 3.
+- Limits: root can undo the lock. Raw drive commands skip the lock, so only the hook stops them, and the hook reads command text. This protects against mistakes, not deliberate attempts to get around it. The guard must be installed and proved again on the installed system, which uses systemd, not OpenRC.
+- Added lessons/, the layout from decision 10.
+- Other disks' serials are masked to the last 4 in the repo, by owner's decision.
+- Cowork: the spec's step 10 adds hooks for the four rules. The disk guard hook already exists, so those need to sit alongside it.
 
 ### 2 Nov 2026 — Claude Code, baseline run and kickoff checks
 
