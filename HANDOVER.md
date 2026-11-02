@@ -4,7 +4,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1, step 3 (guards first). No install work has started. The guard is built and proved on fake disks, but it is not installed. No real disk is locked yet.
+- Stage: Stage 1, step 3 (guards first). No install work has started. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live. One check is left: the owner runs the installed-rule test in a terminal.
 - Target: mlrig, Crucial P2 1 TB drive only. Omarchy is still on it, but the owner has copied what he needs, so the drive is free to wipe (2 Nov 2026).
 - Work can start now.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
@@ -13,13 +13,20 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Finish spec step 3, once the owner approves: run `sudo guard/install.sh`, restart Claude Code, then run the real-disk checks. No disk work before that.
+Finish spec step 3: the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal and saves the log to results/guard-proof-2026-11-02/installed-rule.log. The hook blocks Claude from running it, as it should. Then step 4, hardware analysis, once the owner approves.
 
 After any restart of the live system, the guard is gone. Clone the repo and run `sudo guard/install.sh` again before any disk work. The work is on branch stage1-guards until the owner merges it, so use `git clone -b stage1-guards`.
 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 2 Nov 2026 — Claude Code, disk guard installed
+
+- Ran guard/install.sh with the owner's approval, and restarted Claude Code. The kernel shows every disk locked except the Crucial. No write reached any disk.
+- The hook is live: it blocked zero-byte dd commands aimed at real disks, and the guard's own folder. Results are in results/guard-proof-2026-11-02/summary.txt.
+- The hook also blocks Claude from running tests/guard/fake_disks.sh, so the owner runs it. Changes to the guard or its tests after this point go through the owner's hand.
+- Step 5 needs care: use the /dev/disk/by-id/ path in full on every disk command, with no variables, and read the partition table back after any change. See lessons/hardware.md.
 
 ### 2 Nov 2026 — Claude Code, disk guard built and lessons file started
 

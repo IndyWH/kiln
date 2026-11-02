@@ -7,7 +7,9 @@
 # before and after, and any change fails the test.
 #
 # Usage: sudo tests/guard/fake_disks.sh [--installed-rule]
-#   --installed-rule  also test the udev rule already installed on the system.
+#   --installed-rule  test the udev rule already installed on the system, for use
+#                     after guard/install.sh. The hook blocks this script for
+#                     Claude, as it should, so the owner runs it in a terminal.
 set -u
 
 here=$(cd "$(dirname "$0")" && pwd)
@@ -233,6 +235,10 @@ load_scsi() {
 }
 sleep_settle() { udevadm settle --timeout=20; sleep 1; udevadm settle --timeout=20; }
 
+# Once the rule is installed, a new disk can no longer start unlocked, so stages
+# 5 and 6 only make sense before the install. Stage 7 replaces them after it.
+if [ "${1:-}" != --installed-rule ]; then
+
 echo
 echo "=== 5. New fake disk with no rule in place: the test can see a write"
 load_scsi
@@ -267,14 +273,19 @@ remove_scsi
 rm -f "$test_rule"
 udevadm control --reload
 
-if [ "${1:-}" = --installed-rule ]; then
+else
   echo
   echo "=== 7. New fake disk with the rule installed on the system"
   [ -e /etc/udev/rules.d/99-kiln-guard.rules ] || die "The rule is not installed."
   load_scsi
-  echo "Fake disk: $sd"
+  echo "Fake disk: $sd (model $(cat "/sys/block/$sd/device/model"))"
   check "It was locked when it appeared" "$(cat "/sys/block/$sd/ro")" 1
+  hash_before=$(sha256sum < "/dev/$sd")
   must_fail "dd to the new disk" decoy_write "/dev/$sd"
+  must_fail "Direct write from a program" py_write "/dev/$sd"
+  must_fail "mkfs on the new disk" tool mkfs.ext4 -q -F "/dev/$sd"
+  blockdev --flushbufs "/dev/$sd" 2>/dev/null
+  check "Its data is unchanged" "$(sha256sum < "/dev/$sd")" "$hash_before"
   remove_scsi
 fi
 

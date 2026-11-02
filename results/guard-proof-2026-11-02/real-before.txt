@@ -1,0 +1,9 @@
+=== Real disks before install, Mon Nov  2 23:47:18 UTC 2026
+dm-0 ro=1 writes=0 sectors=0 discards=0 flushes=0
+dm-1 ro=0 writes=0 sectors=0 discards=0 flushes=0
+nvme0n1 ro=0 writes=0 sectors=0 discards=0 flushes=0
+nvme1n1 ro=0 writes=3 sectors=0 discards=0 flushes=3
+nvme2n1 ro=0 writes=0 sectors=0 discards=0 flushes=0
+sda ro=0 writes=0 sectors=0 discards=0 flushes=0
+sdb ro=0 writes=0 sectors=0 discards=0 flushes=0
+sdc ro=0 writes=0 sectors=0 discards=0 flushes=0

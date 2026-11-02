@@ -1,6 +1,7 @@
-Kiln disk guard: proof on fake disks, 2 Nov 2026, mlrig, Gentoo LiveGUI
+Kiln disk guard: proof, 2 Nov 2026, mlrig, Gentoo LiveGUI
 
-STATUS: proved on fake disks. Not yet installed. No real disk is locked yet.
+STATUS: installed. Every disk except the Crucial is locked. The hook is live.
+One check is left: the installed udev rule, which the owner runs by hand.
 
 Hook rules (hook-tests.log): 18 tests, all passed
   115 commands that must be blocked, 65 that must be allowed.
@@ -14,9 +15,21 @@ Kernel lock (fake-disks.log): 35 checks, all passed. Run twice, same result.
   - A new fake disk locked itself when it appeared, using the real udev rule
     with one added line that limits it to fake disks.
 
-Real disks: write counts, sectors, discards, flushes and lock flags were the
-same before and after. The Crucial's 3 writes were there before the test: they
-are empty cache flushes, with 0 sectors of data.
+Real disks, after install (install.log, real-status.txt, real-after.txt):
+  - The kernel flag is set on every disk and partition except the Crucial.
+  - No write reached any disk. All other disks show 0 writes and 0 sectors.
+    The Crucial still shows the same 3 writes as before the first test: empty
+    cache flushes, with 0 sectors of data.
+  - The installed guard files match the repo, and are owned by root.
+
+Hook, live in Claude Code after a restart:
+  Blocked  dd, zero bytes, aimed at a real Samsung
+  Blocked  dd, zero bytes, aimed at a real SATA disk
+  Blocked  Write tool, aimed at the guard's own folder
+  Blocked  sudo running the fake-disk test script (it names raw devices)
+  Allowed  dd, zero bytes, to /dev/null
+  Allowed  read-only status and disk checks
+  The zero-byte commands would have written nothing even if the hook had failed.
 
 Earlier runs that failed, each one a fault in the test, not in the lock:
   1. A test write damaged the fake disk's partition table, and dd then made a
@@ -25,7 +38,8 @@ Earlier runs that failed, each one a fault in the test, not in the lock:
      by the kernel's answers and the data.
   3. A fake disk's lock flag carried over to the next run. Now cleared.
 
-Still to prove, after the owner approves the install:
-  - The kernel flag is set on every real disk except the Crucial.
-  - The hook blocks a zero-byte dd aimed at a real disk, in a live session.
-  - The installed udev rule locks a new fake disk.
+Not tested live: the hook failing outright, such as a crash on start. Its own
+errors are tested to end in a block, and onFailure is set to block, as the
+Claude Code docs describe.
+
+Still to do: installed-rule.log, from the owner's terminal.

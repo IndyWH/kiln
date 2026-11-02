@@ -22,6 +22,9 @@ Disks, the disk guard, and what the tools really do on this machine.
 - The flag does not stop raw drive commands such as `nvme format` or `sg_raw`, and root can turn it off. Only the Claude Code hook covers those, and the hook reads command text, so it cannot catch everything.
 - Claude Code hooks let the action through if the hook crashes or fails to start, unless the hook sets `onFailure: block`. In the script itself, only exit code 2 blocks.
 - A disk that appears is locked by udev a moment later, so there is a very short gap.
+- After `guard/install.sh`, restart Claude Code so it loads the hook. `/etc/claude-code` did not exist when the session began.
+- Disk commands must name the Crucial in full under `/dev/disk/by-id/`, on one line, with no variables or wildcards. Otherwise the hook blocks them.
+- The hook blocks Claude from running `tests/guard/fake_disks.sh`, because the script names raw devices. The owner runs it in a terminal. Do not try to get round this.
 
 ## Tool pitfalls
 
