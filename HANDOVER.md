@@ -44,6 +44,11 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 
 ## Log
 
+### 3 Nov 2026 — Claude Code, driver 615 proved
+
+- After a restart, 615.78.08 loads by itself on the Full LTO kernel. The same default-built test that failed on 595.104.02 now passes. scripts/test-pytorch.py passes, torchvision included, with timings about the same as before. No GPU driver errors. Results: results/nvidia-615-2026-11-03/.
+- `mlrig` has the 615 modules too, but has not been booted with them. 595.112.07's and 615's Gentoo recipes both say kernels up to 7.3, so 7.4-rc1 may still need work.
+
 ### 3 Nov 2026 — Claude Code, driver 615 installed, not yet loaded
 
 - Owner's decision: update the driver, to match CUDA 13.4. NVIDIA pairs 13.4 with its R615 driver branch, and 13.x programs run from R580 up.

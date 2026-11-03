@@ -29,6 +29,7 @@ Build settings for this CPU, and each package that needed safer settings, with t
 - `gentoo-kernel-bin`, `linux-firmware`, `intel-microcode`, `nvidia-drivers` and `snapper` are not in the v3 repo as ready-built packages. They install from Gentoo's main repo instead.
 - PyTorch on the RTX 4090 needs `TORCH_CUDA_ARCH_LIST=8.9`. The recipe defaults to 7.5. Then `torch.cuda.is_available()` is still true, but every calculation fails with "no kernel image". Test with real work, not just availability.
 - torchvision needs `NVCCFLAGS="-O3 --gpu-architecture=sm_89"`. Its recipe overwrites `NVCC_FLAGS` from that. Without it, GPU calls fail with "the provided PTX was compiled with an unsupported toolchain", as driver 595.104.02 cannot translate PTX from CUDA 13.4. Check with `strings` for `-arch sm_89` in the library.
+- CUDA 13.4 needs driver branch R615 for code built with default settings. On 595.104.02 it fails with the same error, and passes on 615.78.08. `tests/nvidia/ptx_check.cu` tests this. Keep the `sm_89` settings anyway, to build for this exact GPU.
 - uv ignores system packages when it resolves, even in an environment made with `--system-site-packages`. Use `uv pip install --excludes FILE` or `UV_EXCLUDE`, or it fetches a generic PyTorch and CUDA.
 - `dev-python/uv` changes upstream's Full LTO to thin. `CARGO_PROFILE_RELEASE_LTO=fat` in `env/rust-overfire.conf` asks for it back.
 - PyTorch's recipe removes LTO, citing a known bug. Trying it means changing the recipe in Kiln's overlay.

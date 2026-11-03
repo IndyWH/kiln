@@ -1,2 +1,4 @@
 Before: driver 595.104.02, kernel 7.3.1-gentoo-kiln-clang-fulllto, build -arch sm_75
 FAILED: the provided PTX was compiled with an unsupported toolchain.
+After: driver 615.78.08, kernel 7.3.1-gentoo-kiln-clang-fulllto, build -arch sm_75
+PASSED: the GPU ran it and got the right answers.
