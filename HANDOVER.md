@@ -4,8 +4,8 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1. Step 4 (hardware analysis) is written and waiting for the owner's check. No install work has started. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
-- Target: mlrig, Crucial P2 1 TB drive only. Omarchy is still on it, but the owner has copied what he needs, so the drive is free to wipe (2 Nov 2026).
+- Stage: Stage 1. Steps 3, 4 and 5 are complete. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
+- Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped, and the new layout is in place (3 Nov 2026). The drive is empty and unmounted.
 - Work can start now.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
 - Baseline: Ubuntu 26.10 on mlrig only. Omarchy is skipped.
@@ -13,13 +13,21 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-The owner checks docs/HARDWARE.md, then spec step 5, disk layout, once the owner approves. To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
+Spec step 6, build settings, once the owner approves the plan. Mount the Crucial with the last block in docs/DISK_LAYOUT.md. To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
 
 After any restart of the live system, the guard is gone. Clone the repo and run `sudo guard/install.sh` again before any disk work. The work is on branch stage1-guards until the owner merges it, so use `git clone -b stage1-guards`.
 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, disk layout
+
+- With the owner's confirmation, wiped the Crucial by serial and laid it out: 2 GB boot partition, the rest btrfs, with sections `@`, `@home`, `@snapshots`, `@log` and `@cache`. No swap partition, by owner's decision. Exact commands: docs/DISK_LAYOUT.md.
+- Read back after each change. A mount test and both filesystem checks passed.
+- Other disks: write counts and lock flags did not change, and all still show 0 writes. Results: results/disk-layout-2026-11-03/.
+- Boot order unchanged, with Ubuntu first. The firmware entries `Limine` and one `UEFI OS` now point at nothing. Left for the boot loader stage, with the owner's approval.
+- Ubuntu may expect the Crucial at start-up. This could not be checked without opening a locked disk, and is unlikely as Omarchy was encrypted. If Ubuntu is slow to start, check this first.
 
 ### 2 Nov 2026 — Claude Code, hardware analysis
 

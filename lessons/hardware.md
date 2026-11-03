@@ -12,6 +12,9 @@ Full report: `docs/HARDWARE.md`.
 - The Ventoy USB drive reports a different serial through the USB bridge than through the drive itself. Treat its identity as unreliable.
 - The Crucial's write count was 3 at the first look, on the live system. All 3 were empty cache flushes, with 0 sectors of data. So check sectors written, not only the write count.
 
+- Layout: `docs/DISK_LAYOUT.md`. The old Omarchy firmware boot entries still exist and point at nothing.
+- After partitioning, the guard's udev rule correctly left the Crucial's new partitions writable.
+
 ## The live system
 
 - It is OpenRC, while the installed system will be systemd. Do not assume systemd tools work here.

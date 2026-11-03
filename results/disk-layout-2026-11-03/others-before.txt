@@ -1,0 +1,14 @@
+/sys/block/dm-0/ro:1
+/sys/block/dm-0/stat: writes=0 sectors=0 discards=0 flushes=0
+/sys/block/dm-1/ro:1
+/sys/block/dm-1/stat: writes=0 sectors=0 discards=0 flushes=0
+/sys/block/nvme0n1/ro:1
+/sys/block/nvme0n1/stat: writes=0 sectors=0 discards=0 flushes=0
+/sys/block/nvme2n1/ro:1
+/sys/block/nvme2n1/stat: writes=0 sectors=0 discards=0 flushes=0
+/sys/block/sda/ro:1
+/sys/block/sda/stat: writes=0 sectors=0 discards=0 flushes=0
+/sys/block/sdb/ro:1
+/sys/block/sdb/stat: writes=0 sectors=0 discards=0 flushes=0
+/sys/block/sdc/ro:1
+/sys/block/sdc/stat: writes=0 sectors=0 discards=0 flushes=0

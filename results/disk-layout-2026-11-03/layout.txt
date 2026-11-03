@@ -1,0 +1,16 @@
+Disk /dev/disk/by-id/nvme-CT1000P2SSD8_2128E5B7DBBC: 1953525168 sectors, 931.5 GiB
+Sector size (logical/physical): 512/512 bytes
+Partition table holds up to 128 entries
+Main partition table begins at sector 2 and ends at sector 33
+First usable sector is 34, last usable sector is 1953525134
+Partitions will be aligned on 2048-sector boundaries
+Total free space is 2014 sectors (1007.0 KiB)
+
+Number  Start (sector)    End (sector)  Size       Code  Name
+   1            2048         4196351   2.0 GiB     EF00  KILN-BOOT
+   2         4196352      1953525134   929.5 GiB   8304  KILN-ROOT
+
+NAME          SIZE FSTYPE LABEL     RO MOUNTPOINTS
+nvme1n1     931.5G                   0 
+├─nvme1n1p1     2G vfat   KILNBOOT   0 
+└─nvme1n1p2 929.5G btrfs  KILN-ROOT  0 
