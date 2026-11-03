@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next, in order, unless the owner changes it: The flags audit. Part 4's safety tests, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
+Next, in order, unless the owner changes it: Part 4's safety tests, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,14 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, flags audit, the before figure
+
+- Added tests/audit/flags_audit.py, written before step 11 by owner's agreement. It reads Portage's records, looks inside each package for compiled code, and checks Rust and Go settings. 14 tests plant wrongly built packages in a fake system, and each one is caught. Exceptions: tests/audit/exceptions.txt.
+- Before figure: 802 packages, 447 with compiled code. Built for this CPU, as asked: 67 of 447, 15.0%. 371 ready-built: 319 at v3, and 52 with no level recorded, most likely the generic starter build. 5 exceptions, 355 with no compiled code. Result: results/flags-audit/2026-11-03-1600.txt.
+- It found 4 packages compiled here without Rust's CPU setting, as they came before `RUSTFLAGS` was set: `dynolog`, `tuigreet`, `greetd` and `mesa`. Step 11 rebuilds them.
+- GCC, Python, glibc and binutils are ready-built v3. Clang and `rust-bin` have no level recorded. So the compilers are not yet built for this CPU.
+- Limits: "as asked" is Portage's record. 4 recipes may change their flags. Proof from built files covers a sample only: 4 kernels, PyTorch and torchvision, all passing. It does not check PGO or LTO yet. Kernels are outside Portage, so they are in the sample, not the count.
 
 ### 3 Nov 2026 — Claude Code, Cowork's prompt: spec, Rust and Go
 

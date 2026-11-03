@@ -11,7 +11,7 @@ Build settings for this CPU, and each package that needed safer settings, with t
 - Trial, 3 Nov 2026: 464 of 500 packages come ready-built, and 2 of the other 36 are large (`mesa`, `nvidia-drivers`). See `results/base-trial-2026-11-03/summary.txt`.
 - To test in memory, use a dedicated tmpfs with `exec,dev`. `/run` is `noexec,nodev`. Unmounting the tmpfs deletes everything in one go. A chroot needs `/dev/null`, `/dev/fd`, `/dev/shm` and `/var/db/repos/gentoo`, but no block devices.
 - `--emptytree @world` left 143 packages on the starter system's generic build: build tools and data. Step 11 needs `--with-bdeps=y` to reach them.
-- Check how a package was built in `/var/db/pkg/<category>/<package>/CFLAGS`.
+- Check how a package was built in `/var/db/pkg/<category>/<package>/CFLAGS`. `tests/audit/flags_audit.py` does this for everything. Each program not built for this CPU, with its reason, is in the newest file in `results/flags-audit/`. Run it with `--save` after every update.
 - `depclean` wants to remove clang and LLVM after the base install, because `mesa` only needs them to compile. Leave them until step 11 is done.
 - Ready-built packages are kept in `/var/cache/binhost/gentoo`. Each has `image.tar.xz.sig` and `metadata.tar.xz.sig`, which can be checked with `gpg --homedir /etc/portage/gnupg`.
 - Stop `gpg-agent` in the chroot before unmounting, with `gpgconf --kill all`, or it may hold the drive open.

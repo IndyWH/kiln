@@ -1,0 +1,7 @@
+# Kiln Linux: installed packages that cannot be built for this CPU here, with the reason.
+# Format: category/name reason. Keep this short: anything that can be rebuilt does not belong.
+dev-util/nvidia-cuda-toolkit NVIDIA supplies it ready-built
+dev-libs/cudnn NVIDIA supplies it ready-built
+dev-libs/cusparselt NVIDIA supplies it ready-built
+x11-drivers/nvidia-drivers NVIDIA supplies its programs ready-built. Its open modules are compiled here
+sys-kernel/gentoo-kernel-bin The rescue kernel is ready-built and generic on purpose
