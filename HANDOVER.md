@@ -44,6 +44,12 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 
 ## Log
 
+### 3 Nov 2026 — Claude Code, ML benchmark
+
+- Added scripts/bench-ml.py, about 5 minutes, on made-up data. First full result, on Full LTO with driver 615: ResNet-50 training 1388 images per second, and inference 4351. Transformer training 36,580 tokens per second, on a 217 million parameter model, using 17,374 MiB. CPU inference 92.9 images per second, and JPEG decoding 245.7 per second on one thread. Results: results/ml-bench/.
+- 3 minutes of sustained training: no speed drop, no throttling, peak 67 °C and 356 W, no GPU driver errors.
+- Two predictions right. The third, overfired against ordinary PyTorch, needs the same script run on Ubuntu with ordinary PyTorch. The owner would run that there. Made-up data, so no disk or real data-loading work is measured.
+
 ### 3 Nov 2026 — Claude Code, driver 615 proved
 
 - After a restart, 615.78.08 loads by itself on the Full LTO kernel. The same default-built test that failed on 595.104.02 now passes. scripts/test-pytorch.py passes, torchvision included, with timings about the same as before. No GPU driver errors. Results: results/nvidia-615-2026-11-03/.

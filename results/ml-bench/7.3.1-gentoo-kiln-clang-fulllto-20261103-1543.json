@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-03 15:38",
+  "kernel": "7.3.1-gentoo-kiln-clang-fulllto",
+  "torch": "2.15.0",
+  "cuda": "13.4",
+  "torchvision": "0.29.2",
+  "short": false,
+  "resnet_train_images_s": 1387.8,
+  "resnet_infer_images_s": 4351.4,
+  "transformer_tokens_s": 36580,
+  "transformer_parameters_millions": 217,
+  "transformer_peak_memory_mib": 17374,
+  "cpu_infer_images_s": 92.9,
+  "jpeg_decode_per_s": 245.7,
+  "sustained_images_s": [
+    1387.7,
+    1387.8,
+    1387.8,
+    1387.8,
+    1387.7,
+    1387.8
+  ],
+  "sustained_drop_percent": -0.01,
+  "peak_temperature_c": 67,
+  "peak_power_w": 355.51,
+  "clock_mhz_first_last": [
+    2760,
+    2760
+  ],
+  "thermal_or_power_throttle_samples": 0,
+  "gpu_samples": 36
+}
