@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next: build 7.3.1 with Clang, using `sudo scripts/build-kernel.sh 7.3.1-gentoo clang`, then boot and check both 7.3.1 kernels. After that, 7.4-rc1, then the overfired 7.3.1. Still missing from the desktop: notifications, a lock screen and screenshots.
+Next: the owner restarts and chooses `7.3.1-gentoo-kiln-gcc` from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it. Then the same for `7.3.1-gentoo-kiln-clang`. The first restart also checks that no windows open at login, and that the bar, shortcuts and screen-off start by themselves. After that, 7.4-rc1, then the overfired 7.3.1. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,13 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, 7.3.1 with Clang, not booted
+
+- Built `7.3.1-gentoo-kiln-clang` with Clang 22.1.8 and LLD, in 234 seconds. Config: config/kernel/kiln-7.3.1-gentoo-clang.config. 61 config lines differ from the GCC version, mostly compiler-specific ones, not yet reviewed line by line.
+- Proved, not only asked for: the version string in each kernel names its compiler, and each build's record of compiling `init/main.c` shows `-march=native`. That is one file checked in each, not every file. Neither uses LTO, so the pair compares fairly.
+- Both have 223 modules. The default and firmware order did not change, and the guard shows OK.
+- NVIDIA: the owner asked why it is missing. It was left out to keep the first test simple. Gentoo's recipe builds for one kernel at a time, so a small script could build the modules from the source already on this machine, for each extra kernel. Every Gentoo recipe, even 615, says it supports up to 7.3. Not started.
 
 ### 3 Nov 2026 — Claude Code, 7.3.1 with GCC, not booted
 
