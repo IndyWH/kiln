@@ -1,0 +1,38 @@
+
+ * IMPORTANT: 21 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+Calculating dependencies ... done!
+Dependency resolution took 0.68 s (backtrack: 0/20).
+
+>>> Verifying ebuild manifests
+>>> Jobs: 0 of 1 complete, 1 running                                    Load avg: 0.77, 0.87, 4.74
+>>> Emerging (1 of 1) x11-drivers/nvidia-drivers-615.78.08::gentoo
+>>> Jobs: 0 of 1 complete, 1 running                                    Load avg: 0.77, 0.87, 4.74
+>>> Jobs: 0 of 1 complete                                               Load avg: 5.66, 2.43, 5.00
+>>> Installing (1 of 1) x11-drivers/nvidia-drivers-615.78.08::gentoo
+>>> Jobs: 0 of 1 complete, 1 merge wait                                 Load avg: 5.66, 2.43, 5.00
+>>> Completed (1 of 1) x11-drivers/nvidia-drivers-615.78.08::gentoo
+>>> Jobs: 0 of 1 complete                                               Load avg: 5.36, 2.43, 4.99
+>>> Jobs: 1 of 1 complete                                               Load avg: 5.36, 2.43, 4.99
+
+
+ * Messages for package x11-drivers/nvidia-drivers-615.78.08:
+
+ * virtual/dist-kernel is installed, but USE="dist-kernel"
+ * is not enabled for x11-drivers/nvidia-drivers.
+ * It's recommended to globally enable the dist-kernel USE flag
+ * to automatically trigger initramfs rebuilds on kernel updates
+ * 
+ * Currently loaded NVIDIA modules do not match the newly installed
+ * libraries and may prevent launching GPU-accelerated applications.
+ * Easiest way to fix this is normally to reboot. If still run into issues
+ * (e.g. API mismatch messages in the `dmesg` output), please verify
+ * that the running kernel is 6.18.60-gentoo-mlrig and that (if used) the
+ * initramfs does not include NVIDIA modules (or at least, not old ones).
+
+ * GNU info directory index is up-to-date.
+
+ * IMPORTANT: 21 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+

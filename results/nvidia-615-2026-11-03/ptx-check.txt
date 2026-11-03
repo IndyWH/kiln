@@ -1,0 +1,2 @@
+Before: driver 595.104.02, kernel 7.3.1-gentoo-kiln-clang-fulllto, build -arch sm_75
+FAILED: the provided PTX was compiled with an unsupported toolchain.

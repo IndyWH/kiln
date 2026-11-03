@@ -44,6 +44,13 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 
 ## Log
 
+### 3 Nov 2026 — Claude Code, driver 615 installed, not yet loaded
+
+- Owner's decision: update the driver, to match CUDA 13.4. NVIDIA pairs 13.4 with its R615 driver branch, and 13.x programs run from R580 up.
+- Test first: `tests/nvidia/ptx_check.cu`, built with default settings, fails on 595.104.02 with "unsupported toolchain". Result: results/nvidia-615-2026-11-03/ptx-check.txt. The prediction is in docs/HYPOTHESES.md.
+- Installed `nvidia-drivers` 615.78.08 from Gentoo's testing branch, and rebuilt the modules for `mlrig` with the recipe and for Full LTO with scripts/build-nvidia.sh. Both report 615.78.08.
+- Not yet run: the old modules stay loaded until a restart, so `nvidia-smi` may fail until then. After it: `ptx_check` again, and scripts/test-pytorch.py.
+
 ### 3 Nov 2026 — Claude Code, torchvision and the uv exclude list
 
 - `UV_EXCLUDE=/etc/kiln/uv-exclude.txt` is set in login shells and in Hyprland, and names `torch` and `torchvision`. A dry run keeps both out, in a login shell, and a new terminal window has the setting. It covers `uv pip` only, not `uv sync`.

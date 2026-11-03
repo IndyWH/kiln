@@ -12,7 +12,7 @@ set -eu
 SOURCE=$1
 VARIANT=$2
 
-VERSION=595.104.02
+VERSION=615.78.08
 [ -d "/var/db/pkg/x11-drivers/nvidia-drivers-$VERSION" ] || {
     echo "nvidia-drivers $VERSION is not the installed version. Update this script."; exit 1; }
 

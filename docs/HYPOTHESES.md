@@ -10,5 +10,6 @@ What we expect before each big step, so results can prove us wrong. Write a pred
 | 3 Nov 2026 | Claude Code | Rebuilding 7-Zip with its assembly option closes most of the 18% to 20% gap to Ubuntu | Rebuild 7-Zip, then the same test | |
 | 3 Nov 2026 | Claude Code | In step 11, `sysbench` gains under 2%, and 7-Zip gains more than `sysbench` | `scripts/measure.sh`, before and after | |
 | 3 Nov 2026 | Claude Code | A compiler rebuilt for this CPU with LTO and profiles compiles a kernel over 5% faster | `scripts/bench-kernel.sh`, kernel compile time | |
+| 3 Nov 2026 | Claude Code | Driver 615.78.08 lets a CUDA 13.4 program built with default settings run, where driver 595.104.02 fails with "unsupported toolchain" | `tests/nvidia/ptx_check.cu`, before and after | |
 | 3 Nov 2026 | Owner | The maxed setup benefits things like video editing and ComfyUI | The same video export and the same ComfyUI workflow, timed on Kiln and on Ubuntu 26.10. Details to be set before testing | |
 | 3 Nov 2026 | Claude Code | Video export gains more than ComfyUI. ComfyUI gains under 3%, as most of its work runs on the GPU, in code from NVIDIA that Kiln cannot rebuild | The same test as the row above | |
