@@ -1,0 +1,144 @@
+
+ * IMPORTANT: 18 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+Calculating dependencies ... done!
+Dependency resolution took 0.70 s (backtrack: 0/20).
+
+[binary  N g   ] dev-debug/strace-7.2-1  USE="ncurses -aio -elfutils -perl (-selinux) -static -test -unwind -verify-sig" 
+[ebuild  N     ] dev-python/pyelftools-0.33  PYTHON_TARGETS="python3_14 -python3_12 -python3_13 (-python3_15)" 
+[ebuild   R    ] sys-apps/systemd-261.2  USE="boot*" 
+[binary  N g   ] sys-apps/gptfdisk-1.0.10-r1-5  USE="ncurses -static" 
+[binary  N g   ] sys-kernel/dracut-112-2  USE="systemd -debug -dracut-cpio (-selinux) -test" 
+[binary   Rg   ] sys-boot/efibootmgr-18-r2-2 
+[ebuild  N     ] sys-kernel/installkernel-68-r1  USE="dracut systemd systemd-boot -efistub -grub -refind -ugrd -uki -ukify" 
+
+!!! The following binary packages have been ignored due to non matching USE:
+
+    =sys-apps/systemd-261.2 -boot selinux
+    =sys-apps/systemd-261.2 -boot python_single_target_python3_13 -python_single_target_python3_14
+    =sys-apps/systemd-261.2 -boot
+    =sys-kernel/installkernel-68-r1 -systemd-boot
+    =sys-kernel/installkernel-68-r1 -systemd -systemd-boot
+
+NOTE: The --binpkg-respect-use=n option will prevent emerge
+      from ignoring these binary packages if possible.
+      Using --binpkg-respect-use=y will silence this warning.
+>>> Verifying ebuild manifests
+>>> Running pre-merge checks for sys-apps/systemd-261.2
+ [32m*[0m Determining the location of the kernel source code
+ [33;01m*[0m Unable to find kernel sources at /usr/src/linux
+ [32m*[0m Please make sure that /usr/src/linux points at your running kernel, 
+ [32m*[0m (or the kernel you wish to build against).
+ [32m*[0m Alternatively, set the KERNEL_DIR environment variable to the kernel sources location
+ [33;01m*[0m Unable to calculate Linux Kernel version for build, attempting to use running version
+ [32m*[0m Checking for suitable kernel configuration options ...
+[A[72C [34;01m[ [32;01mok[34;01m ][0m
+>>> Jobs: 0 of 7 complete, 1 running                                    Load avg: 0.45, 0.23, 0.12
+>>> Emerging binary (1 of 7) dev-debug/strace-7.2::gentoo
+>>> Jobs: 0 of 7 complete, 1 running                                    Load avg: 0.45, 0.23, 0.12
+>>> Jobs: 0 of 7 complete, 2 running                                    Load avg: 0.45, 0.23, 0.12
+>>> Emerging (2 of 7) dev-python/pyelftools-0.33::gentoo
+>>> Jobs: 0 of 7 complete, 2 running                                    Load avg: 0.45, 0.23, 0.12
+>>> Jobs: 0 of 7 complete, 1 running                                    Load avg: 0.45, 0.23, 0.12
+>>> Jobs: 0 of 7 complete, 1 merge wait                                 Load avg: 0.49, 0.25, 0.13
+>>> Installing (1 of 7) dev-debug/strace-7.2::gentoo
+>>> Jobs: 0 of 7 complete, 2 merge wait                                 Load avg: 0.49, 0.25, 0.13
+>>> Completed (1 of 7) dev-debug/strace-7.2::gentoo
+>>> Jobs: 0 of 7 complete                                               Load avg: 0.49, 0.25, 0.13
+>>> Installing (2 of 7) dev-python/pyelftools-0.33::gentoo
+>>> Jobs: 0 of 7 complete                                               Load avg: 0.49, 0.25, 0.13
+>>> Jobs: 1 of 7 complete                                               Load avg: 0.49, 0.25, 0.13
+>>> Completed (2 of 7) dev-python/pyelftools-0.33::gentoo
+>>> Jobs: 1 of 7 complete                                               Load avg: 0.54, 0.26, 0.13
+>>> Jobs: 2 of 7 complete                                               Load avg: 0.54, 0.26, 0.13
+>>> Jobs: 2 of 7 complete, 1 running                                    Load avg: 0.54, 0.26, 0.13
+>>> Emerging (3 of 7) sys-apps/systemd-261.2::gentoo
+>>> Jobs: 2 of 7 complete, 1 running                                    Load avg: 0.54, 0.26, 0.13
+>>> Jobs: 2 of 7 complete                                               Load avg: 7.48, 2.17, 0.79
+>>> Installing (3 of 7) sys-apps/systemd-261.2::gentoo
+>>> Jobs: 2 of 7 complete, 1 merge wait                                 Load avg: 7.48, 2.17, 0.79
+>>> Completed (3 of 7) sys-apps/systemd-261.2::gentoo
+>>> Jobs: 2 of 7 complete                                               Load avg: 6.96, 2.15, 0.79
+>>> Jobs: 3 of 7 complete                                               Load avg: 6.96, 2.15, 0.79
+>>> Jobs: 3 of 7 complete, 1 running                                    Load avg: 6.96, 2.15, 0.79
+>>> Emerging binary (4 of 7) sys-apps/gptfdisk-1.0.10-r1::gentoo
+>>> Jobs: 3 of 7 complete, 1 running                                    Load avg: 6.96, 2.15, 0.79
+>>> Jobs: 3 of 7 complete                                               Load avg: 6.96, 2.15, 0.79
+>>> Installing (4 of 7) sys-apps/gptfdisk-1.0.10-r1::gentoo
+>>> Jobs: 3 of 7 complete, 1 merge wait                                 Load avg: 6.96, 2.15, 0.79
+>>> Completed (4 of 7) sys-apps/gptfdisk-1.0.10-r1::gentoo
+>>> Jobs: 3 of 7 complete                                               Load avg: 6.96, 2.15, 0.79
+>>> Jobs: 4 of 7 complete                                               Load avg: 6.96, 2.15, 0.79
+>>> Jobs: 4 of 7 complete, 1 running                                    Load avg: 6.96, 2.15, 0.79
+>>> Emerging binary (5 of 7) sys-kernel/dracut-112::gentoo
+>>> Jobs: 4 of 7 complete, 1 running                                    Load avg: 6.96, 2.15, 0.79
+>>> Jobs: 4 of 7 complete                                               Load avg: 6.41, 2.11, 0.78
+>>> Installing (5 of 7) sys-kernel/dracut-112::gentoo
+>>> Jobs: 4 of 7 complete, 1 merge wait                                 Load avg: 6.41, 2.11, 0.78
+>>> Completed (5 of 7) sys-kernel/dracut-112::gentoo
+>>> Jobs: 4 of 7 complete                                               Load avg: 6.41, 2.11, 0.78
+>>> Jobs: 5 of 7 complete                                               Load avg: 6.41, 2.11, 0.78
+>>> Jobs: 5 of 7 complete, 1 running                                    Load avg: 6.41, 2.11, 0.78
+>>> Emerging binary (6 of 7) sys-boot/efibootmgr-18-r2::gentoo
+>>> Jobs: 5 of 7 complete, 1 running                                    Load avg: 6.41, 2.11, 0.78
+>>> Jobs: 5 of 7 complete                                               Load avg: 6.41, 2.11, 0.78
+>>> Installing (6 of 7) sys-boot/efibootmgr-18-r2::gentoo
+>>> Jobs: 5 of 7 complete, 1 merge wait                                 Load avg: 6.41, 2.11, 0.78
+>>> Completed (6 of 7) sys-boot/efibootmgr-18-r2::gentoo
+>>> Jobs: 5 of 7 complete                                               Load avg: 5.89, 2.08, 0.78
+>>> Jobs: 6 of 7 complete                                               Load avg: 5.89, 2.08, 0.78
+>>> Jobs: 6 of 7 complete, 1 running                                    Load avg: 5.89, 2.08, 0.78
+>>> Emerging (7 of 7) sys-kernel/installkernel-68-r1::gentoo
+>>> Jobs: 6 of 7 complete, 1 running                                    Load avg: 5.89, 2.08, 0.78
+>>> Jobs: 6 of 7 complete                                               Load avg: 5.89, 2.08, 0.78
+>>> Installing (7 of 7) sys-kernel/installkernel-68-r1::gentoo
+>>> Jobs: 6 of 7 complete, 1 merge wait                                 Load avg: 5.89, 2.08, 0.78
+>>> Completed (7 of 7) sys-kernel/installkernel-68-r1::gentoo
+>>> Jobs: 6 of 7 complete                                               Load avg: 5.66, 2.10, 0.79
+>>> Jobs: 7 of 7 complete                                               Load avg: 5.66, 2.10, 0.79
+
+
+ * Messages for package sys-apps/systemd-261.2:
+
+ * Unable to find kernel sources at /usr/src/linux
+ * Unable to calculate Linux Kernel version for build, attempting to use running version
+
+ * Messages for package sys-apps/systemd-261.2:
+
+ * Install additional packages for optional runtime features:
+ *   sys-kernel/installkernel[systemd-boot] for installing kernels in systemd-boot's native layout and update loader entries
+
+ * Messages for package sys-kernel/dracut-112:
+
+ * Install additional packages for optional runtime features:
+ *   net-misc/networkmanager for Networking support
+ *   net-fs/cifs-utils for Support CIFS
+ *   sys-fs/cryptsetup[-static-libs] for Decrypt devices encrypted with cryptsetup/LUKS
+ *   app-shells/dash for Allows use of dash instead of default bash (on your own risk)
+ *   sys-apps/busybox for Allows use of busybox instead of default bash (on your own risk)
+ *   sys-block/open-iscsi for Support iSCSI
+ *   sys-fs/lvm2[lvm] for Support Logical Volume Manager
+ *   sys-fs/mdadm for Support MD devices, also known as software RAID devices
+ *   sys-fs/dmraid for Support MD devices, also known as software RAID devices
+ *   sys-fs/multipath-tools for Support Device Mapper multipathing
+ *   >=sys-boot/plymouth-0.8.5-r5 for Plymouth boot splash
+ *   sys-block/nbd for Support network block devices
+ *   net-fs/nfs-utils for Support NFS
+ *   net-nds/rpcbind for Support NFS
+ *   app-admin/rsyslog for Enable logging with rsyslog
+ *   sys-fs/squashfs-tools for Support Squashfs
+ *   app-crypt/tpm2-tools for Support TPM 2.0 TSS
+ *   net-wireless/bluez for Support Bluetooth (experimental)
+ *   sys-apps/biosdevname for Support BIOS-given device names
+ *   sys-apps/nvme-cli for Support network NVMe
+ *   app-misc/jq for Support network NVMe
+ *   sys-apps/rng-tools for Enable rngd service to help generating entropy early during boot
+ *   sys-kernel/installkernel[dracut] for automatically generating an initramfs on each kernel installation
+ *   sys-kernel/installkernel[dracut,uki] for automatically generating an UKI on each kernel installation
+
+ * GNU info directory index is up-to-date.
+
+ * IMPORTANT: 23 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+

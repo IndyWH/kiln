@@ -15,6 +15,9 @@ Build settings for this CPU, and each package that needed safer settings, with t
 - `depclean` wants to remove clang and LLVM after the base install, because `mesa` only needs them to compile. Leave them until step 11 is done.
 - Ready-built packages are kept in `/var/cache/binhost/gentoo`. Each has `image.tar.xz.sig` and `metadata.tar.xz.sig`, which can be checked with `gpg --homedir /etc/portage/gnupg`.
 - Stop `gpg-agent` in the chroot before unmounting, with `gpgconf --kill all`, or it may hold the drive open.
+- `systemd-boot` needs `sys-apps/systemd boot`, so `systemd` compiles from source: the ready-built copy leaves that flag off.
+- A package installed with `--oneshot` is not kept in the world list. Add kernels and tools back with `emerge --noreplace`.
+- Inside the chroot, `snapper` needs `--no-dbus`.
 - Settings are in `config/portage/`. `tests/build-settings/check.py` tests them.
 - Ready-built packages are skipped if their USE flags differ from ours. `-march` and `-flto` do not count, so they only affect packages that compile from source. The USE flags `lto` and `pgo` do count, so they wait for step 11.
 - The full CPU flag list costs little: only 12 of the 7,253 packages in the v3 repo offer a flag the repo leaves off. No package there offers `avx_vnni`, `bmi1` or `bmi2`.

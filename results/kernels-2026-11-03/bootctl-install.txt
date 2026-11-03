@@ -1,0 +1,15 @@
+Running in a chroot, enabling --graceful.
+Created directory "/boot/EFI".
+Created directory "/boot/EFI/systemd".
+Created directory "/boot/EFI/BOOT".
+Created directory "/boot/loader".
+Created directory "/boot/loader/keys".
+Created directory "/boot/loader".
+Created directory "/boot/loader/entries".
+Created directory "/boot/EFI".
+Created directory "/boot/EFI/Linux".
+Copied "/usr/lib/systemd/boot/efi/systemd-bootx64.efi" to "/boot/EFI/systemd/systemd-bootx64.efi".
+Copied "/usr/lib/systemd/boot/efi/systemd-bootx64.efi" to "/boot/EFI/BOOT/BOOTX64.EFI".
+⚠️  Mount point '/boot' which backs the random seed file is world accessible, which is a security hole!  ⚠️
+⚠️ Random seed file '/boot/loader/.#bootctlrandom-seedd11579a87c99e364' is world accessible, which is a security hole! ⚠️
+Random seed file /boot/loader/random-seed successfully written (32 bytes).

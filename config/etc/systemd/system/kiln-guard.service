@@ -1,0 +1,15 @@
+[Unit]
+Description=Kiln disk guard: lock every disk except the Crucial
+DefaultDependencies=no
+Wants=systemd-udev-trigger.service
+After=systemd-udev-trigger.service
+Before=local-fs-pre.target shutdown.target
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/python3 -B /usr/local/lib/kiln-guard/kiln_guard.py lock
+
+[Install]
+WantedBy=local-fs-pre.target

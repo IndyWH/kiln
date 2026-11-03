@@ -1,0 +1,153 @@
+
+ * IMPORTANT: 18 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+Calculating dependencies ... done!
+Dependency resolution took 0.41 s (backtrack: 0/20).
+
+[binary  N g   ] gui-libs/eglexternalplatform-1.2.1-1 
+[binary  N g   ] dev-libs/jansson-2.15.1-2  USE="-doc -static-libs" 
+[ebuild  N     ] gui-libs/egl-gbm-1.1.4  ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] gui-libs/egl-wayland-1.1.24  ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] gui-libs/egl-wayland2-1.0.2  ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] gui-libs/egl-x11-1.0.6  ABI_X86="(64) -32 (-x32)" 
+[binary  N g   ] x11-libs/libXv-1.0.13-7  USE="-doc" ABI_X86="(64) -32 (-x32)" 
+[binary  N g   ] virtual/linux-sources-3-r8-1  USE="-firmware" 
+[ebuild  N     ] x11-libs/libvdpau-1.5  USE="dri -doc -test" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] x11-drivers/nvidia-drivers-595.104.02  USE="X modules static-libs strip tools wayland -dist-kernel -modules-compress -modules-sign -persistenced -powerd" ABI_X86="(64) -32" 
+
+!!! The following binary packages have been ignored due to non matching USE:
+
+    =x11-libs/libvdpau-1.5 -dri
+
+NOTE: The --binpkg-respect-use=n option will prevent emerge
+      from ignoring these binary packages if possible.
+      Using --binpkg-respect-use=y will silence this warning.
+>>> Verifying ebuild manifests
+>>> Jobs: 0 of 10 complete, 1 running                                   Load avg: 4.26, 8.09, 4.31
+>>> Emerging binary (1 of 10) gui-libs/eglexternalplatform-1.2.1::gentoo
+>>> Jobs: 0 of 10 complete, 1 running                                   Load avg: 4.26, 8.09, 4.31
+>>> Jobs: 0 of 10 complete, 2 running                                   Load avg: 4.26, 8.09, 4.31
+>>> Emerging binary (2 of 10) dev-libs/jansson-2.15.1::gentoo
+>>> Jobs: 0 of 10 complete, 2 running                                   Load avg: 4.26, 8.09, 4.31
+>>> Jobs: 0 of 10 complete, 1 running                                   Load avg: 4.26, 8.09, 4.31
+>>> Jobs: 0 of 10 complete, 1 merge wait                                Load avg: 4.26, 8.09, 4.31
+>>> Installing (1 of 10) gui-libs/eglexternalplatform-1.2.1::gentoo
+>>> Jobs: 0 of 10 complete, 2 merge wait                                Load avg: 4.26, 8.09, 4.31
+>>> Completed (1 of 10) gui-libs/eglexternalplatform-1.2.1::gentoo
+>>> Jobs: 0 of 10 complete                                              Load avg: 4.26, 8.09, 4.31
+>>> Installing (2 of 10) dev-libs/jansson-2.15.1::gentoo
+>>> Jobs: 0 of 10 complete                                              Load avg: 4.26, 8.09, 4.31
+>>> Jobs: 1 of 10 complete                                              Load avg: 4.26, 8.09, 4.31
+>>> Completed (2 of 10) dev-libs/jansson-2.15.1::gentoo
+>>> Jobs: 1 of 10 complete                                              Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete                                              Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete, 1 running                                   Load avg: 4.32, 8.04, 4.32
+>>> Emerging (3 of 10) gui-libs/egl-gbm-1.1.4::gentoo
+>>> Jobs: 2 of 10 complete, 1 running                                   Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete, 2 running                                   Load avg: 4.32, 8.04, 4.32
+>>> Emerging (4 of 10) gui-libs/egl-wayland-1.1.24::gentoo
+>>> Jobs: 2 of 10 complete, 2 running                                   Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete, 3 running                                   Load avg: 4.32, 8.04, 4.32
+>>> Emerging (5 of 10) gui-libs/egl-wayland2-1.0.2::gentoo
+>>> Jobs: 2 of 10 complete, 3 running                                   Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete, 4 running                                   Load avg: 4.32, 8.04, 4.32
+>>> Emerging (6 of 10) gui-libs/egl-x11-1.0.6::gentoo
+>>> Jobs: 2 of 10 complete, 4 running                                   Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete, 3 running                                   Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete, 4 running, 1 merge wait                     Load avg: 4.32, 8.04, 4.32
+>>> Emerging binary (7 of 10) x11-libs/libXv-1.0.13::gentoo
+>>> Jobs: 2 of 10 complete, 4 running, 1 merge wait                     Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete, 3 running, 1 merge wait                     Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete, 4 running, 2 merge wait                     Load avg: 4.32, 8.04, 4.32
+>>> Emerging binary (8 of 10) virtual/linux-sources-3-r8::gentoo
+>>> Jobs: 2 of 10 complete, 4 running, 2 merge wait                     Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete, 3 running, 2 merge wait                     Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete, 2 running, 3 merge wait                     Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete, 3 running, 4 merge wait                     Load avg: 4.32, 8.04, 4.32
+>>> Emerging (9 of 10) x11-libs/libvdpau-1.5::gentoo
+>>> Jobs: 2 of 10 complete, 3 running, 4 merge wait                     Load avg: 4.32, 8.04, 4.32
+>>> Jobs: 2 of 10 complete, 2 running, 4 merge wait                     Load avg: 4.46, 8.01, 4.32
+>>> Jobs: 2 of 10 complete, 1 running, 5 merge wait                     Load avg: 4.46, 8.01, 4.32
+>>> Jobs: 2 of 10 complete, 6 merge wait                                Load avg: 4.46, 8.01, 4.32
+>>> Installing (3 of 10) gui-libs/egl-gbm-1.1.4::gentoo
+>>> Jobs: 2 of 10 complete, 7 merge wait                                Load avg: 4.46, 8.01, 4.32
+>>> Completed (3 of 10) gui-libs/egl-gbm-1.1.4::gentoo
+>>> Jobs: 2 of 10 complete                                              Load avg: 4.26, 7.91, 4.31
+>>> Installing (7 of 10) x11-libs/libXv-1.0.13::gentoo
+>>> Jobs: 2 of 10 complete                                              Load avg: 4.26, 7.91, 4.31
+>>> Jobs: 3 of 10 complete                                              Load avg: 4.26, 7.91, 4.31
+>>> Completed (7 of 10) x11-libs/libXv-1.0.13::gentoo
+>>> Jobs: 3 of 10 complete                                              Load avg: 4.26, 7.91, 4.31
+>>> Jobs: 4 of 10 complete                                              Load avg: 4.26, 7.91, 4.31
+>>> Installing (4 of 10) gui-libs/egl-wayland-1.1.24::gentoo
+>>> Jobs: 4 of 10 complete                                              Load avg: 4.26, 7.91, 4.31
+>>> Completed (4 of 10) gui-libs/egl-wayland-1.1.24::gentoo
+>>> Jobs: 4 of 10 complete                                              Load avg: 4.26, 7.91, 4.31
+>>> Jobs: 5 of 10 complete                                              Load avg: 4.26, 7.91, 4.31
+>>> Installing (8 of 10) virtual/linux-sources-3-r8::gentoo
+>>> Jobs: 5 of 10 complete                                              Load avg: 4.26, 7.91, 4.31
+>>> Completed (8 of 10) virtual/linux-sources-3-r8::gentoo
+>>> Jobs: 5 of 10 complete                                              Load avg: 4.16, 7.83, 4.30
+>>> Jobs: 6 of 10 complete                                              Load avg: 4.16, 7.83, 4.30
+>>> Installing (5 of 10) gui-libs/egl-wayland2-1.0.2::gentoo
+>>> Jobs: 6 of 10 complete                                              Load avg: 4.16, 7.83, 4.30
+>>> Completed (5 of 10) gui-libs/egl-wayland2-1.0.2::gentoo
+>>> Jobs: 6 of 10 complete                                              Load avg: 4.16, 7.83, 4.30
+>>> Jobs: 7 of 10 complete                                              Load avg: 4.16, 7.83, 4.30
+>>> Installing (6 of 10) gui-libs/egl-x11-1.0.6::gentoo
+>>> Jobs: 7 of 10 complete                                              Load avg: 4.16, 7.83, 4.30
+>>> Completed (6 of 10) gui-libs/egl-x11-1.0.6::gentoo
+>>> Jobs: 7 of 10 complete                                              Load avg: 4.16, 7.83, 4.30
+>>> Jobs: 8 of 10 complete                                              Load avg: 4.16, 7.83, 4.30
+>>> Installing (9 of 10) x11-libs/libvdpau-1.5::gentoo
+>>> Jobs: 8 of 10 complete                                              Load avg: 4.16, 7.83, 4.30
+>>> Completed (9 of 10) x11-libs/libvdpau-1.5::gentoo
+>>> Jobs: 8 of 10 complete                                              Load avg: 3.98, 7.73, 4.29
+>>> Jobs: 9 of 10 complete                                              Load avg: 3.98, 7.73, 4.29
+>>> Jobs: 9 of 10 complete, 1 running                                   Load avg: 3.98, 7.73, 4.29
+>>> Emerging (10 of 10) x11-drivers/nvidia-drivers-595.104.02::gentoo
+>>> Jobs: 9 of 10 complete, 1 running                                   Load avg: 3.98, 7.73, 4.29
+>>> Jobs: 9 of 10 complete                                              Load avg: 8.72, 8.48, 4.77
+>>> Installing (10 of 10) x11-drivers/nvidia-drivers-595.104.02::gentoo
+>>> Jobs: 9 of 10 complete, 1 merge wait                                Load avg: 8.72, 8.48, 4.77
+>>> Recording x11-drivers/nvidia-drivers in "world" favorites file...
+>>> Jobs: 9 of 10 complete                                              Load avg: 8.72, 8.48, 4.77
+>>> Completed (10 of 10) x11-drivers/nvidia-drivers-595.104.02::gentoo
+>>> Jobs: 9 of 10 complete                                              Load avg: 8.72, 8.48, 4.77
+>>> Jobs: 10 of 10 complete                                             Load avg: 8.72, 8.48, 4.77
+
+
+ * Messages for package x11-drivers/nvidia-drivers-595.104.02:
+
+ * virtual/dist-kernel is installed, but USE="dist-kernel"
+ * is not enabled for x11-drivers/nvidia-drivers.
+ * It's recommended to globally enable the dist-kernel USE flag
+ * to automatically trigger initramfs rebuilds on kernel updates
+ * Trusted users should be in the 'video' group to use NVIDIA devices.
+ * You can add yourself by using: gpasswd -a my-user video
+ * Like all out-of-tree kernel modules, it is necessary to rebuild
+ * nvidia-drivers after upgrading or rebuilding the Linux kernel
+ * by for example running `emerge @module-rebuild`. Alternatively,
+ * if using a distribution kernel (sys-kernel/gentoo-kernel{,-bin}),
+ * this can be automated by setting USE=dist-kernel globally.
+ * Loaded kernel modules also must not mismatch with the installed
+ * nvidia-drivers version (excluding -r revision), meaning should
+ * ensure `eselect kernel list` points to the kernel that will be
+ * booted before building and preferably reboot after upgrading
+ * nvidia-drivers (the ebuild will emit a warning if mismatching).
+ * See '/etc/modprobe.d/nvidia.conf' for modules options.
+ * Note that without USE=abi_x86_32 on nvidia-drivers, 32bit applications
+ * (typically using wine / steam) will not be able to use GPU acceleration.
+ * For additional information or for troubleshooting issues, please see
+ * https://wiki.gentoo.org/wiki/NVIDIA/nvidia-drivers and NVIDIA's own
+ * documentation that is installed alongside this README.
+ * (Note: Above message is only printed the first time package is
+ * installed. Please look at /usr/share/doc/nvidia-drivers-595.104.02/README.gentoo*
+ * for future reference)
+
+ * GNU info directory index is up-to-date.
+
+ * IMPORTANT: 18 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+

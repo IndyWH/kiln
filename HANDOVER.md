@@ -4,8 +4,8 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1. Steps 3, 4, 5, 6 and 7 are complete. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
-- Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped. The ready-built base is installed, with snapshot 1 taken (3 Nov 2026). The drive is unmounted. It cannot boot until step 8.
+- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built but has not been booted. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
+- Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped. Two kernels, the boot loader and the guard are on it, with snapshot 3 taken (3 Nov 2026). The drive is unmounted.
 - Work can start now.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
 - Baseline: Ubuntu 26.10 on mlrig only. Omarchy is skipped.
@@ -13,13 +13,29 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Spec step 8, two kernels, once the owner approves the plan. It must put the disk guard on Kiln before first boot, keep Ubuntu first in the boot order, and include the NVIDIA and `cp210x` drivers. Mount the Crucial with the last block in docs/DISK_LAYOUT.md. To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
+Spec step 8 part 4, first boot. The owner presses F8, chooses Kiln, logs in as root and runs `kiln-first-boot-check`. Then the same with the rescue kernel, from the boot menu. It prints PASS or FAIL for each check, and saves results to /var/log/kiln-first-boot/ on the Crucial.
 
-After any restart of the live system, the guard is gone. Clone the repo and run `sudo guard/install.sh` again before any disk work. The work is on branch stage1-guards until the owner merges it, so use `git clone -b stage1-guards`.
+Then the owner starts the live system again, with a new Claude Code session. That session mounts the Crucial with the last block in docs/DISK_LAYOUT.md, read-only if it can, reads the results, removes IDs, and commits them to results/kernels-2026-11-03/. Check that the boot order still starts with 0000.
+
+If F8 does not show `Kiln`, the Crucial should appear as `UEFI OS`, from the fallback copy. If Kiln does not start, Ubuntu is untouched and first, and it can be fixed from the live image.
+
+To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
+
+After any restart of the live system, the guard is gone. Clone the repo and run `sudo guard/install.sh` again before any disk work, and restart Claude Code so it loads the hook. Work is merged to main before each restart.
 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, step 8 built, not booted
+
+- Two kernels, both 6.18.60: `6.18.60-gentoo-mlrig`, the default, and Gentoo's ready-built `6.18.60-gentoo-dist-bin`, the rescue. Boot loader `systemd-boot`. Results: results/kernels-2026-11-03/summary.txt. Kernel config: config/kernel/.
+- NVIDIA 595.104.02 and `cp210x` are in, not yet tested. NVIDIA is on the mlrig kernel only, by owner's decision. Cowork: the spec's step 8 lists neither these nor the boot loader.
+- The owner copied the guard to Kiln by hand, and set the root password. Checksums match the repo. The hook does nothing on Kiln until Claude Code is there in step 10.
+- Firmware: added `Kiln`, not in the boot order. Removed the stale `Limine` and `UEFI OS` with the owner's approval, after proving their partitions are gone. Order is now 0000,0005.
+- Other disks: all still at 0 writes and locked.
+- Kernel 6.18 is Gentoo stable, by owner's decision. Ubuntu runs 7.3.0, so step 12 must record the difference. Cowork: the comparison is not purely about building for the CPU.
+- Cowork: rule 1 wants a past snapshot in the boot menu. `systemd-boot` needs a menu entry written for each, and kernels on `/boot` are not in snapshots. For step 10.
 
 ### 3 Nov 2026 — Claude Code, ready-built base installed
 

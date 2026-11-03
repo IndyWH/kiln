@@ -1,0 +1,6 @@
+# │ Type   │ Pre # │ Date                     │ User │ Cleanup │ Description    
+──┼────────┼───────┼──────────────────────────┼──────┼─────────┼────────────────
+0 │ single │       │                          │ root │         │ current        
+1 │ single │       │ Tue Nov  3 01:04:56 2026 │ root │ number  │ base installed 
+2 │ single │       │ Tue Nov  3 07:51:33 2026 │ root │         │ before kernels 
+3 │ single │       │ Tue Nov  3 08:10:43 2026 │ root │         │ kernels install

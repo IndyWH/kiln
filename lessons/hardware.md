@@ -33,6 +33,10 @@ Full report: `docs/HARDWARE.md`.
 - The hook blocks Claude from running `tests/guard/fake_disks.sh`, because the script names raw devices. The owner runs it in a terminal. Do not try to get round this.
 - The hook sometimes blocks harmless commands, because it reads text. Seen so far: `which nvme`, where the word counts as a disk tool, a `sed` pattern containing `/sys/block`, and Markdown backticks inside single quotes, which it reads as a command. Write text with the file tools instead. Use a simpler read-only command, such as `ls` or `grep`. If a command is blocked, re-check what it does before rewording it.
 
+- The guard on Kiln goes on by the owner's hand, with `scripts/guard-to-kiln.sh`. It adds `kiln-guard.service`, which locks the disks early in each boot. The start-up image runs before that, with no locks.
+- The hook refuses a script inside the chroot, such as `chroot /mnt/gentoo bash /usr/src/x.sh`, because it looks for that path outside the chroot and cannot read it. Run the commands one by one, so it can read each. For a script on the Crucial that can run from outside, use its `/mnt/gentoo` path.
+- The hook also stops the `Read` tool opening files in `guard/`, with the message about changing them. `sha256sum` on them is allowed. Review this at step 10.
+
 ## Tool pitfalls
 
 - `grep` on the live image is `ugrep`, which goes down into folders by itself. A wildcard path under `/sys` can match folders and produce a huge output. Name exact files.

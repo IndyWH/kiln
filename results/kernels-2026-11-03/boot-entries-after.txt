@@ -1,0 +1,4 @@
+BootOrder: 0000,0005
+0000 * Ubuntu                             partition exists                             
+0001 * Kiln                               partition exists (Crucial boot partition)    
+0005 * UEFI OS                            no GPT partition named

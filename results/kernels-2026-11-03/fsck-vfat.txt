@@ -1,0 +1,2 @@
+fsck.fat 4.2 (2021-01-31)
+/dev/disk/by-id/nvme-CT1000P2SSD8_2128E5B7DBBC-part1: 28 files, 42866/523262 clusters

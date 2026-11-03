@@ -1,0 +1,30 @@
+
+These are the packages that would be merged, in order:
+
+Calculating dependencies ... done!
+Dependency resolution took 0.43 s (backtrack: 0/20).
+
+[binary  N g   ] gui-libs/eglexternalplatform-1.2.1-1::gentoo  40 KiB
+[binary  N g   ] dev-libs/jansson-2.15.1-2:0/4::gentoo  USE="-doc -static-libs" 90 KiB
+[ebuild  N     ] gui-libs/egl-gbm-1.1.4::gentoo  ABI_X86="(64) -32 (-x32)" 18 KiB
+[ebuild  N     ] gui-libs/egl-wayland-1.1.24::gentoo  ABI_X86="(64) -32 (-x32)" 79 KiB
+[ebuild  N     ] gui-libs/egl-wayland2-1.0.2::gentoo  ABI_X86="(64) -32 (-x32)" 80 KiB
+[ebuild  N     ] gui-libs/egl-x11-1.0.6::gentoo  ABI_X86="(64) -32 (-x32)" 74 KiB
+[binary  N g   ] x11-libs/libXv-1.0.13-7::gentoo  USE="-doc" ABI_X86="(64) -32 (-x32)" 60 KiB
+[binary  N g   ] virtual/linux-sources-3-r8-1::gentoo  USE="-firmware" 20 KiB
+[ebuild  N     ] x11-libs/libvdpau-1.5::gentoo  USE="dri -doc -test" ABI_X86="(64) -32 (-x32)" 140 KiB
+[ebuild  N     ] x11-drivers/nvidia-drivers-595.104.02:0/595::gentoo  USE="X modules static-libs strip tools wayland -dist-kernel -modules-compress -modules-sign -persistenced -powerd" ABI_X86="(64) -32" 438197 KiB
+
+Total: 10 packages (10 new, 4 binaries), Size of downloads: 438796 KiB
+
+!!! The following binary packages have been ignored due to non matching USE:
+
+    =x11-libs/libvdpau-1.5 -dri
+
+NOTE: The --binpkg-respect-use=n option will prevent emerge
+      from ignoring these binary packages if possible.
+      Using --binpkg-respect-use=y will silence this warning.
+
+ * IMPORTANT: 18 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+

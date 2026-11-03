@@ -1,0 +1,1 @@
+root=LABEL=KILN-ROOT rootflags=subvol=@ rw rd.lvm=0 rd.md=0 rd.luks=0 rd.dm=0 systemd.gpt_auto=0

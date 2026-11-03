@@ -1,0 +1,38 @@
+
+These are the packages that would be merged, in order:
+
+Calculating dependencies ... done!
+Dependency resolution took 0.81 s (backtrack: 0/20).
+
+[binary  N g   ] dev-debug/strace-7.2-1::gentoo  USE="ncurses -aio -elfutils -perl (-selinux) -static -test -unwind -verify-sig" 1160 KiB
+[binary  N g   ] sys-devel/bc-1.08.2-6::gentoo  USE="readline -libedit -static" 140 KiB
+[binary  N g   ] app-alternatives/bc-0-1::gentoo  USE="gnu -gh" 20 KiB
+[binary  N g   ] app-crypt/sbsigntools-0.9.5-2::gentoo  80 KiB
+[ebuild  N     ] dev-python/pyelftools-0.33::gentoo  PYTHON_TARGETS="python3_14 -python3_12 -python3_13 (-python3_15)" 14828 KiB
+[ebuild   R    ] sys-apps/systemd-261.2:0/2::gentoo  USE="acl boot* dns-over-tls gcrypt kernel-install kmod libarchive lz4 openssl pam pcre policykit resolvconf seccomp sysv-utils zstd -apparmor -audit -bpf -cryptsetup -curl -elfutils -fido2 -gnutls -homed -idn -imds -importd -lzma -passwdqc -pkcs11 -pwquality -qrcode -remote -secureboot (-selinux) -test -tpm -ukify -vanilla -xkb" ABI_X86="(64) -32 (-x32)" PYTHON_SINGLE_TARGET="python3_14 -python3_12 -python3_13" 18024 KiB
+[binary  N g   ] sys-apps/gptfdisk-1.0.10-r1-5::gentoo  USE="ncurses -static" 230 KiB
+[binary  N g   ] sys-kernel/dracut-112-2::gentoo  USE="systemd -debug -dracut-cpio (-selinux) -test" 420 KiB
+[binary   Rg   ] sys-boot/efibootmgr-18-r2-2::gentoo  0 KiB
+[ebuild  N     ] sys-kernel/installkernel-68-r1::gentoo  USE="dracut systemd systemd-boot -efistub -grub -refind -ugrd -uki -ukify" 33 KiB
+[binary  N g   ] dev-util/pahole-1.31-1::gentoo  USE="-debug -verify-sig" PYTHON_SINGLE_TARGET="python3_14 -python3_12 -python3_13" 400 KiB
+[binary  N g   ] sys-kernel/gentoo-sources-6.18.60-1:6.18.60::gentoo  USE="-build -experimental -symlink -vanilla" 154260 KiB
+[ebuild  N     ] sys-kernel/gentoo-kernel-bin-6.18.60:6.18.60::gentoo  USE="initramfs -debug -generic-uki -modules-compress -test -verify-sig" 619768 KiB
+[ebuild  N     ] virtual/dist-kernel-6.18.60:0/6.18.60::gentoo  0 KiB
+
+Total: 14 packages (12 new, 2 reinstalls, 9 binaries), Size of downloads: 809361 KiB
+
+!!! The following binary packages have been ignored due to non matching USE:
+
+    =sys-apps/systemd-261.2 -boot selinux
+    =sys-apps/systemd-261.2 -boot python_single_target_python3_13 -python_single_target_python3_14
+    =sys-apps/systemd-261.2 -boot
+    =sys-kernel/installkernel-68-r1 -systemd-boot
+    =sys-kernel/installkernel-68-r1 -systemd -systemd-boot
+
+NOTE: The --binpkg-respect-use=n option will prevent emerge
+      from ignoring these binary packages if possible.
+      Using --binpkg-respect-use=y will silence this warning.
+
+ * IMPORTANT: 18 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+

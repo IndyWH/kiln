@@ -1,0 +1,6 @@
+title      Gentoo Linux
+version    6.18.60-gentoo-mlrig
+options    root=LABEL=KILN-ROOT rootflags=subvol=@ rw rd.lvm=0 rd.md=0 rd.luks=0 rd.dm=0 systemd.gpt_auto=0 systemd.machine_id=<ma
+initrd     /<machine-id>/6.18.60-gentoo-mlrig/microcode-amd
+initrd     /<machine-id>/6.18.60-gentoo-mlrig/microcode-intel
+initrd     /<machine-id>/6.18.60-gentoo-mlrig/initrd

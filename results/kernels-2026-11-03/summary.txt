@@ -1,0 +1,42 @@
+Step 8 parts 1 to 3: two kernels and boot loader on the Crucial, 3 Nov 2026
+
+STATUS: built and installed. NOT YET BOOTED, so nothing below proves Kiln starts.
+The first-boot check is part 4.
+
+Kernels, both 6.18.60, Gentoo stable:
+  6.18.60-gentoo-mlrig     built here, 3 min, 101 MB modules. Default.
+  6.18.60-gentoo-dist-bin  Gentoo's ready-built, the rescue kernel, 618 MB modules.
+Gentoo's package list on the Crucial was refreshed from 2 Nov to 3 Nov, because the
+2 Nov list still marked 6.18.60 as testing. Nothing was upgraded because of it.
+
+Boot loader: systemd-boot 261.2, 3-second menu, mlrig kernel by default. Installed
+with no firmware changes. The fallback copy is at /EFI/BOOT/BOOTX64.EFI.
+systemd compiled from source, as the ready-built copy has no boot loader in it.
+
+NVIDIA: 595.104.02, built for the mlrig kernel only. Licence is Dual MIT/GPL, so the
+open module. The rescue kernel has no NVIDIA driver. nouveau is blocked on both.
+Not tested: it has not been loaded yet.
+
+cp210x: in both kernels. Not tested.
+
+Disk guard on Kiln: copied by the owner's hand. Checksums match the repo for the
+program, the udev rule and the hook settings. Start-up service enabled. Not tested:
+it has not run on Kiln yet, and Claude Code is not on Kiln until step 10.
+
+Firmware boot entries, read back after each change:
+  Before: order 0000,0003,0004,0005
+  Proof: entries 0003 and 0004 named partitions that no longer exist.
+  Added 0001 Kiln, not in the order, on the Crucial's boot partition.
+  Removed 0003 Limine and 0004 UEFI OS, with the owner's approval.
+  After: order 0000,0005. Ubuntu first.
+
+Snapshots: 2 before kernels, 3 kernels installed. Neither covers /boot.
+
+Other disks: lock flags and write counts did not change. All still show 0 writes.
+Crucial: both filesystems check clean. Unmounted. 8.1 GiB in use.
+
+Left as it is:
+  The mlrig start-up carries a 28 MB Intel microcode file for every Intel chip. It
+  could be cut to this chip, which may help boot time at step 12.
+  18 Gentoo news items unread. The kernel installer and dracut ones were read.
+  The kernel is Gentoo stable 6.18. Ubuntu runs 7.3.0. Step 12 must say so.

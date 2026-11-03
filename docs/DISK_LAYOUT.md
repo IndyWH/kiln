@@ -57,6 +57,4 @@ sudo mount /dev/disk/by-id/nvme-CT1000P2SSD8_2128E5B7DBBC-part1 /mnt/gentoo/boot
 
 The Crucial is left unmounted after step 5. Later steps mount it with this block.
 
-The firmware boot entries `Limine` and one `UEFI OS` still point at the old boot partition, and no longer work. Ubuntu is first in the boot order, so they do no harm. Removing them needs the owner's approval, at the boot loader stage.
-
 The snapshot tool goes in with the base system. The `@snapshots` section is ready for it.

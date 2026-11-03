@@ -1,0 +1,6 @@
+# Kiln Linux, mlrig: wired network, found by its driver.
+[Match]
+Driver=igc
+
+[Network]
+DHCP=yes

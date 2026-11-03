@@ -1,0 +1,5 @@
+BootOrder: 0000,0003,0004,0005
+0000 * Ubuntu                             partition exists                             
+0003 * Limine                             partition GONE                               
+0004 * UEFI OS                            partition GONE                               
+0005 * UEFI OS                            no GPT partition named

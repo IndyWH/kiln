@@ -1,5 +1,7 @@
 # Kiln Linux, mlrig: /etc/portage/package.use/kiln
-# The kernel installer needs this to build its start-up image.
-sys-kernel/installkernel dracut
+# The kernel installer builds the start-up image and writes systemd-boot menu entries.
+sys-kernel/installkernel dracut systemd systemd-boot
+# systemd-boot comes with systemd, but only with this flag.
+sys-apps/systemd boot
 # Firefox needs this.
 media-libs/libvpx postproc
