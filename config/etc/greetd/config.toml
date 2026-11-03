@@ -1,0 +1,8 @@
+# Kiln Linux, mlrig: /etc/greetd/config.toml
+# The login screen. It starts the desktop with kiln-session after you log in.
+[terminal]
+vt = 7
+
+[default_session]
+command = "tuigreet --time --remember --asterisks --cmd /usr/local/bin/kiln-session"
+user = "greetd"

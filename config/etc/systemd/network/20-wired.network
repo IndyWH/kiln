@@ -1,6 +1,7 @@
-# Kiln Linux, mlrig: wired network, found by its driver.
+# Kiln Linux, mlrig: wired network, found by its port name.
+# Matching on Driver=igc never brought the port up at first boot.
 [Match]
-Driver=igc
+Name=en*
 
 [Network]
 DHCP=yes

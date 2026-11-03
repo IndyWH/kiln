@@ -48,3 +48,5 @@ Full report: `docs/HARDWARE.md`.
 - `dd of=/dev/x` makes a plain file if the device node has gone, and reports success. Use `conv=nocreat`.
 - A loop device keeps its read-only flag after it is detached, so the next use of that loop device starts locked.
 - Writing to the first sectors of a disk damages its partition table, and the kernel then removes the partitions. That is how the node above went missing during a test.
+- The hook looks for a program path before the command runs, outside the chroot. A path that only exists inside the chroot, or that an earlier part of the same command creates, is refused. Check such a program in a later command, by its `/mnt/gentoo` path.
+- The hook reads the lines of a heredoc as commands, so write notes with the file tools.

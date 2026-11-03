@@ -1,0 +1,29 @@
+Step 9, desktop, and Claude Code on Kiln, 3 Nov 2026
+
+STATUS: installed on the Crucial from the live system. NOT YET BOOTED, so nothing here
+proves the desktop starts, the network comes up, or sound works.
+
+Installed: 124 packages, 102 ready-built, 22 compiled, in about 10 minutes.
+  Hyprland 0.57.0, from Kiln's own recipes in overlay/.
+  Login screen greetd and tuigreet, foot terminal, Firefox 153.6.0, PipeWire 1.6.9,
+  WirePlumber 0.5.18, rtkit, Noto and DejaVu fonts, sudo, git.
+Logs: pretend-1.txt, emerge-desktop.log.
+
+Own recipes: 10. Hyprland, 8 of its libraries, and Lua 5.5.
+  Lua 5.5 is needed by Hyprland 0.57 and is not in Gentoo. It is built as a library only.
+  glaze 8.1.0 comes from Gentoo's testing packages. Gentoo's stable copy is too old.
+  Left out of Hyprland: rtkit support, the plugin manager, and the uwsm session.
+
+Checked without booting:
+  Hyprland read config/hypr/hyprland.lua and said config ok.
+  The sudo rules parse. tests/build-settings/check.py passes.
+  Claude Code 2.1.317 runs and prints its version.
+  greetd, network, name lookup and guard services are enabled. Default is graphical.
+
+Wired network: now matched by port name, en*, not by driver. Not tested until boot.
+
+Account: indy, with sudo and no password, by owner's decision. Claude Code is installed
+for indy, and needs signing in on Kiln. Password set by the owner.
+
+Snapshots: 4 before the desktop, 5 desktop installed.
+Boot order: not touched.

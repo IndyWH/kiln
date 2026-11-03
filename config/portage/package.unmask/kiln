@@ -1,0 +1,12 @@
+# Kiln Linux, mlrig: /etc/portage/package.unmask/kiln
+# Gentoo moved Hyprland out of its main repo in 2026 and left these names masked,
+# saying they belong in a separate repo. These lines unmask Kiln's own recipes only.
+gui-wm/hyprland::kiln
+gui-libs/aquamarine::kiln
+gui-libs/hyprcursor::kiln
+gui-libs/hyprutils::kiln
+gui-libs/hyprwire::kiln
+dev-libs/hyprgraphics::kiln
+dev-libs/hyprland-protocols::kiln
+dev-libs/hyprlang::kiln
+dev-util/hyprwayland-scanner::kiln

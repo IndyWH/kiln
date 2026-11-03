@@ -1,0 +1,10 @@
+#!/bin/sh
+# Kiln Linux, mlrig: starts the desktop from the login screen.
+# The desktop runs on the WX 3200 (PCI 02:00.0, decision 4). Card numbers change
+# between boots, so find its current number. The list Hyprland reads is split by
+# colons, and the by-path name has colons in it, so it cannot be used directly.
+card=$(readlink -f /dev/dri/by-path/pci-0000:02:00.0-card 2>/dev/null)
+[ -e "$card" ] && export AQ_DRM_DEVICES="$card"
+export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
+export XDG_SESSION_TYPE=wayland XDG_CURRENT_DESKTOP=Hyprland
+exec /usr/bin/start-hyprland

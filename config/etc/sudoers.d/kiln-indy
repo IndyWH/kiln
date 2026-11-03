@@ -1,0 +1,3 @@
+# Kiln Linux, mlrig. Owner's decision, 3 Nov 2026: no sudo password for the owner's
+# account, so the sidekick can work. Remove this file to require a password again.
+indy ALL=(ALL:ALL) NOPASSWD: ALL

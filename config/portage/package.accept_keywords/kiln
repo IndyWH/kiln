@@ -1,0 +1,3 @@
+# Kiln Linux, mlrig: /etc/portage/package.accept_keywords/kiln
+# Hyprland 0.57 needs glaze 7 or newer. Gentoo's stable copy is 5.5, so use its testing copy.
+dev-cpp/glaze ~amd64
