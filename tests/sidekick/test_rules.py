@@ -179,6 +179,17 @@ class Flow(unittest.TestCase):
 
 
 class Undo(unittest.TestCase):
+    def test_changes_before_a_restore_cannot_be_undone(self):
+        folder = tempfile.mkdtemp()
+        r.LOG = folder + "/changes.log"
+        with open(r.LOG, "w") as f:
+            f.write("2026-11-03 10:00  #1 ASKED [root 11 home 11] Before\n")
+            f.write("2026-11-03 10:00  #1 DONE [root 12 home 12]\n")
+            f.write("2026-11-03 10:01  #0 RESTORED to snapshot 6, kept as @.old-1\n")
+            f.write("2026-11-03 10:02  #2 ASKED [root 13 home 13] After\n")
+            f.write("2026-11-03 10:02  #2 DONE [root 14 home 14]\n")
+        self.assertEqual([e["number"] for e in r.read_changes(r.LOG)], [2])
+
     def test_a_change_that_changed_nothing_is_skipped(self):
         folder = tempfile.mkdtemp()
         r.LOG = folder + "/changes.log"

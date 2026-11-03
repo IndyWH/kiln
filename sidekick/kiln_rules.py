@@ -367,12 +367,14 @@ def read_changes(path=None):
     entries = {}
     with open(path or LOG) as f:
         for line in f:
-            m = re.match(r"^\S+ \S+  #(\d+) (ASKED|DONE|FAILED|BACKGROUND|UNDONE|EMPTY)"
+            m = re.match(r"^\S+ \S+  #(\d+) (ASKED|DONE|FAILED|BACKGROUND|UNDONE|EMPTY|RESTORED)"
                          r"(?: \[root (\d+) home (\d+)\])?(?: (.*))?$", line.rstrip("\n"))
             if not m:
                 continue
             number, word = int(m[1]), m[2]
-            if word == "ASKED" and m[3]:
+            if word == "RESTORED":
+                entries.clear()  # Earlier changes no longer match the system.
+            elif word == "ASKED" and m[3]:
                 entries[number] = {"number": number, "said": m[5] or "", "root": m[3],
                                    "home": m[4], "ran": False, "root2": "0", "home2": "0"}
             elif number not in entries:

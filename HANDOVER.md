@@ -15,14 +15,16 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Part 4 of step 10, when the owner says to start. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
+Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
+
+Next: the owner tries the Omarchy-based desktop, then decides how to add a status bar, launcher, notifications, lock screen and wallpaper.
 
 Step 10, in four parts, reporting back after each:
 
 1. Sidekick key and rules file. Done.
 2. Hooks for rules 1 and 2, with the change log and `undo`. Hooks go in the protected folder, installed by the owner's hand. `undo` restores only `~/.config` in the home folder, by owner's decision. Done.
-3. Past snapshots in the boot menu. Built, not booted.
-4. Tests: break the desktop and recover with `undo`, and boot the rescue kernel and a past snapshot. A fix for the guard's false alarms, installed by the owner's hand.
+3. Past snapshots in the boot menu, with milestones and `restore`. Installed, not booted.
+4. Tests: break the desktop and recover with `undo`, boot the rescue kernel and a past snapshot, and run a real `restore` and `restore --back`. A fix for the guard's false alarms, installed by the owner's hand.
 
 To reach Kiln, the owner presses F8, chooses the Crucial, logs in as `indy`, and presses Super+Space.
 
@@ -30,7 +32,7 @@ Open, and not holding this up:
 
 - The rescue kernel: boot it from the 3-second menu and run `kiln-first-boot-check`, as in docs/FIRST_BOOT.md. It writes to its own folder in /var/log/kiln-first-boot/ on the Crucial. Then copy the results as for the mlrig kernel, with IDs removed.
 - The first-boot guard test always shows 1 failure on Kiln, because it counts the Crucial's own writes. Fixing the test goes through the owner's hand.
-- Omarchy's configs are not ported. See the log.
+- Omarchy's Hyprland settings are ported, but not its shell or scripts. See the log.
 
 The Crucial shows in F8 as `UEFI OS`, because the `Kiln` entry has gone. If Kiln does not start, Ubuntu is untouched and first, and it can be fixed from the live image.
 
@@ -41,6 +43,36 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, gaps, layout and desktop shortcuts
+
+- Owner's requests: no gaps between windows, no windows at login, shortcuts on the empty desktop in a large font, and equal columns on this screen. On a standard screen, 2 halves, then the right half splits, then 2 by 2.
+- The layout is a custom one in config/hypr/hyprland.lua. Measured on this screen: 1 window fills it, and 2, 3, 4 and 5 windows each get equal columns. Window borders stay, so a 4-pixel line shows between windows.
+- Not tested: the standard-screen branch, as there is only this screen. Also not tested with this layout: swapping windows, and resizing, which may not hold, because the layout sets equal widths.
+- The shortcuts are an image, config/desktop/make-shortcuts.py makes it, and `swaybg` shows it. Installed `gui-apps/swaybg` from Gentoo. It was started by hand this session, so showing at login is proved at the next restart.
+- Nothing is set to open at login. Proved at the next restart.
+- The screen is OLED, and nothing turns it off when idle, so a still image on an empty desktop could wear it over time. The image is on black, in muted colours. An idle screen-off is for the owner to decide.
+
+### 3 Nov 2026 — Claude Code, Omarchy's Hyprland settings
+
+- Owner's decision: adopt the Omarchy config now, and do the part 4 tests later.
+- Omarchy 4.0 alpha (commit ae64a4b) already writes its Hyprland settings in Lua, so nothing needed converting. Kiln's Lua 5.5.1 recipe from step 9 runs them. Whether 5.5.1 is the newest Lua was not checked.
+- config/hypr/hyprland.lua now has Omarchy's look, animations, window rules, input feel and key bindings, credited, with its MIT licence beside it. The colours are its Tokyo Night theme, assumed to be its default, as its installer did not show one in a quick search. Hyprland reports the config OK, with no errors live.
+- Kept as Kiln's: the screen mode, US layout, Super+Space and mouse buttons. Mouse copy and paste now use Omarchy's method, which sends key down and up separately. Not yet retried by the owner.
+- Left out, because they need other parts of Omarchy: its shell, which is its bar, launcher, menus, notifications and lock screen, on Quickshell. Also 87 omarchy-* scripts, themes, wallpapers, screenshots, the Quake console and media keys. Omarchy expects over 300 packages, and is Arch-based.
+- Cowork: this closes the spec's "configs borrowed from Omarchy and credited" for Hyprland only. The vision wants only the bare minimum of apps, which weighs against taking Omarchy's whole shell.
+
+### 3 Nov 2026 — Claude Code, milestones and restore
+
+- Owner's decisions on the two open points below: milestones stay in the boot menu, and there is a restore command.
+- The menu keeps the 3 newest milestones beside the 5 newest snapshots. A milestone is a snapshot with `milestone=yes`, and has no automatic cleanup. Snapshot 6, the first working desktop, is the first.
+- `restore` makes a past snapshot the system from the next restart. It sets the current system aside as `@.old-<date>`, and `restore --back` reverses it. It runs only in a terminal, by hand. Set-aside systems stay until removed, which uses space.
+- Program: sidekick/kiln_snapshots.py, moved from config/usr/local/bin. 36 tests pass, with a stand-in for the real disk steps. A real `restore` has not been run.
+- Restoring a snapshot older than the hooks removes them until `sudo sidekick/install.sh` is run again. `restore` warns about this. Snapshot 6 is one of these.
+- After a restore, `undo` will not touch earlier changes, as they no longer match the system.
+- Read back: the mlrig kernel is the default, the rescue kernel is listed, Ubuntu is first in the firmware order, and the guard shows OK.
+- Seen in use: the hook still asks about some commands that only touch the repo, such as `python3` tests and `git mv`. Each takes snapshots, so the menu's 5 newest are often tiny steps. Milestones cover this for now.
+- Cowork: `restore` goes beyond the spec, by owner's decision. The spec needs a line for it.
 
 ### 3 Nov 2026 — Claude Code, step 10 part 3, not booted
 

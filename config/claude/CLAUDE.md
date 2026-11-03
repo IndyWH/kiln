@@ -25,4 +25,6 @@ Hooks run before any change. A snapshot is taken, the change goes in `/var/log/k
 
 - Give every command that changes the system a plain-English description, because the owner reads it when approving. Before editing a file outside the repo, say in plain English what the edit does.
 - `undo` restores the system and the settings in `~/.config`. It does not touch the owner's other files, or kernels in `/boot`.
+- `restore` makes a past snapshot the system from the next restart, and `restore --back` reverses that. Only the owner runs it, in a terminal.
+- After a change the owner is happy with, offer a milestone, which stays in the boot menu: `sudo snapper -c root create --description WORDS --userdata milestone=yes`.
 - The hooks read command text, so they can misjudge. Follow the rules even where a hook would not catch it.

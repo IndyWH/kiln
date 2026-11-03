@@ -6,7 +6,7 @@ RequiresMountsFor=/.snapshots /boot
 Type=oneshot
 # A new snapshot folder appears before snapper has finished filling it.
 ExecStartPre=/usr/bin/sleep 2
-ExecStart=/usr/bin/python3 -B /usr/local/bin/kiln-snapshot-menu
+ExecStart=/usr/bin/python3 -B /usr/local/lib/kiln-guard/kiln_snapshots.py menu
 
 [Install]
 WantedBy=multi-user.target

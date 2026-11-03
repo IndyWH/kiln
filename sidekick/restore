@@ -1,0 +1,3 @@
+#!/bin/sh
+# Kiln Linux: makes a past snapshot the system from the next restart. Works with Claude off.
+exec sudo /usr/bin/python3 -B /usr/local/lib/kiln-guard/kiln_snapshots.py restore "$@"
