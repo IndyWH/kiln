@@ -1,0 +1,62 @@
+
+ * IMPORTANT: 21 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+Calculating dependencies ... done!
+Dependency resolution took 0.61 s (backtrack: 0/20).
+
+>>> Verifying ebuild manifests
+>>> Running pre-merge checks for sys-devel/gcc-16.2.1_p20260926
+>>> Jobs: 0 of 5 complete, 1 running                                    Load avg: 0.21, 2.80, 5.71
+>>> Emerging (1 of 5) dev-lang/tcl-8.6.17::gentoo
+>>> Jobs: 0 of 5 complete, 1 running                                    Load avg: 0.21, 2.80, 5.71
+>>> Jobs: 0 of 5 complete                                               Load avg: 0.73, 2.72, 5.60
+>>> Installing (1 of 5) dev-lang/tcl-8.6.17::gentoo
+>>> Jobs: 0 of 5 complete, 1 merge wait                                 Load avg: 0.73, 2.72, 5.60
+>>> Completed (1 of 5) dev-lang/tcl-8.6.17::gentoo
+>>> Jobs: 0 of 5 complete                                               Load avg: 0.73, 2.72, 5.60
+>>> Jobs: 1 of 5 complete                                               Load avg: 0.73, 2.72, 5.60
+>>> Jobs: 1 of 5 complete, 1 running                                    Load avg: 0.73, 2.72, 5.60
+>>> Emerging (2 of 5) dev-tcltk/expect-5.45.4-r6::gentoo
+>>> Jobs: 1 of 5 complete, 1 running                                    Load avg: 0.73, 2.72, 5.60
+>>> Jobs: 1 of 5 complete                                               Load avg: 0.77, 2.66, 5.56
+>>> Installing (2 of 5) dev-tcltk/expect-5.45.4-r6::gentoo
+>>> Jobs: 1 of 5 complete, 1 merge wait                                 Load avg: 0.77, 2.66, 5.56
+>>> Completed (2 of 5) dev-tcltk/expect-5.45.4-r6::gentoo
+>>> Jobs: 1 of 5 complete                                               Load avg: 0.79, 2.63, 5.53
+>>> Jobs: 2 of 5 complete                                               Load avg: 0.79, 2.63, 5.53
+>>> Jobs: 2 of 5 complete, 1 running                                    Load avg: 0.79, 2.63, 5.53
+>>> Emerging (3 of 5) dev-util/dejagnu-1.6.3::gentoo
+>>> Jobs: 2 of 5 complete, 1 running                                    Load avg: 0.79, 2.63, 5.53
+>>> Jobs: 2 of 5 complete                                               Load avg: 0.81, 2.60, 5.51
+>>> Installing (3 of 5) dev-util/dejagnu-1.6.3::gentoo
+>>> Jobs: 2 of 5 complete, 1 merge wait                                 Load avg: 0.81, 2.60, 5.51
+>>> Completed (3 of 5) dev-util/dejagnu-1.6.3::gentoo
+>>> Jobs: 2 of 5 complete                                               Load avg: 0.81, 2.60, 5.51
+>>> Jobs: 3 of 5 complete                                               Load avg: 0.81, 2.60, 5.51
+>>> Jobs: 3 of 5 complete, 1 running                                    Load avg: 0.81, 2.60, 5.51
+>>> Emerging (4 of 5) sys-devel/binutils-2.47::gentoo
+>>> Jobs: 3 of 5 complete, 1 running                                    Load avg: 0.81, 2.60, 5.51
+>>> Jobs: 3 of 5 complete                                               Load avg: 2.01, 1.79, 3.71
+>>> Installing (4 of 5) sys-devel/binutils-2.47::gentoo
+>>> Jobs: 3 of 5 complete, 1 merge wait                                 Load avg: 2.01, 1.79, 3.71
+>>> Completed (4 of 5) sys-devel/binutils-2.47::gentoo
+>>> Jobs: 3 of 5 complete                                               Load avg: 2.01, 1.79, 3.71
+>>> Jobs: 4 of 5 complete                                               Load avg: 2.01, 1.79, 3.71
+>>> Jobs: 4 of 5 complete, 1 running                                    Load avg: 2.01, 1.79, 3.71
+>>> Emerging (5 of 5) sys-devel/gcc-16.2.1_p20260926::gentoo
+>>> Jobs: 4 of 5 complete, 1 running                                    Load avg: 2.01, 1.79, 3.71
+>>> Jobs: 4 of 5 complete                                               Load avg: 3.4, 9.3, 12.2
+>>> Installing (5 of 5) sys-devel/gcc-16.2.1_p20260926::gentoo
+>>> Jobs: 4 of 5 complete, 1 merge wait                                 Load avg: 3.4, 9.3, 12.2
+>>> Completed (5 of 5) sys-devel/gcc-16.2.1_p20260926::gentoo
+>>> Jobs: 4 of 5 complete                                               Load avg: 3.2, 9.2, 12.2
+>>> Jobs: 5 of 5 complete                                               Load avg: 3.2, 9.2, 12.2
+
+
+ * Regenerating GNU info directory index...
+ * Processed 111 info files.
+
+ * IMPORTANT: 21 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+

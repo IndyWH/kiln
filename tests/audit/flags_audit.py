@@ -23,6 +23,12 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 CHANGES_FLAGS = re.compile(r"\b(?:strip-flags|filter-flags|filter-march|replace-cpu-flags"
                            r"|replace-flags|strip-unsupported-flags)\b")
 
+# This CPU, spelled out, for GCC itself, which refuses -march=native on a hybrid chip.
+SAME_AS_NATIVE = ("-march=alderlake", "-mabm", "-mno-kl", "-mno-sgx", "-mno-widekl", "-mshstk")
+
+# GCC refuses -march=native here, and these recipes strip the rest of that list.
+RECIPE_LIMITED = {"sys-devel/gcc": "alderlake", "sys-devel/binutils": "alderlake"}
+
 # The result for each package. "ok" means built for this CPU as far as records show.
 NATIVE, READY, BUILT_WRONG, RUST_WRONG, GO_WRONG, EXCEPTION, NO_CODE = (
     "native", "ready-built", "built-here-not-native", "rust-without-this-cpu",
@@ -100,7 +106,9 @@ def classify(package_dir, root, exceptions):
         level = build_setting(package_dir, "GOAMD64")
         if level not in ("v3", "v4"):
             return GO_WRONG, level or "no GOAMD64", ""
-    if march != "native":
+    if name in RECIPE_LIMITED and march == RECIPE_LIMITED[name]:
+        return NATIVE, "", "recipe keeps only -march=%s" % march
+    if march != "native" and not all(flag in cflags.split() for flag in SAME_AS_NATIVE):
         return BUILT_WRONG, march, ""
 
     recipe = read_file(glob.glob(os.path.join(package_dir, "*.ebuild"))[0]) if glob.glob(
@@ -168,9 +176,9 @@ def report(results, proved):
     lines += ["  %s: %s, %s" % (r[0], r[1], r[2]) for r in problems]
     lines += ["", "Exceptions, which cannot be built for this CPU:"]
     lines += ["  %s: %s" % (r[0], r[2]) for r in results if r[1] == EXCEPTION]
-    warned = [r[0] for r in results if r[3]]
-    lines += ["", "Built native as asked, but the recipe may change its flags: %d" % len(warned)]
-    lines += ["  " + name for name in warned]
+    warned = [r for r in results if r[3]]
+    lines += ["", "Built for this CPU as asked, with a warning: %d" % len(warned)]
+    lines += ["  %s: %s" % (r[0], r[3]) for r in warned]
     lines += ["", "Proved from the built files, a sample only:"]
     lines += ["  %s %s" % ("PASS" if ok else "FAIL", what) for ok, what in proved]
     lines += ["", "Not in Portage, so not counted above:",

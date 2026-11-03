@@ -1,0 +1,4 @@
+date,label,kernel,gcc_s,clang_s,gcc_version,clang_version,all_runs
+2026-11-03 16:13,before,7.3.1-gentoo-kiln-clang-fulllto,76.1,89.5,16.2.1_p20260926 p1) 16.2.1,22.1.8,75.9 76.1 76.3 89.8 89.5 89.5
+2026-11-03 17:43,after-gcc,7.3.1-gentoo-kiln-clang-fulllto,66.6,89.7,16.2.1_p20260926 p1) 16.2.1,22.1.8,66.5 66.6 66.8 89.8 89.7 89.6
+2026-11-03 18:23,after-llvm,7.3.1-gentoo-kiln-clang-fulllto,66.6,84.7,16.2.1_p20260926 p1) 16.2.1,22.1.8,66.4 66.6 66.7 84.7 84.7 84.6

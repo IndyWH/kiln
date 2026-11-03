@@ -1,0 +1,7 @@
+[ebuild   R   ] llvm-core/llvm-22.1.8 
+[ebuild   R   ] llvm-core/clang-22.1.8 
+[ebuild   R   ] llvm-core/lld-22.1.8-r1 
+
+ * IMPORTANT: 21 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+

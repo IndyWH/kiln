@@ -1,0 +1,6 @@
+# Kiln Linux: /etc/portage/env/dev-lang/rust. The recipe writes thin LTO when USE=lto is on,
+# so change that one line to Full after it is written. Stop if that does not happen.
+post_src_configure() {
+	sed -i -e 's/^\([[:space:]]*\)lto = "thin"/\1lto = "fat"/' "${S}/bootstrap.toml" || die
+	grep -q 'lto = "fat"' "${S}/bootstrap.toml" || die "Full LTO did not reach bootstrap.toml"
+}

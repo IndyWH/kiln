@@ -56,6 +56,20 @@ class Audit(unittest.TestCase):
         self.package("app/planted-1.0", cflags="-O2 -march=x86-64")
         self.assertEqual(self.result("app/planted-1.0"), a.BUILT_WRONG)
 
+    def test_this_cpu_spelled_out_in_full_passes(self):
+        self.package("sys-devel/gcc-16", cflags="-O3 -march=alderlake -mabm -mno-kl -mno-sgx -mno-widekl -mshstk")
+        self.assertEqual(self.result("sys-devel/gcc-16"), a.NATIVE)
+
+    def test_gcc_recipe_limit_passes_with_a_warning(self):
+        self.package("sys-devel/gcc-16.2.1_p20260926", cflags="-pipe -march=alderlake -O3")
+        got = self.results()["sys-devel/gcc-16.2.1_p20260926"]
+        self.assertEqual(got[1], a.NATIVE)
+        self.assertIn("recipe keeps only", got[3])
+
+    def test_a_near_miss_of_this_cpu_is_caught(self):
+        self.package("app/planted-1.0", cflags="-O3 -march=alderlake")
+        self.assertEqual(self.result("app/planted-1.0"), a.BUILT_WRONG)
+
     def test_planted_build_with_no_march_is_caught(self):
         self.package("app/planted-1.0", cflags="-O2")
         self.assertEqual(self.result("app/planted-1.0"), a.BUILT_WRONG)

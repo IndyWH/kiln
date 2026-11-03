@@ -44,6 +44,15 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 
 ## Log
 
+### 3 Nov 2026 — Claude Code, compilers maxed out
+
+- Owner's decision: build the compilers at maximum now, and postpone part 4's tests. Those tests, including a real `restore`, remain unproved.
+- Results, compiling the same kernel, median of 3, with the other compiler as a control: GCC 76.1 s to 66.6 s, 12.5% faster. Clang 89.5 s to 84.7 s, 5.4% faster. Results: results/compilers/. scripts/bench-compilers.sh and scripts/bench-rust.sh repeat them.
+- GCC and binutils: PGO, LTO for GCC, `-O3`. GCC's recipe refuses `-march=native` on this hybrid chip, as the core types report different L1 caches. Their recipes also strip all but `-march=alderlake`. LLVM, Clang and lld: Full LTO, `-O3`, `-march=native`, built by Clang. Their recipes have no PGO option. Rust: built from source with Full LTO, using a hook in env/dev-lang/rust.
+- Rust got slower: 17.20 s to 23.60 s, 37%, on a one-core test. Prediction wrong. Cause not proved. It uses Gentoo's system LLVM, and the ready-built compiler brings its own, larger, compiler library. From memory, not checked here, Rust's official builds use PGO and BOLT. `rust-1.98.1` is the active compiler now. `rust-bin` stays installed. Owner to decide.
+- Audit: 76 of 451 packages with compiled code, 16.9%. `mesa`, `greetd`, `tuigreet` and `dynolog` still lack Rust's setting. Python and glibc are still ready-built, and programs built earlier have not changed.
+- Checks after: build settings 39 passed, PyTorch still sees the GPU, no failed services, guard OK. Mesa's `libLLVM` was replaced while the desktop ran, so a restart is the real test.
+
 ### 3 Nov 2026 — Claude Code, flags audit, the before figure
 
 - Added tests/audit/flags_audit.py, written before step 11 by owner's agreement. It reads Portage's records, looks inside each package for compiled code, and checks Rust and Go settings. 14 tests plant wrongly built packages in a fake system, and each one is caught. Exceptions: tests/audit/exceptions.txt.

@@ -7,6 +7,10 @@ sys-apps/systemd boot
 media-libs/libvpx postproc
 # The top bar shows the network state.
 gui-apps/waybar network
+# The compilers themselves, at maximum.
+sys-devel/gcc lto pgo
+sys-devel/binutils pgo
+dev-lang/rust lto
 # PyTorch on the RTX 4090, with every option that works together on this machine.
 # nccl and rocm are for AMD GPUs. mkl and opencl are left out for openblas and cuda.
 sci-ml/pytorch cuda cusparselt distributed fbgemm flash gloo kineto memefficient mimalloc nnpack onednn openblas openmp qnnpack xnnpack

@@ -1,0 +1,9 @@
+[ebuild  N    ] dev-lang/tcl-8.6.17 
+[ebuild  N    ] dev-tcltk/expect-5.45.4-r6 
+[ebuild  N    ] dev-util/dejagnu-1.6.3 
+[ebuild   R   ] sys-devel/binutils-2.47 
+[ebuild   R   ] sys-devel/gcc-16.2.1_p20260926 
+
+ * IMPORTANT: 21 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
