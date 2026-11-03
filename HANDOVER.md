@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next: 7.4-rc1 with GCC and Clang, for testing only, never as the default. Then the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
+Next: boot and benchmark `7.3.1-gentoo-kiln-clang-fulllto`, then `7.3.1-gentoo-kiln-clang-thinlto` as a comparison, if the owner keeps it. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -44,12 +44,27 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 
 ## Log
 
+### 3 Nov 2026 — Claude Code, Full LTO built, not booted
+
+- Owner's correction: ThinLTO broke the vision. Kiln takes the strongest setting, and build time and small gains are not reasons to choose less. Claude Code had picked ThinLTO for the usual practical reasons, with no measurement. Correctness is still the limit.
+- Built `7.3.1-gentoo-kiln-clang-fulllto` in 591 seconds, under 10 minutes, on this machine, against 354 for ThinLTO and 234 without LTO. So the fear of a very long build did not apply here.
+- Proved: `init/main.o` is LLVM bitcode, and its build record shows `-flto` and `-march=native`. That is one file checked. Kernel image 23.4 MB, against 20.2 MB for ThinLTO and 19.9 MB without LTO. 223 modules, and the main drivers are present.
+- Not booted. The default and firmware order did not change, and the guard shows OK. `/boot` has 1.7 GB free.
+
+### 3 Nov 2026 — Claude Code, Clang chosen, ThinLTO built, not booted
+
+- Owner's decision: Clang for kernels, replacing the earlier rule of a GCC and a Clang version of each. The reason is the projects' policies on AI-written code. GCC declines legally significant LLM-generated contributions, for now, with a review by the start of 2027. LLVM accepts them with a human in the loop. Both ban agents acting alone. Sources: gcc.gnu.org/ai-policy.html and llvm.org/docs/AIToolPolicy.html. The rest of Kiln still builds with GCC.
+- Removed `7.3.1-gentoo-kiln-gcc`: its boot entry, /boot files, modules and build folder. Its config and results stay in the repo.
+- Built `7.3.1-gentoo-kiln-clang-thinlto` in 354 seconds, against 234 without LTO. ThinLTO rather than Full was Claude Code's choice, as CachyOS uses it and it builds faster. Full can be added later.
+- Proved: `init/main.o` is LLVM bitcode, and its build record shows `-flto=thin` and `-march=native`. That is one file checked. Its kernel image is 20.2 MB, against 19.9 MB without LTO. 223 modules, and the main drivers are present.
+- Not booted. The default and firmware order did not change, and the guard shows OK.
+- Cowork: the kernel plan and this choice are new for the spec, Claude Doc first.
+
 ### 3 Nov 2026 — Claude Code, 7.3.1 Clang booted and measured
 
 - `7.3.1-gentoo-kiln-clang` boots and passes the same checks as GCC. Its pointer works with the same live setting. The owner thinks the Omarchy config caused the missing pointer, which fits, as it first showed at the first full restart after that change. Not proved until `mlrig` is booted without the setting.
 - Clang against GCC on 7.3.1, both without LTO: a tie. Sockets 2.488 against 2.498 s, pipes 2.039 against 2.030 s, kernel compile 76.5 against 76.6 s. sysbench and 7-Zip within 0.5%.
 - Wake-up 99.9% is 1726 microseconds on Clang and 1705 on GCC, against 842 on 6.18. Two 7.3.1 runs agreeing makes this more likely a real change than chance, but 6.18 has only one run, and it had the NVIDIA driver loaded. Wake-up 99% moved around: 59 on Clang, 77 on GCC, 61 on 6.18, so that figure is noisy at one run each.
-- Next, in the agreed order: 7.4-rc1 with GCC and Clang.
 
 ### 3 Nov 2026 — Claude Code, 7.3.1 GCC booted and measured
 
