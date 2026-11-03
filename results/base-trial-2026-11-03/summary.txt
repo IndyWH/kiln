@@ -1,0 +1,42 @@
+Step 7 trial, 3 Nov 2026. In memory only, with emerge --pretend. Nothing was
+installed. The trial had no block devices, and it has been deleted.
+
+Starter system: stage3-amd64-desktop-systemd-20261101T164556Z. Signature and
+checksum good. Settings: config/portage/ from step 6.
+
+Count                                   Ready-built  Not ready-built  Download
+A  Update the starter system                     12                5    101 MB
+B  Replace it all with v3 packages              367               17    686 MB
+C  Step 7 tools                                  23                4    741 MB
+D  Later: kernel, NVIDIA, sound, Firefox         63               10   1177 MB
+E  B, C and D together, no double count         464               36   2619 MB
+
+Hyprland is not counted. Its repo needs the owner's decision at step 9.
+The file for count E's list is E-compile.txt.
+
+The 36 in count E, sorted by hand from their names. Times were not measured:
+  5 install without compiling: intel-microcode, linux-firmware, firefox-l10n,
+    gentoo-kernel-bin, dist-kernel. The kernel-bin install also builds its
+    start-up image.
+  15 Python and script packages, expected to be quick. All dev-python, plus
+    xdg-utils.
+  14 small programs and libraries: python-exec, python-exec-conf, nettle,
+    libgcrypt, json-c, libdrm, libvdpau, egl-gbm, egl-wayland, egl-wayland2,
+    egl-x11, fcft, btrfs-progs, snapper.
+  2 larger: mesa, and nvidia-drivers, which builds kernel modules.
+
+Why mesa and libdrm compile: our VIDEO_CARDS is shorter than the repo's.
+Why nettle, libgcrypt and json-c compile: our CPU flag list is longer.
+libvdpau and firefox-l10n also differ in USE flags.
+
+Two settings the real install needs, which are not yet in config/portage/:
+  sys-kernel/installkernel dracut
+  media-libs/libvpx postproc     (Firefox needs it. Firefox stays ready-built.)
+
+Compiler on the starter system: GCC 16.2.1, not the live image's GCC 15.3. The
+test program built with the step 6 flags, with and without LTO, and ran on fast
+and efficient cores. -march=raptorlake differs from -march=native in the same
+way on GCC 16.
+
+Firefox: the ready-built package is 153.6 ESR. firefox-bin is 159.0, and is
+Mozilla's own build. The trial counted both, and E uses the ready-built ESR.

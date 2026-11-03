@@ -1,0 +1,48 @@
+[gentoo] Local copy of remote index is within TTL and will be used.
+
+These are the packages that would be merged, in order:
+
+Calculating dependencies ... done!
+Dependency resolution took 0.46 s (backtrack: 0/20).
+
+[binary  N g   ] sys-libs/efivar-39-r2-1:0/1::gentoo  USE="-test" 170 KiB
+[binary  N g   ] dev-libs/lzo-2.10-7:2::gentoo  USE="-examples (-split-usr) -static-libs" ABI_X86="(64) -32 (-x32)" 100 KiB
+[binary  N g   ] sys-apps/iucode_tool-2.3.1-r2-1::gentoo  70 KiB
+[binary  N g   ] dev-python/alabaster-1.0.0-3::gentoo  PYTHON_TARGETS="python3_14 -python3_12 -python3_13 (-python3_15)" 60 KiB
+[binary  N g   ] dev-python/babel-2.18.0-3::gentoo  USE="-doc -test -verify-provenance" PYTHON_TARGETS="python3_14 -python3_12 -python3_13 (-python3_15)" 6190 KiB
+[binary  N g   ] dev-python/imagesize-2.0.1-1::gentoo  USE="-test" PYTHON_TARGETS="python3_14 -python3_12 -python3_13 (-python3_15)" 80 KiB
+[binary  N g   ] dev-python/roman-numerals-4.1.0-3::gentoo  USE="-test -verify-provenance" PYTHON_TARGETS="python3_14 -python3_12 -python3_13 (-python3_14t) (-python3_15)" 60 KiB
+[binary  N g   ] dev-python/snowballstemmer-3.1.1-3::gentoo  USE="-test -verify-provenance" PYTHON_TARGETS="python3_14 -python3_12 -python3_13 (-python3_15)" 300 KiB
+[binary  N g   ] sys-fs/dosfstools-4.2-2::gentoo  USE="iconv -compat -test" 150 KiB
+[binary  N g   ] sys-apps/pciutils-3.15.0-1::gentoo  USE="kmod udev zlib -dns -static-libs -verify-sig" ABI_X86="(64) -32 (-x32)" 200 KiB
+[binary  N g   ] dev-libs/boost-1.90.0-r3-1:0/1.90.0::gentoo  USE="bzip2 context icu nls stacktrace zlib -debug -doc -lzma -mpi -numpy -python -test -test-full -tools -zstd" ABI_X86="(64) -32 (-x32)" PYTHON_TARGETS="python3_14 -python3_12 -python3_13" 17730 KiB
+[ebuild  N     ] sys-firmware/intel-microcode-20260925_p20260925::gentoo  USE="initramfs split-ucode -dist-kernel -hostonly -vanilla" 45003 KiB
+[binary  N g   ] sys-boot/efibootmgr-18-r2-2::gentoo  50 KiB
+[binary  N g   ] app-arch/cpio-2.15-6::gentoo  USE="nls" 270 KiB
+[binary  N g   ] app-alternatives/cpio-0-1::gentoo  USE="gnu -libarchive (-split-usr)" 20 KiB
+[ebuild  N     ] sys-kernel/linux-firmware-20261019::gentoo  USE="initramfs redistributable -bindist -compress-xz -compress-zstd -deduplicate -dist-kernel -savedconfig" 656928 KiB
+[binary  N g   ] dev-python/sphinxcontrib-applehelp-2.0.0-r1-1::gentoo  USE="-test" PYTHON_TARGETS="python3_14 -python3_13 (-python3_15)" 70 KiB
+[binary  N g   ] dev-python/sphinxcontrib-devhelp-2.0.0-r1-1::gentoo  USE="-test" PYTHON_TARGETS="python3_14 -python3_13 (-python3_15)" 60 KiB
+[binary  N g   ] dev-python/sphinxcontrib-htmlhelp-2.1.0-r1-1::gentoo  USE="-test" PYTHON_TARGETS="python3_14 -python3_13 (-python3_15)" 70 KiB
+[binary  N g   ] dev-python/sphinxcontrib-jsmath-1.0.1-r5-1::gentoo  USE="-test" PYTHON_TARGETS="python3_14 -python3_13 (-python3_15)" 50 KiB
+[binary  N g   ] dev-python/sphinxcontrib-qthelp-2.0.0-r1-1::gentoo  USE="-test" PYTHON_TARGETS="python3_14 -python3_13 (-python3_15)" 60 KiB
+[binary  N g   ] dev-python/sphinxcontrib-serializinghtml-2.0.0-r1-1::gentoo  USE="-test" PYTHON_TARGETS="python3_14 -python3_13 (-python3_15)" 60 KiB
+[binary  N g   ] dev-python/sphinx-9.1.0-r1-1::gentoo  USE="-doc -latex -test" PYTHON_TARGETS="python3_14 -python3_13 (-python3_15)" 2630 KiB
+[binary  N g   ] dev-python/sphinxcontrib-jquery-4.1-1::gentoo  USE="-test" PYTHON_TARGETS="python3_14 -python3_13 (-python3_15)" 150 KiB
+[binary  N g   ] dev-python/sphinx-rtd-theme-3.1.0-1::gentoo  USE="-test" PYTHON_TARGETS="python3_14 -python3_13 (-python3_15)" 4720 KiB
+[ebuild  N     ] sys-fs/btrfs-progs-7.1-r1::gentoo  USE="convert lzo man udev zstd -experimental -reiserfs -static -static-libs -verify-sig" 4881 KiB
+[ebuild  N     ] app-backup/snapper-0.13.1::gentoo  USE="pam systemd xattr -lvm -test" 601 KiB
+
+Total: 27 packages (27 new, 23 binaries), Size of downloads: 740732 KiB
+
+!!! The following binary packages have been ignored due to non matching USE:
+
+    =sys-fs/btrfs-progs-7.1-r1 -udev
+
+NOTE: The --binpkg-respect-use=n option will prevent emerge
+      from ignoring these binary packages if possible.
+      Using --binpkg-respect-use=y will silence this warning.
+
+ * IMPORTANT: 17 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+

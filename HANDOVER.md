@@ -13,13 +13,20 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Spec step 7, ready-built base, once the owner approves the plan. It starts with a trial run, to count what is ready-built and what compiles. Mount the Crucial with the last block in docs/DISK_LAYOUT.md. To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
+Spec step 7, part 2: install the ready-built base on the Crucial, once the owner approves. The trial run is done. Mount the Crucial with the last block in docs/DISK_LAYOUT.md. To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
 
 After any restart of the live system, the guard is gone. Clone the repo and run `sudo guard/install.sh` again before any disk work. The work is on branch stage1-guards until the owner merges it, so use `git clone -b stage1-guards`.
 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, step 7 trial
+
+- Trial in memory, with `emerge --pretend`, and then deleted. No disk was touched. Results: results/base-trial-2026-11-03/summary.txt.
+- Everything except Hyprland: 500 packages, 464 ready-built, 36 not, 2.6 GB to download. Of the 36, only `mesa` and `nvidia-drivers` look large. Compile times were not measured.
+- The real install needs two settings not yet in config/portage/: `sys-kernel/installkernel dracut` and `media-libs/libvpx postproc`.
+- The one-hour test cannot pass on this run, as planning and approvals took more than an hour. It needs a timed repeat run. Cowork and the owner to decide when.
 
 ### 3 Nov 2026 — Claude Code, build settings
 

@@ -1,0 +1,43 @@
+
+These are the packages that would be merged, in order:
+
+Calculating dependencies ... done!
+Dependency resolution took 2.87 s (backtrack: 0/20).
+
+[binary   Rg   ] dev-db/sqlite-3.53.4-1:3::gentoo  USE="icu* readline -debug -doc -secure-delete -static-libs -tcl -test -test-full -tools" ABI_X86="(64) -32 (-x32)" 1180 KiB
+[binary   Rg   ] x11-libs/pixman-0.46.4-6::gentoo  USE="(-loongson2f) -static-libs -test" ABI_X86="(64) -32 (-x32)" CPU_FLAGS_X86="mmxext sse2 ssse3*" 300 KiB
+[binary  N g   ] net-libs/nghttp3-1.18.0-1::gentoo  USE="-verify-sig" ABI_X86="(64) -32 (-x32)" 110 KiB
+[binary  N g   ] net-libs/ngtcp2-1.25.0-1::gentoo  USE="openssl ssl -gnutls -verify-sig" ABI_X86="(64) -32 (-x32)" 230 KiB
+[binary   Rg   ] net-misc/iputils-20250605-r4-1::gentoo  USE="arping caps filecaps* nls suid -clockdiff -doc -idn -test -tracepath -verify-sig" 140 KiB
+[binary   Rg   ] sys-devel/gettext-0.23.2-7::gentoo  USE="acl cxx ncurses nls openmp* xattr -doc -emacs -git -java -static-libs -verify-sig" ABI_X86="(64) -32 (-x32)" 2690 KiB
+[binary   Rg   ] app-crypt/libb2-0.98.1-r3-14::gentoo  USE="openmp* -native-cflags -static-libs" ABI_X86="(64) -32 (-x32)" 50 KiB
+[ebuild   R    ] dev-libs/nettle-3.10.2:0/8-6::gentoo  USE="asm gmp -doc -static-libs -verify-sig" ABI_X86="(64) -32 (-x32)" CPU_FLAGS_X86="aes* pclmul* sha*" 2583 KiB
+[ebuild   R    ] dev-libs/libgcrypt-1.12.4:0/20::gentoo  USE="asm getentropy -doc -static-libs (-verify-sig)" ABI_X86="(64) -32 (-x32)" CPU_FLAGS_X86="aes* avx* avx2* sha* sse4_1* -avx512f -padlock" 4369 KiB
+[binary   Rg   ] media-libs/libwebp-1.6.0-10:0/7::gentoo  USE="gif jpeg opengl png -static-libs -swap-16bit-csp -tiff" ABI_X86="(64) -32 (-x32)" CPU_FLAGS_X86="avx2* sse2 sse4_1*" 480 KiB
+[binary  N g   ] net-libs/nghttp2-1.70.0-1:0/1.14::gentoo  USE="systemd xml -debug -hpack-tools -test -utils -verify-sig" ABI_X86="(64) -32 (-x32)" 190 KiB
+[binary   Rg   ] net-misc/curl-8.23.0-1::gentoo  USE="adns alt-svc ftp hsts http2* http3* httpsrr imap openssl pop3 psl quic* smtp ssl tftp websockets -brotli -debug (-ech) -gnutls -gopher -idn -kerberos -ldap -mbedtls (-rustls) -sasl-scram -ssh -static-libs -telnet -test -verify-sig -zstd" ABI_X86="(64) -32 (-x32)" CURL_SSL="openssl -gnutls -mbedtls (-rustls)" 1380 KiB
+[ebuild   R    ] x11-libs/libdrm-2.4.134::gentoo  USE="udev -doc -test -tools -valgrind" ABI_X86="(64) -32 (-x32)" VIDEO_CARDS="amdgpu (-exynos) (-freedreno) -intel* -nouveau* (-omap) -radeon* (-tegra) (-vc4) (-vivante) -vmware" 427 KiB
+[ebuild   R    ] dev-libs/json-c-0.19-r3:0/5.1::gentoo  USE="-static-libs -test -threads" ABI_X86="(64) -32 (-x32)" CPU_FLAGS_X86="rdrand*" 452 KiB
+[ebuild   R    ] media-libs/mesa-26.1.8-r1::gentoo  USE="X llvm (opengl) proprietary-codecs vulkan wayland zstd -debug -lm-sensors -opencl -sysprof -test -unwind -vaapi -valgrind" ABI_X86="(64) -32 (-x32)" CPU_FLAGS_X86="sse2" LLVM_SLOT="22 -18 -19 -20 -21" VIDEO_CARDS="radeonsi -asahi -d3d12 (-freedreno) -i915 (-imagination) -intel* -lavapipe (-lima) -nouveau* -nvk (-panfrost) -r300 -r600 -radeon* (-v3d) (-vc4) -virgl (-vivante) -vmware -zink" 76004 KiB
+[binary   Rg   ] gui-libs/gtk-4.20.4-r1-4:4::gentoo  USE="X cups introspection vulkan wayland (-aqua) -broadway -cloudproviders -colord -examples -gstreamer -gtk-doc -sysprof -test" CPU_FLAGS_X86="f16c*" 10000 KiB
+[binary   Rg   ] app-portage/portage-utils-0.97.1-1::gentoo  USE="openmp* qmanifest -static" 200 KiB
+
+Total: 17 packages (3 new, 14 reinstalls, 12 binaries), Size of downloads: 100784 KiB
+
+!!! The following binary packages have been ignored due to non matching USE:
+
+    =dev-libs/libgcrypt-1.12.4 -cpu_flags_x86_aes -cpu_flags_x86_sha
+    =media-libs/mesa-26.1.8-r1 sysprof video_cards_intel video_cards_nouveau video_cards_radeon
+    =media-libs/mesa-26.1.8-r1 video_cards_intel video_cards_nouveau video_cards_radeon
+    =x11-libs/libdrm-2.4.134 -udev video_cards_intel video_cards_nouveau video_cards_radeon
+    =x11-libs/libdrm-2.4.134 video_cards_intel video_cards_nouveau video_cards_radeon
+    =dev-libs/nettle-3.10.2 -cpu_flags_x86_aes -cpu_flags_x86_pclmul -cpu_flags_x86_sha
+    =dev-libs/json-c-0.19-r3 -cpu_flags_x86_rdrand
+
+NOTE: The --binpkg-respect-use=n option will prevent emerge
+      from ignoring these binary packages if possible.
+      Using --binpkg-respect-use=y will silence this warning.
+
+ * IMPORTANT: 17 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
