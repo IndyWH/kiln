@@ -1,0 +1,14 @@
+# Hypotheses
+
+What we expect before each big step, so results can prove us wrong. Write a prediction before the test, never after. Do not edit a prediction once the test has run. Add the result beside it, right or wrong.
+
+| Date | Who | Prediction | Test | Result |
+|---|---|---|---|---|
+| 3 Nov 2026 | Claude Code | ThinLTO's pipes time falls between plain Clang's 2.04 s and Full LTO's 2.43 s | `scripts/bench-kernel.sh` on the ThinLTO kernel | |
+| 3 Nov 2026 | Claude Code | A kernel rebuilt with a profile of this machine's use removes most of Full LTO's pipes slowdown | The overfired kernel, against Full LTO | |
+| 3 Nov 2026 | Claude Code | BORE improves wake-up delay at 99.9%, and costs under 5% on pipes | The overfired kernel, with repeat runs | |
+| 3 Nov 2026 | Claude Code | Rebuilding 7-Zip with its assembly option closes most of the 18% to 20% gap to Ubuntu | Rebuild 7-Zip, then the same test | |
+| 3 Nov 2026 | Claude Code | In step 11, `sysbench` gains under 2%, and 7-Zip gains more than `sysbench` | `scripts/measure.sh`, before and after | |
+| 3 Nov 2026 | Claude Code | A compiler rebuilt for this CPU with LTO and profiles compiles a kernel over 5% faster | `scripts/bench-kernel.sh`, kernel compile time | |
+| 3 Nov 2026 | Owner | The maxed setup benefits things like video editing and ComfyUI | The same video export and the same ComfyUI workflow, timed on Kiln and on Ubuntu 26.10. Details to be set before testing | |
+| 3 Nov 2026 | Claude Code | Video export gains more than ComfyUI. ComfyUI gains under 3%, as most of its work runs on the GPU, in code from NVIDIA that Kiln cannot rebuild | The same test as the row above | |

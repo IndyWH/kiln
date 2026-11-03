@@ -1,0 +1,14 @@
+Kiln Linux: PyTorch 2.15.0 names an event type that Gentoo's Kineto 0.4.0_p20260805
+does not have, so it does not compile. Kineto cannot produce that event, so remove the
+one reference. Drop this patch when Gentoo's Kineto catches up.
+
+--- a/torch/csrc/profiler/kineto_shim.cpp
++++ b/torch/csrc/profiler/kineto_shim.cpp
+@@ -549,7 +549,6 @@
+       [[fallthrough]];
+     case libkineto::ActivityType::CUDA_SYNC:
+     case libkineto::ActivityType::CUDA_PROFILER_RANGE:
+-    case libkineto::ActivityType::HARDWARE_COUNTERS:
+       return device_type_privateuse1_or(c10::DeviceType::CUDA);
+     // TODO: T151322015
+     case libkineto::ActivityType::MTIA_CCP_EVENTS:

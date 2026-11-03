@@ -1,3 +1,4 @@
 results/*-short/
 __pycache__/
 results/*/build-nvidia-*.log
+results/pytorch-*/emerge.log

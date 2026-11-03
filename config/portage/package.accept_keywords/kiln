@@ -5,3 +5,25 @@ dev-cpp/glaze ~amd64
 =sys-kernel/gentoo-sources-7.3.1 ~amd64
 # hackbench and cyclictest, for measuring kernels. Gentoo has no stable copy.
 dev-util/rt-tests ~amd64
+# PyTorch and the parts it needs. Gentoo has no stable copy of these.
+=sci-ml/pytorch-2.15.0 ~amd64
+=sci-ml/onnx-1.20.1 ~amd64
+=sci-ml/ideep-3.12 ~amd64
+=sci-ml/kineto-0.4.0_p20260805-r1 ~amd64
+=sci-ml/gloo-2026.06.10 ~amd64
+=sci-ml/tensorpipe-2025.11.05 ~amd64
+=sci-ml/cudnn-frontend-1.28.0 ~amd64
+=sci-ml/FP16-2024.05.27-r1 ~amd64
+=sci-ml/NNPACK-2020.12.22-r4 ~amd64
+=sci-ml/XNNPACK-2024.12.03 ~amd64
+=dev-util/nvidia-cuda-toolkit-13.4.1 ~amd64
+=dev-libs/cudnn-9.25.1.1 ~amd64
+=dev-libs/cusparselt-0.7.1.0 ~amd64
+=dev-libs/cutlass-4.6.1 ~amd64
+=dev-libs/clog-2023.11.04 ~amd64
+=dev-libs/dynolog-0.5.0-r1 ~amd64
+=dev-libs/pfs-0.10.0 ~amd64
+=dev-libs/pocketfft-2026.04.10 ~amd64
+=dev-libs/pthreadpool-2023.08.29 ~amd64
+=dev-python/opcodes-0.3.14-r3 ~amd64
+=dev-python/peachpy-2022.11.13-r3 ~amd64

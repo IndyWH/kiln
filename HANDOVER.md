@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next: the owner restarts onto `7.3.1-gentoo-kiln-clang-fulllto`, now the default, and Claude Code checks that NVIDIA loads by itself. Then PyTorch on the RTX 4090. After that, benchmark `7.3.1-gentoo-kiln-clang-thinlto`, which the owner keeps as a comparison. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
+Next: the owner decides how to keep uv from replacing the system's PyTorch. Then, in order, unless the owner changes it: Cowork's prompt on the spec, Rust and Go. The flags audit. Part 4's safety tests, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,29 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, uv and PyTorch on the RTX 4090
+
+- NVIDIA loads by itself at boot on the Full LTO kernel, all four modules.
+- Installed from source for this CPU, with Gentoo's recipes: uv 0.13.4 and PyTorch 2.15.0, with 59 other packages, in about 40 minutes of build time. Results: results/pytorch-2026-11-03/. PyTorch, its maths libraries and others use `-O3 -march=native`. uv was given Full LTO and this CPU, but that is what it was asked for, not proved.
+- Not from source, as NVIDIA supplies them ready-built: the CUDA toolkit, cuDNN and cuSPARSELt. The owner accepted their licences.
+- Two fixes. A one-line patch, as PyTorch names an event that Gentoo's Kineto lacks: config/portage/patches/. And `TORCH_CUDA_ARCH_LIST=8.9`, because the recipe's default of 7.5 cannot run on a 4090. `nccl` is left out, as the recipe allows it only for AMD GPUs. No LTO yet, as the recipe removes it.
+- scripts/test-pytorch.py passed on the GPU: maths, gradients, cuDNN and training. CUDA 13.4 works on the driver that reports 13.2. Its CPU timings are not fair, as the test uses bfloat16 there, which this chip probably has to emulate. Do not quote the GPU against CPU ratio.
+- Correction: Claude Code told the owner that a uv environment using the system's packages would stop `uv pip install torch` replacing PyTorch. A dry run shows it does not. It would fetch generic PyTorch and CUDA, about 29 packages. `uv pip install --excludes FILE`, or `UV_EXCLUDE`, keeps them out in dry runs. `uv sync --no-install-package torch` is not enough, as it still fetches torch's other packages. A PyPI torchvision built for generic PyTorch may not match, and Gentoo has `sci-ml/torchvision`.
+
+### 3 Nov 2026 — Claude Code, ArtCraft apps idea
+
+- Owner's idea: offer ArtCraft's open-source apps on Kiln, such as PhotoCraft, LightCraft, FilmCraft and PdfCraft. Not started. Claude Code suggests own recipes, built for this CPU, installed when the user asks, not by default, as the vision wants only the bare minimum of apps. Reports call them early alpha, and they are Rust. To check first: their licences, the DAW and office apps, and how much they rely on the maker's AI service. Cowork: for the spec.
+
+### 3 Nov 2026 — Claude Code, hypotheses
+
+- Owner's decision: write down what we expect before each big step, in docs/HYPOTHESES.md, and never edit a prediction once its test has run. First six predictions added, all Claude Code's. The owner can add their own.
+
+### 3 Nov 2026 — Claude Code, sharing plans
+
+- Owner's plan: share through the public repo, and later a post on r/ClaudeAI, once there is a live image that users can download and install. Not before.
+- Gentoo's Council bans contributions made with AI tools, so Kiln should not send Gentoo its patches or text. The owner could report the PyTorch and Kineto mismatch in their own words.
+- Cowork: the spec puts the installer and a public release out of scope for Stage 1. The live image needs a place in the plan, Claude Doc first. Before posting: repeat benchmark runs, an honest README, and a full privacy pass over the repo and its history.
 
 ### 3 Nov 2026 — Claude Code, Full LTO is the default
 
