@@ -4,6 +4,14 @@
 
 Copied from the Claude Doc, which is the source of truth: https://claude.ai/artifact/LKdCA8eLpUT27X5B6A9Ds1
 
+## The obsession
+
+AMD and Intel advertise new features and instruction sets with each new chip. Most of Linux sticks to generic builds and leaves them unused. Gentoo gives us the chance to use them.
+
+Kiln is an experiment in doing that obsessively. We call it overfiring. Compilers must exploit every feature of the hardware they run on, and the compiling itself must exploit those features too, rather than run generic.
+
+It does not matter if the gains are small. Kiln still measures them and writes them down, good or bad.
+
 ## The problem
 
 Most Linux distributions are built to run on almost any computer. That makes them safe, but it means they are not tuned for the computer they are actually running on.

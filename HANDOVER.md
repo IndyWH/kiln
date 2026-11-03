@@ -44,6 +44,13 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 
 ## Log
 
+### 3 Nov 2026 — Claude Code, vision updated
+
+- Owner's decision: Kiln exploits every hardware feature it can, whatever the size of the gain. The compiling itself must not run generic either. The word for this is overfiring. Added as a new first section, The obsession, in the Claude Doc and then docs/VISION.md.
+- Owner's decision: keep today's kernels and add more to choose from at boot, each new one in a GCC and a Clang version. In order: 7.3.1 plain, 7.4-rc1 plain, then 7.3.1 overfired, with BORE, 1000 Hz and a profile of this machine's own use. Cowork: this is new for the spec, Claude Doc first.
+- Cowork: the spec's step 11 starts with the kernel, graphics and audio. This decision suggests rebuilding the compiler and build tools first. For the spec, Claude Doc first.
+- Cowork: a pasted prompt on Rust, Go and the flags audit is on hold until the owner has finished discussing it. It says to audit after every compiler update. Claude Code suggests after every update, as Kiln fetches ready-built packages.
+
 ### 3 Nov 2026 — Claude Code, bar, launcher and screen-off
 
 - Owner's decisions: separate small programs rather than Omarchy's shell, and the screen turns off after 10 minutes idle.
