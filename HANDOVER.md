@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next: boot and benchmark `7.3.1-gentoo-kiln-clang-thinlto`, which the owner keeps as a comparison. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
+Next: the owner restarts onto `7.3.1-gentoo-kiln-clang-fulllto`, now the default, and Claude Code checks that NVIDIA loads by itself. Then PyTorch on the RTX 4090. After that, benchmark `7.3.1-gentoo-kiln-clang-thinlto`, which the owner keeps as a comparison. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,12 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, Full LTO is the default
+
+- Owner's decision: `7.3.1-gentoo-kiln-clang-fulllto` is the boot menu's default. Ubuntu stays first in the firmware order. `mlrig` and the rescue kernel stay in the menu, and past snapshots still boot with `mlrig`.
+- `restore` now switches the default back to `mlrig` if the snapshot lacks the default kernel's drivers. Otherwise an older snapshot would boot into a kernel with no modules. 43 tests pass, with a stand-in for the real disk steps. A real `restore` still has not run. The fix needs `sudo sidekick/install.sh`.
+- The pointer setting `no_hardware_cursors = 1` is now in the repo's hyprland.lua, for every kernel. Still to find out: whether `mlrig` needs it.
 
 ### 3 Nov 2026 — Claude Code, NVIDIA on the Full LTO kernel
 

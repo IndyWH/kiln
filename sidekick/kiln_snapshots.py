@@ -13,6 +13,7 @@ deletes the current system. It is set aside on the Crucial, for restore --back.
 """
 import datetime
 import fcntl
+import fnmatch
 import glob
 import os
 import re
@@ -36,6 +37,8 @@ GUARD_FILES = ("usr/local/lib/kiln-guard/kiln_guard.py",
                "etc/systemd/system/local-fs-pre.target.wants/kiln-guard.service")
 HOOK_FILE = "usr/local/lib/kiln-guard/kiln_rules.py"
 ESSENTIAL_KERNELS = ("mlrig", "dist-bin")
+LOADER = "/boot/loader/loader.conf"
+SAFE_DEFAULT = "*-mlrig*"
 
 
 class RestoreError(Exception):
@@ -214,6 +217,22 @@ def kernels_lost_by(snap):
             if "version" in k and not has_modules(snap, k)]
 
 
+def make_default_safe(lost):
+    """If the boot menu's default is a lost kernel, go back to mlrig. Returns True if so."""
+    with open(LOADER) as f:
+        lines = f.readlines()
+    for i, line in enumerate(lines):
+        key, _, value = line.strip().partition(" ")
+        if key == "default" and any(
+                fnmatch.fnmatch("id-%s.conf" % v, value.strip()) for v in lost):
+            lines[i] = "default %s\n" % SAFE_DEFAULT
+            with open(LOADER + ".tmp", "w") as f:
+                f.writelines(lines)
+            os.replace(LOADER + ".tmp", LOADER)
+            return True
+    return False
+
+
 def old_systems(top):
     return sorted(os.path.basename(p) for p in glob.glob(os.path.join(top, "@.old-*")))
 
@@ -330,6 +349,8 @@ def cmd_restore(argv):
         return 0
     aside = on_top_level(lambda top: do_restore(top, number))
     log_restore("to snapshot %d, and the system before it is kept as %s" % (number, aside))
+    if make_default_safe(lost):
+        print("The default kernel would not work from this snapshot, so the default is now mlrig.")
     print("Done. Restart the machine now. The system before this is kept as %s." % aside)
     return 0
 

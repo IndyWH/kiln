@@ -144,11 +144,20 @@ class Menu(Base):
     def test_default_pattern_does_not_match_a_snapshot(self):
         self.assertNotRegex(menu.PREFIX + "00026.conf", "-mlrig")
 
-    def test_default_pattern_only_matches_the_mlrig_kernel(self):
-        pattern = "*-mlrig*"  # From config/boot/loader/loader.conf.
+    def test_safe_default_only_matches_the_mlrig_kernel(self):
+        pattern = menu.SAFE_DEFAULT
         self.assertTrue(fnmatch.fnmatch("id-6.18.60-gentoo-mlrig.conf", pattern))
         for name in ("id-7.3.1-gentoo-kiln-gcc.conf", "id-7.3.1-gentoo-kiln-clang.conf",
                      "id-7.4.0-rc1-kiln-gcc.conf", "id-6.18.60-gentoo-dist-bin.conf"):
+            self.assertFalse(fnmatch.fnmatch(name, pattern), name)
+
+    def test_default_only_matches_the_full_lto_kernel(self):
+        with open(os.path.join(ROOT, "config/boot/loader/loader.conf")) as f:
+            pattern = next(line.split()[1] for line in f if line.startswith("default"))
+        self.assertTrue(fnmatch.fnmatch("id-7.3.1-gentoo-kiln-clang-fulllto.conf", pattern))
+        for name in ("id-7.3.1-gentoo-kiln-clang.conf", "id-7.3.1-gentoo-kiln-clang-thinlto.conf",
+                     "id-6.18.60-gentoo-mlrig.conf", "id-6.18.60-gentoo-dist-bin.conf",
+                     menu.PREFIX + "00026.conf"):
             self.assertFalse(fnmatch.fnmatch(name, pattern), name)
 
     def test_experimental_kernels_do_not_change_the_menu(self):
@@ -232,6 +241,21 @@ class Restore(Base):
     def test_nothing_is_lost_when_a_snapshot_holds_every_kernel(self):
         self.snapshot(2)
         self.assertEqual(menu.kernels_lost_by(menu.restorable()[0]), [])
+
+    def test_a_lost_default_kernel_goes_back_to_mlrig(self):
+        menu.LOADER = self.dir + "/loader.conf"
+        self.write(menu.LOADER, "default *-clang-fulllto*\ntimeout 3\n")
+        self.assertTrue(menu.make_default_safe(["7.3.1-gentoo-kiln-clang-fulllto"]))
+        with open(menu.LOADER) as f:
+            self.assertEqual(f.read(), "default *-mlrig*\ntimeout 3\n")
+
+    def test_a_default_that_still_works_stays(self):
+        menu.LOADER = self.dir + "/loader.conf"
+        self.write(menu.LOADER, "default *-clang-fulllto*\ntimeout 3\n")
+        self.assertFalse(menu.make_default_safe(["7.3.1-gentoo-kiln-clang-thinlto"]))
+        self.assertFalse(menu.make_default_safe([]))
+        with open(menu.LOADER) as f:
+            self.assertEqual(f.read(), "default *-clang-fulllto*\ntimeout 3\n")
 
     def test_no_kernels_stops_restore(self):
         os.unlink(menu.ENTRIES + "/id-6.18.60-gentoo-mlrig.conf")

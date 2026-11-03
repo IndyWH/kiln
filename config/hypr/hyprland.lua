@@ -138,6 +138,8 @@ hl.config({
     },
     cursor = {
         hide_on_key_press        = true,
+        -- Without this the pointer did not show after a full restart. See lessons/desktop.md.
+        no_hardware_cursors      = 1,
         warp_on_change_workspace = 1,
     },
     render = { cm_auto_hdr = 0 },
