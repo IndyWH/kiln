@@ -1,0 +1,8 @@
+# Kernel messages about microcode
+x86/CPU: Running old microcode
+microcode: Current revision: 0x0000012f
+
+# Kernel messages at error level, with test-disk noise removed
+ACPI Error: Aborting method \_SB.PC00.PEG1.PEGP._DSM due to previous error (AE_AML_LOOP_TIMEOUT) (20260408/psparse-543)
+i2c i2c-1: Failed to register i2c client ITE8853:00 at 0x4e (-16)
+virt/tdx: TDX not supported by the host platform

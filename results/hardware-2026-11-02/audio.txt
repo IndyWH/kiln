@@ -1,0 +1,58 @@
+ 0 [NVidia         ]: HDA-Intel - HDA NVidia
+                      HDA NVidia at 0x81080000 irq 17
+ 1 [HDMI           ]: HDA-Intel - HDA ATI HDMI
+                      HDA ATI HDMI at 0x82c60000 irq 189
+ 2 [C615           ]: USB-Audio - HD Webcam C615
+                      HD Webcam C615 at usb-0000:00:14.0-6, high speed
+ 3 [Audio          ]: USB-Audio - USB Audio
+                      Generic USB Audio at usb-0000:00:14.0-11, high speed
+
+**** List of PLAYBACK Hardware Devices ****
+card 0: NVidia [HDA NVidia], device 3: HDMI 0 [HDMI 0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 0: NVidia [HDA NVidia], device 7: HDMI 1 [HDMI 1]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 0: NVidia [HDA NVidia], device 8: HDMI 2 [HDMI 2]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 0: NVidia [HDA NVidia], device 9: HDMI 3 [HDMI 3]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 1: HDMI [HDA ATI HDMI], device 3: HDMI 0 [HDMI 0]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 1: HDMI [HDA ATI HDMI], device 7: HDMI 1 [49M2C8900L]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 1: HDMI [HDA ATI HDMI], device 8: HDMI 2 [HDMI 2]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 1: HDMI [HDA ATI HDMI], device 9: HDMI 3 [HDMI 3]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 1: HDMI [HDA ATI HDMI], device 10: HDMI 4 [HDMI 4]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 3: Audio [USB Audio], device 0: USB Audio [USB Audio]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 3: Audio [USB Audio], device 1: USB Audio [USB Audio #1]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 3: Audio [USB Audio], device 2: USB Audio [USB Audio #2]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+card 3: Audio [USB Audio], device 3: USB Audio [USB Audio #3]
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
+
+60	alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink	PipeWire	s24le 2ch 48000Hz	SUSPENDED
+61	alsa_output.usb-Generic_USB_Audio-00.HiFi__Speaker__sink	PipeWire	s32le 2ch 48000Hz	SUSPENDED
+62	alsa_output.usb-Generic_USB_Audio-00.HiFi__Headphones__sink	PipeWire	s32le 2ch 48000Hz	SUSPENDED
+114	alsa_output.pci-0000_02_00.1.hdmi-stereo-extra1	PipeWire	s32le 2ch 48000Hz	SUSPENDED
+
+Server Name: PulseAudio (on PipeWire 1.6.8)
+Default Sample Specification: float32le 2ch 48000Hz
+Default Sink: alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink

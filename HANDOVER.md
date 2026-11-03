@@ -4,7 +4,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1. Step 3 (guards first) is complete. No install work has started. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
+- Stage: Stage 1. Step 4 (hardware analysis) is written and waiting for the owner's check. No install work has started. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
 - Target: mlrig, Crucial P2 1 TB drive only. Omarchy is still on it, but the owner has copied what he needs, so the drive is free to wipe (2 Nov 2026).
 - Work can start now.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
@@ -13,13 +13,24 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Spec step 4, hardware analysis, once the owner approves the plan. To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
+The owner checks docs/HARDWARE.md, then spec step 5, disk layout, once the owner approves. To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
 
 After any restart of the live system, the guard is gone. Clone the repo and run `sudo guard/install.sh` again before any disk work. The work is on branch stage1-guards until the owner merges it, so use `git clone -b stage1-guards`.
 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 2 Nov 2026 — Claude Code, hardware analysis
+
+- Wrote docs/HARDWARE.md, with raw readings in results/hardware-2026-11-02/. Read-only. Drive health queries went to the Crucial only, by owner's decision.
+- For step 6: `-march=raptorlake` does not match this chip. Prefer `-march=native`.
+- For steps 7 and 8: the kernel warns of old microcode.
+- For step 12: set the same audio output and power mode as the Ubuntu run, or the numbers will not compare.
+- The RTX 4090 runs at x8, not x16, with the WX 3200 fitted. Probably the shared CPU lanes. The owner decided this does not matter, as the card is mainly for ML work.
+- Owner answers, 3 Nov 2026: install the NVIDIA driver at some point. Install the `cp210x` driver, low priority, because the owner uses that adapter on Ubuntu to run GermOS on the HP. No self-test on the Crucial before the wipe.
+- Owner decision, 3 Nov 2026: Ubuntu stays first in the boot order, and the owner presses F8 and chooses the Crucial to start Kiln. Kiln's boot loader must not stay first. Cowork: for the spec, Claude Doc first.
+- Cowork: the spec's machine table says NVIDIA driver for compute, but no build step includes it. It needs a place, Claude Doc first. Claude Code suggests step 8, with the kernels.
 
 ### 2 Nov 2026 — Claude Code, step 3 complete
 

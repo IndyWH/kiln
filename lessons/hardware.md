@@ -2,8 +2,11 @@
 
 Disks, the disk guard, and what the tools really do on this machine.
 
+Full report: `docs/HARDWARE.md`.
+
 ## Disks
 
+- The Crucial's health on 2 Nov 2026: 2% of rated life used, 13.4 TB written, 8,977 hours, no media errors. Compare against this if it misbehaves.
 - Find the Crucial by serial only. Use `/dev/disk/by-id/nvme-CT1000P2SSD8_2128E5B7DBBC`, and add `-part1` for a partition. On 2 Nov 2026 it was `nvme1n1`, but do not rely on that.
 - NVMe serials in `/sys/block/*/device/serial` have trailing spaces. Trim them before comparing.
 - The Ventoy USB drive reports a different serial through the USB bridge than through the drive itself. Treat its identity as unreliable.
@@ -25,10 +28,12 @@ Disks, the disk guard, and what the tools really do on this machine.
 - After `guard/install.sh`, restart Claude Code so it loads the hook. `/etc/claude-code` did not exist when the session began.
 - Disk commands must name the Crucial in full under `/dev/disk/by-id/`, on one line, with no variables or wildcards. Otherwise the hook blocks them.
 - The hook blocks Claude from running `tests/guard/fake_disks.sh`, because the script names raw devices. The owner runs it in a terminal. Do not try to get round this.
-- The hook sometimes blocks harmless commands, because it reads text. Seen so far: `which nvme`, where the word counts as a disk tool, and a `sed` pattern containing `/sys/block`. Use a simpler read-only command, such as `ls` or `grep`. If a command is blocked, re-check what it does before rewording it.
+- The hook sometimes blocks harmless commands, because it reads text. Seen so far: `which nvme`, where the word counts as a disk tool, a `sed` pattern containing `/sys/block`, and Markdown backticks inside single quotes, which it reads as a command. Write text with the file tools instead. Use a simpler read-only command, such as `ls` or `grep`. If a command is blocked, re-check what it does before rewording it.
 
 ## Tool pitfalls
 
+- `grep` on the live image is `ugrep`, which goes down into folders by itself. A wildcard path under `/sys` can match folders and produce a huge output. Name exact files.
+- Hardware output can hide IDs. `pactl info` puts the webcam's serial in the default source name, and `kscreen-doctor` prints a unique screen ID. Filter by keeping known-safe lines, and run a search for IDs, before anything goes in the public repo.
 - `sgdisk --zap-all` on a locked disk prints `GPT data structures destroyed!` and exits 0, although the kernel refused every write. Never trust its exit code. Read the partition table back after any change.
 - A write-mode open of a locked disk succeeds. The refusal comes at the write. So a successful open proves nothing.
 - `dd of=/dev/x` makes a plain file if the device node has gone, and reports success. Use `conv=nocreat`.

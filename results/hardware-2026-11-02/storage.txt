@@ -1,0 +1,35 @@
+NAME    MODEL                     SIZE ROTA TRAN RM RO PHY-SEC LOG-SEC SCHED
+loop0                             3.9G    1       0  1     512     512 none
+sda     WDC WD20EZRX-00D8PB0      1.8T    1 sata  0  1    4096     512 mq-deadline
+sdb     Samsung SSD 870 QVO 1TB 931.5G    0 sata  0  1     512     512 mq-deadline
+sdc     ST9500420ASG            465.8G    1 usb   0  1     512     512 mq-deadline
+nvme0n1 Samsung SSD 990 PRO 2TB   1.8T    0 nvme  0  1     512     512 none
+nvme2n1 Samsung SSD 990 PRO 2TB   1.8T    0 nvme  0  1     512     512 none
+nvme1n1 CT1000P2SSD8            931.5G    0 nvme  0  0     512     512 none
+
+NAME        FSTYPE        SIZE RO MOUNTPOINTS
+loop0       squashfs      3.9G  1 /run/rootfsbase
+sda                       1.8T  1 
+└─sda1      ntfs          1.8T  1 
+sdb                     931.5G  1 
+└─sdb1      ext4        931.5G  1 
+sdc                     465.8G  1 
+├─sdc1      exfat       465.7G  1 
+│ ├─ventoy  iso9660         4G  1 /run/initramfs/live
+│ └─sdc1    exfat       465.7G  1 
+└─sdc2      vfat           32M  1 
+nvme0n1                   1.8T  1 
+├─nvme0n1p1 vfat            1G  1 
+└─nvme0n1p2 ext4          1.8T  1 
+nvme2n1                   1.8T  1 
+└─nvme2n1p1 ext4          1.8T  1 
+nvme1n1                 931.5G  0 
+├─nvme1n1p1 vfat            2G  0 
+└─nvme1n1p2 crypto_LUKS 929.5G  0 
+
+# PCI address and link: current / most it can do
+03:00.0 Samsung 990 PRO: 16.0 GT/s x4 / 16.0 GT/s x4, on the CPU's own lanes
+04:00.0 Crucial P2: 8.0 GT/s x4 / 8.0 GT/s x4, through the chipset
+06:00.0 Samsung 990 PRO: 16.0 GT/s x4 / 16.0 GT/s x4, through the chipset
+01:00.0 RTX 4090: 2.5 GT/s x8 / 16.0 GT/s x16, idle, on nouveau
+02:00.0 WX 3200: 8.0 GT/s x8 / 8.0 GT/s x8

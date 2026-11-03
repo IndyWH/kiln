@@ -1,0 +1,77 @@
+ERROR: Can't get value of subfeature temp1_max_alarm: Can't read
+ERROR: Can't get value of subfeature temp1_max_alarm: Can't read
+iwlwifi_1-virtual-0
+Adapter: Virtual device
+temp1:        +37.0°C  
+
+spd5118-i2c-3-52
+Adapter: SMBus I801 adapter at 0000:00:1f.4
+temp1:        +43.5°C  (low  =  +0.0°C, high = +55.0°C)
+                       (crit low =  +0.0°C, crit = +85.0°C)
+
+nvme-pci-0600
+Adapter: PCI adapter
+Composite:    +40.9°C  (low  = -273.1°C, high = +81.8°C)
+                       (crit = +84.8°C)
+Sensor 1:     +40.9°C  (low  = -273.1°C, high = +65261.8°C)
+Sensor 2:     +46.9°C  (low  = -273.1°C, high = +65261.8°C)
+
+acpitz-acpi-0
+Adapter: ACPI interface
+temp1:        +27.8°C  
+
+amdgpu-pci-0200
+Adapter: PCI adapter
+vddgfx:      975.00 mV 
+fan1:        2061 RPM  (min = 1800 RPM, max = 6900 RPM)
+edge:         +55.0°C  (crit = +97.0°C, hyst = -273.1°C)
+PPT:          13.30 W  (cap =  35.00 W)
+pwm1:             24%
+sclk:           1 GHz 
+mclk:           2 GHz 
+
+coretemp-isa-0000
+Adapter: ISA adapter
+Package id 0:  +38.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 0:        +33.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 4:        +34.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 8:        +33.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 12:       +33.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 16:       +34.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 20:       +33.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 24:       +33.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 28:       +32.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 32:       +34.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 33:       +34.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 34:       +34.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 35:       +34.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 36:       +35.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 37:       +35.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 38:       +35.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 39:       +35.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 40:       +32.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 41:       +31.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 42:       +31.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 43:       +31.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 44:       +31.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 45:       +31.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 46:       +31.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 47:       +31.0°C  (high = +80.0°C, crit = +100.0°C)
+
+spd5118-i2c-3-50
+Adapter: SMBus I801 adapter at 0000:00:1f.4
+temp1:        +42.8°C  (low  =  +0.0°C, high = +55.0°C)
+                       (crit low =  +0.0°C, crit = +85.0°C)
+
+nvme-pci-0400
+Adapter: PCI adapter
+Composite:    +36.9°C  (low  =  -0.1°C, high = +69.8°C)
+                       (crit = +84.8°C)
+
+nvme-pci-0300
+Adapter: PCI adapter
+Composite:    +42.9°C  (low  = -273.1°C, high = +81.8°C)
+                       (crit = +84.8°C)
+Sensor 1:     +42.9°C  (low  = -273.1°C, high = +65261.8°C)
+Sensor 2:     +48.9°C  (low  = -273.1°C, high = +65261.8°C)
+

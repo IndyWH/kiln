@@ -1,0 +1,26 @@
+-[0000:00]-+-00.0  Intel Corporation Raptor Lake-S Host Bridge/DRAM Controller
+           +-01.0-[01]--+-00.0  NVIDIA Corporation AD102 [GeForce RTX 4090]
+           |            \-00.1  NVIDIA Corporation AD102 High Definition Audio Controller
+           +-01.1-[02]--+-00.0  Advanced Micro Devices, Inc. [AMD/ATI] Lexa XT [Radeon PRO WX 3200]
+           |            \-00.1  Advanced Micro Devices, Inc. [AMD/ATI] Baffin HDMI/DP Audio [Radeon RX 550 640SP / RX 560/560X]
+           +-06.0-[03]----00.0  Samsung Electronics Co Ltd NVMe SSD Controller S4LV008[Pascal]
+           +-0a.0  Intel Corporation Raptor Lake Crashlog and Telemetry
+           +-14.0  Intel Corporation Raptor Lake USB 3.2 Gen 2x2 (20 Gb/s) XHCI Host Controller
+           +-14.2  Intel Corporation Raptor Lake PCH Shared SRAM
+           +-14.3  Intel Corporation 700 Series Chipset CNVi WiFi
+           +-15.0  Intel Corporation Raptor Lake Serial IO I2C Host Controller #0
+           +-15.1  Intel Corporation Raptor Lake Serial IO I2C Host Controller #1
+           +-15.2  Intel Corporation Raptor Lake Serial IO I2C Host Controller #2
+           +-16.0  Intel Corporation Raptor Lake CSME HECI #1
+           +-17.0  Intel Corporation Raptor Lake SATA AHCI Controller
+           +-1a.0-[04]----00.0  Micron/Crucial Technology P2 [Nick P2] / P3 / P3 Plus NVMe PCIe SSD (DRAM-less)
+           +-1b.0-[05]--
+           +-1b.4-[06]----00.0  Samsung Electronics Co Ltd NVMe SSD Controller S4LV008[Pascal]
+           +-1c.0-[07]--
+           +-1c.2-[08]----00.0  Intel Corporation Ethernet Controller I226-V
+           +-1c.4-[09]--
+           +-1c.5-[0a]--
+           +-1d.0-[0b]--
+           +-1f.0  Intel Corporation Z790 Chipset LPC/eSPI Controller
+           +-1f.4  Intel Corporation 700 Series Chipset SMBus Controller
+           \-1f.5  Intel Corporation Raptor Lake SPI (flash) Controller

@@ -1,0 +1,19 @@
+# Connectors
+/sys/class/drm/card0-DP-1/status:disconnected
+/sys/class/drm/card0-DP-2/status:disconnected
+/sys/class/drm/card0-DP-3/status:disconnected
+/sys/class/drm/card0-DP-4/status:connected
+/sys/class/drm/card1-DP-5/status:disconnected
+/sys/class/drm/card1-DP-6/status:disconnected
+/sys/class/drm/card1-DP-7/status:disconnected
+/sys/class/drm/card1-HDMI-A-1/status:disconnected
+
+# Screen modes at 5120x1440, as KDE reports them
+5120x1440
+5120x1440@120.00*
+5120x1440@59.98
+5120x1440@75.00
+
+# Which card the firmware started with (1 is yes)
+RTX 4090 (01:00.0): 0
+WX 3200 (02:00.0): 1

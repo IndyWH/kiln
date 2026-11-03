@@ -1,0 +1,95 @@
+# lscpu
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           46 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  32
+On-line CPU(s) list:                     0-31
+Vendor ID:                               GenuineIntel
+Model name:                              13th Gen Intel(R) Core(TM) i9-13900K
+CPU family:                              6
+Model:                                   183
+Thread(s) per core:                      2
+Core(s) per socket:                      24
+Socket(s):                               1
+Stepping:                                1
+Microcode version:                       0x12f
+CPU(s) scaling MHz:                      33%
+CPU max MHz:                             5800.0000
+CPU min MHz:                             800.0000
+BogoMIPS:                                5992.00
+Virtualization:                          VT-x
+L1d cache:                               896 KiB (24 instances)
+L1i cache:                               1.3 MiB (24 instances)
+L2 cache:                                32 MiB (12 instances)
+L3 cache:                                36 MiB (1 instance)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-31
+
+# Threads: CPU, core, socket, node, caches, max and min MHz
+CPU CORE SOCKET NODE L1d:L1i:L2:L3    MAXMHZ   MINMHZ
+  0    0      0    0 0:0:0:0       5500.0000 800.0000
+  1    0      0    0 0:0:0:0       5500.0000 800.0000
+  2    1      0    0 4:4:1:0       5500.0000 800.0000
+  3    1      0    0 4:4:1:0       5500.0000 800.0000
+  4    2      0    0 8:8:2:0       5500.0000 800.0000
+  5    2      0    0 8:8:2:0       5500.0000 800.0000
+  6    3      0    0 12:12:3:0     5500.0000 800.0000
+  7    3      0    0 12:12:3:0     5500.0000 800.0000
+  8    4      0    0 16:16:4:0     5800.0000 800.0000
+  9    4      0    0 16:16:4:0     5800.0000 800.0000
+ 10    5      0    0 20:20:5:0     5800.0000 800.0000
+ 11    5      0    0 20:20:5:0     5800.0000 800.0000
+ 12    6      0    0 24:24:6:0     5500.0000 800.0000
+ 13    6      0    0 24:24:6:0     5500.0000 800.0000
+ 14    7      0    0 28:28:7:0     5500.0000 800.0000
+ 15    7      0    0 28:28:7:0     5500.0000 800.0000
+ 16    8      0    0 32:32:8:0     4300.0000 800.0000
+ 17    9      0    0 33:33:8:0     4300.0000 800.0000
+ 18   10      0    0 34:34:8:0     4300.0000 800.0000
+ 19   11      0    0 35:35:8:0     4300.0000 800.0000
+ 20   12      0    0 36:36:9:0     4300.0000 800.0000
+ 21   13      0    0 37:37:9:0     4300.0000 800.0000
+ 22   14      0    0 38:38:9:0     4300.0000 800.0000
+ 23   15      0    0 39:39:9:0     4300.0000 800.0000
+ 24   16      0    0 40:40:10:0    4300.0000 800.0000
+ 25   17      0    0 41:41:10:0    4300.0000 800.0000
+ 26   18      0    0 42:42:10:0    4300.0000 800.0000
+ 27   19      0    0 43:43:10:0    4300.0000 800.0000
+ 28   20      0    0 44:44:11:0    4300.0000 800.0000
+ 29   21      0    0 45:45:11:0    4300.0000 800.0000
+ 30   22      0    0 46:46:11:0    4300.0000 800.0000
+ 31   23      0    0 47:47:11:0    4300.0000 800.0000
+
+# Caches
+NAME ONE-SIZE ALL-SIZE WAYS TYPE        LEVEL  SETS PHY-LINE COHERENCY-SIZE
+L1d       48K     896K   12 Data            1    64        1             64
+L1i       32K     1.3M    8 Instruction     1    64        1             64
+L2         2M      32M   16 Unified         2  2048        1             64
+L3        36M      36M   12 Unified         3 49152        1             64
+
+# Fast and efficient threads
+/sys/devices/cpu_atom/cpus:16-31
+/sys/devices/cpu_core/cpus:0-15
+
+# Speed settings on this live system
+/sys/devices/system/cpu/cpu0/cpufreq/energy_performance_preference:balance_performance
+/sys/devices/system/cpu/cpu0/cpufreq/scaling_driver:intel_pstate
+/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor:powersave
+
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb ssbd ibrs ibpb stibp ibrs_enhanced tpr_shadow flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb intel_pt sha_ni xsaveopt xsavec xgetbv1 xsaves split_lock_detect user_shstk avx_vnni dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp hwp_pkg_req hfi vnmi umip pku ospke waitpkg gfni vaes vpclmulqdq rdpid movdiri movdir64b fsrm md_clear serialize pconfig arch_lbr ibt flush_l1d arch_capabilities
+
+microcode	: 0x12f
+
+# Compiler
+gcc (Gentoo 15.3.0 p8) 15.3.0
+  -march=                     		alderlake
+  -mtune=                     		alderlake
+  x86-64-v4
+  x86-64-v3 (supported, searched)
+  x86-64-v2 (supported, searched)
+
+# GCC 15.3.0, options enabled by -march=native but not -march=raptorlake
+abm shstk
+# Options enabled by -march=raptorlake but not -march=native
+kl sgx widekl

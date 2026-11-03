@@ -1,0 +1,42 @@
+Platform Firmware Information
+	Vendor: American Megatrends Inc.
+	Version: 3107
+	Release Date: 12/01/2025
+	ROM Size: 16 MiB
+System Information
+	Manufacturer: ASUS
+Base Board Information
+	Manufacturer: ASUSTeK COMPUTER INC.
+	Product Name: ROG MAXIMUS Z790 APEX
+	Version: Rev 1.xx
+	Type: Motherboard
+Memory Device
+	Size: 48 GiB
+	Locator: Controller0-DIMM0
+	Type: DDR5
+	Speed: 6400 MT/s
+	Manufacturer: Corsair
+	Part Number: CMK96GX5M2B6400C32
+	Rank: 2
+	Configured Memory Speed: 6400 MT/s
+	Configured Voltage: 1.1 V
+Memory Device
+	Size: 48 GiB
+	Locator: Controller1-DIMM0
+	Type: DDR5
+	Speed: 6400 MT/s
+	Manufacturer: Corsair
+	Part Number: CMK96GX5M2B6400C32
+	Rank: 2
+	Configured Memory Speed: 6400 MT/s
+	Configured Voltage: 1.1 V
+Processor Information
+	Type: Central Processor
+	Manufacturer: Intel(R) Corporation
+	Version: 13th Gen Intel(R) Core(TM) i9-13900K
+	Core Count: 24
+	Thread Count: 32
+Memory block size:                  2G
+Total online memory:               96G
+Total offline memory:               0B
+Memmap on memory parameter:         no
