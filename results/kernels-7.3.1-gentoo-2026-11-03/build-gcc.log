@@ -1,0 +1,2 @@
+.config:1460:warning: symbol value 'm' invalid for NETFILTER_NETLINK
+.config:7843:warning: symbol value 'n' invalid for BOOTPARAM_SOFTLOCKUP_PANIC

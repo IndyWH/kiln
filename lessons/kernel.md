@@ -12,3 +12,7 @@ The mlrig kernel config, and what was learnt building it.
 - `nvidia-drivers` builds for the kernel `eselect kernel` points at, so only the mlrig kernel has it. Keep that pointing at `linux-6.18.60-gentoo`. After rebuilding that kernel, run `emerge @module-rebuild`.
 - `nvidia-drivers` 595 has no `kernel-open` flag, because the open module is the only choice. `modinfo` shows licence `Dual MIT/GPL`.
 - `nvidia-drivers` 595.104.02 says it supports kernels up to 7.3.
+- Extra kernels: `sudo scripts/build-kernel.sh SOURCE gcc|clang`. They are named `-kiln-`, never `-mlrig`, so the `*-mlrig*` default cannot pick one. Each keeps its own build folder in `/usr/src/kiln-kernel/`, and the `/usr/src/linux` link stays on 6.18. They have no NVIDIA driver.
+- Clang 22 is installed for Mesa but is not on the PATH. A kernel build uses `LLVM=/usr/lib/llvm/22/bin/`.
+- A world entry with no slot keeps only the newest kernel source, so name each kernel's slot in the world file: `sys-kernel/gentoo-sources:6.18.60`.
+- Module file names use hyphens, such as `snd-hda-intel.ko`, so searching with underscores finds nothing.

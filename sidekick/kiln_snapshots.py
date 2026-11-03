@@ -35,6 +35,7 @@ PREFIX = "kiln-snapshot-"
 GUARD_FILES = ("usr/local/lib/kiln-guard/kiln_guard.py",
                "etc/systemd/system/local-fs-pre.target.wants/kiln-guard.service")
 HOOK_FILE = "usr/local/lib/kiln-guard/kiln_rules.py"
+ESSENTIAL_KERNELS = ("mlrig", "dist-bin")
 
 
 class RestoreError(Exception):
@@ -194,12 +195,23 @@ def crucial_partition():
     return device
 
 
+def essential(kernel):
+    """The default and rescue kernels. Others are experiments, named so as not to match."""
+    return any(word in kernel.get("version", "") for word in ESSENTIAL_KERNELS)
+
+
 def restorable():
-    """Snapshots holding the drivers for every kernel, so all menu entries still work."""
-    kernels = [k for k in kernel_entries() if "version" in k]
+    """Snapshots that can boot both the default and the rescue kernel."""
+    kernels = [k for k in kernel_entries() if essential(k)]
     if not kernels:
-        raise RestoreError("No kernels were found in the boot menu, so nothing was done.")
+        raise RestoreError("No default or rescue kernel was found, so nothing was done.")
     return [s for s in read_snapshots() if all(has_modules(s, k) for k in kernels)]
+
+
+def kernels_lost_by(snap):
+    """Boot menu kernels whose drivers are not in this snapshot, so they would not work."""
+    return [k["version"] for k in kernel_entries()
+            if "version" in k and not has_modules(snap, k)]
 
 
 def old_systems(top):
@@ -309,6 +321,10 @@ def cmd_restore(argv):
     if older:
         print("This snapshot is older than the safety hooks. After the restart, run:")
         print("  cd ~/Projects/kiln && sudo sidekick/install.sh")
+    lost = kernels_lost_by(snap)
+    if lost:
+        print("These kernels stay in the boot menu but will not work, as this snapshot is")
+        print("older than they are. Do not choose them: " + ", ".join(lost))
     if not confirmed():
         print("Nothing was changed.")
         return 0

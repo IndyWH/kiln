@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next: the owner chooses. Still missing from the desktop: notifications, a lock screen and screenshots.
+Next: build 7.3.1 with Clang, using `sudo scripts/build-kernel.sh 7.3.1-gentoo clang`, then boot and check both 7.3.1 kernels. After that, 7.4-rc1, then the overfired 7.3.1. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -44,10 +44,19 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 
 ## Log
 
+### 3 Nov 2026 — Claude Code, 7.3.1 with GCC, not booted
+
+- `restore` now only needs a snapshot to hold the default and rescue kernels' drivers, and warns about newer kernels that would not work from it. The owner installed the fix. 40 tests pass, but a real `restore` still has not run.
+- Built `7.3.1-gentoo-kiln-gcc` with scripts/build-kernel.sh, in 205 seconds, from mlrig's settings. Config: config/kernel/kiln-7.3.1-gentoo-gcc.config. Log: results/kernels-7.3.1-gentoo-2026-11-03/. It has not been booted.
+- Read back: 6.18.60 `mlrig` is still the default and the rescue kernel is still listed. `eselect kernel` still points at 6.18, and Ubuntu is still first in the firmware order. The guard shows OK. `/boot` has 1.8 GB free.
+- Drivers compared with 6.18: no NVIDIA, as planned, so no RTX 4090 on this kernel. `nfnetlink` is now built in, and `iTCO_vendor_support` has gone. Two config warnings, both harmless.
+- `gentoo-sources:6.18.60` and `:7.3.1` are now both in the world file, so a clean-up cannot remove the 6.18 source that NVIDIA builds against.
+- Correction: `mlrig` already runs at 1000 Hz, so the overfired kernel gains nothing there.
+
 ### 3 Nov 2026 — Claude Code, vision updated
 
 - Owner's decision: Kiln exploits every hardware feature it can, whatever the size of the gain. The compiling itself must not run generic either. The word for this is overfiring. Added as a new first section, The obsession, in the Claude Doc and then docs/VISION.md.
-- Owner's decision: keep today's kernels and add more to choose from at boot, each new one in a GCC and a Clang version. In order: 7.3.1 plain, 7.4-rc1 plain, then 7.3.1 overfired, with BORE, 1000 Hz and a profile of this machine's own use. Cowork: this is new for the spec, Claude Doc first.
+- Owner's decision: keep today's kernels and add more to choose from at boot, each new one in a GCC and a Clang version. In order: 7.3.1 plain, 7.4-rc1 plain, then 7.3.1 overfired, with BORE and a profile of this machine's own use. Cowork: this is new for the spec, Claude Doc first.
 - Cowork: the spec's step 11 starts with the kernel, graphics and audio. This decision suggests rebuilding the compiler and build tools first. For the spec, Claude Doc first.
 - Cowork: a pasted prompt on Rust, Go and the flags audit is on hold until the owner has finished discussing it. It says to audit after every compiler update. Claude Code suggests after every update, as Kiln fetches ready-built packages.
 

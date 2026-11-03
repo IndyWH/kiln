@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Tests for the boot menu and restore, on fake folders. Nothing real is touched."""
+import fnmatch
 import os
 import sys
 import tempfile
@@ -143,6 +144,21 @@ class Menu(Base):
     def test_default_pattern_does_not_match_a_snapshot(self):
         self.assertNotRegex(menu.PREFIX + "00026.conf", "-mlrig")
 
+    def test_default_pattern_only_matches_the_mlrig_kernel(self):
+        pattern = "*-mlrig*"  # From config/boot/loader/loader.conf.
+        self.assertTrue(fnmatch.fnmatch("id-6.18.60-gentoo-mlrig.conf", pattern))
+        for name in ("id-7.3.1-gentoo-kiln-gcc.conf", "id-7.3.1-gentoo-kiln-clang.conf",
+                     "id-7.4.0-rc1-kiln-gcc.conf", "id-6.18.60-gentoo-dist-bin.conf"):
+            self.assertFalse(fnmatch.fnmatch(name, pattern), name)
+
+    def test_experimental_kernels_do_not_change_the_menu(self):
+        self.write(menu.ENTRIES + "/id-7.3.1-gentoo-kiln-gcc.conf",
+                   MLRIG.replace("6.18.60-gentoo-mlrig", "7.3.1-gentoo-kiln-gcc"))
+        self.snapshot(3)
+        menu.cmd_menu()
+        with open(menu.ENTRIES + "/kiln-snapshot-00003.conf") as f:
+            self.assertIn("linux      /id/6.18.60-gentoo-mlrig/linux", f.read())
+
 
 class Restore(Base):
     """The swap, with a plain folder standing in for the filesystem's top level."""
@@ -204,6 +220,18 @@ class Restore(Base):
         self.snapshot(1, rescue_modules=False)
         self.snapshot(2)
         self.assertEqual([s["number"] for s in menu.restorable()], [2])
+
+    def test_a_new_kernel_does_not_block_older_snapshots(self):
+        self.write(menu.ENTRIES + "/id-7.3.1-gentoo-kiln-gcc.conf",
+                   MLRIG.replace("6.18.60-gentoo-mlrig", "7.3.1-gentoo-kiln-gcc"))
+        self.snapshot(2)
+        usable = menu.restorable()
+        self.assertEqual([s["number"] for s in usable], [2])
+        self.assertEqual(menu.kernels_lost_by(usable[0]), ["7.3.1-gentoo-kiln-gcc"])
+
+    def test_nothing_is_lost_when_a_snapshot_holds_every_kernel(self):
+        self.snapshot(2)
+        self.assertEqual(menu.kernels_lost_by(menu.restorable()[0]), [])
 
     def test_no_kernels_stops_restore(self):
         os.unlink(menu.ENTRIES + "/id-6.18.60-gentoo-mlrig.conf")
