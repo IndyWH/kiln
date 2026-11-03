@@ -64,6 +64,8 @@ hl.env("OZONE_PLATFORM", "wayland")
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")
+-- Keeps `uv pip` from replacing the PyTorch built for this machine.
+hl.env("UV_EXCLUDE", "/etc/kiln/uv-exclude.txt")
 
 -- Look and feel
 local active_border_color   = "rgb(7aa2f7)"

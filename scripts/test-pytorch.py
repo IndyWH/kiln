@@ -91,6 +91,18 @@ def main():
               % (device, first, last, accuracy * 100, seconds))
         assert last < first and accuracy > 0.9, "The network did not learn"
 
+    try:
+        import torchvision
+    except ImportError:
+        print("torchvision: not installed")
+    else:
+        boxes = torch.tensor([[0, 0, 10, 10], [1, 1, 11, 11], [50, 50, 60, 60]],
+                             dtype=torch.float32, device="cuda")
+        scores = torch.tensor([0.9, 0.8, 0.7], device="cuda")
+        kept = torchvision.ops.nms(boxes, scores, 0.5)
+        assert kept.device.type == "cuda" and kept.tolist() == [0, 2]
+        print("torchvision", torchvision.__version__, "on the GPU: OK")
+
     print("Peak GPU memory: %d MiB" % (torch.cuda.max_memory_allocated() // 2**20))
     print("All passed.")
 

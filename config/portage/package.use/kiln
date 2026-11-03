@@ -14,3 +14,4 @@ dev-util/nvidia-cuda-toolkit profiler
 dev-libs/cutlass tools
 sci-ml/tensorpipe cuda
 sci-ml/gloo cuda
+sci-ml/torchvision cuda

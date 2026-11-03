@@ -1,0 +1,5 @@
+# Kiln Linux: /etc/kiln/uv-exclude.txt
+# Packages that `uv pip` must leave alone, because Kiln builds them from source for this
+# machine. Without this, uv would fetch generic copies, with a second copy of CUDA.
+torch
+torchvision

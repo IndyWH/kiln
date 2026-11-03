@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next: the owner decides how to keep uv from replacing the system's PyTorch. Then, in order, unless the owner changes it: Cowork's prompt on the spec, Rust and Go. The flags audit. Part 4's safety tests, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
+Next, in order, unless the owner changes it: Cowork's prompt on the spec, Rust and Go. The flags audit. Part 4's safety tests, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,12 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, torchvision and the uv exclude list
+
+- `UV_EXCLUDE=/etc/kiln/uv-exclude.txt` is set in login shells and in Hyprland, and names `torch` and `torchvision`. A dry run keeps both out, in a login shell, and a new terminal window has the setting. It covers `uv pip` only, not `uv sync`.
+- Built `sci-ml/torchvision` 0.29.2 from source with CUDA. `scripts/test-pytorch.py` passes, including torchvision on the GPU.
+- Its default GPU code failed on this driver with "unsupported toolchain". So the CUDA 13.4 toolkit against a driver reporting 13.2 does matter for code built for an older generation. `NVCCFLAGS="-O3 --gpu-architecture=sm_89"` fixes it. `NVCC_FLAGS` has no effect, as the recipe overwrites it. Any other program compiled with default CUDA settings may hit the same fault. A newer driver may fix that in general: 595.112.07 and 615.78.08 are in Gentoo's testing branch, and any change needs the modules rebuilt.
 
 ### 3 Nov 2026 — Claude Code, uv and PyTorch on the RTX 4090
 

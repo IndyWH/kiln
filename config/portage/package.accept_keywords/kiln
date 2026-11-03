@@ -7,6 +7,7 @@ dev-cpp/glaze ~amd64
 dev-util/rt-tests ~amd64
 # PyTorch and the parts it needs. Gentoo has no stable copy of these.
 =sci-ml/pytorch-2.15.0 ~amd64
+=sci-ml/torchvision-0.29.2 ~amd64
 =sci-ml/onnx-1.20.1 ~amd64
 =sci-ml/ideep-3.12 ~amd64
 =sci-ml/kineto-0.4.0_p20260805-r1 ~amd64
