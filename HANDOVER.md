@@ -4,17 +4,25 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built. The mlrig kernel boots, with 3 checks failed. The rescue kernel has not been checked, and can wait, by owner's decision. Step 9 is done: Kiln boots to the desktop, with network and sound working. Claude Code runs on Kiln, signed in. Step 10 has not started.
+- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built. The mlrig kernel boots, with 3 checks failed. The rescue kernel has not been checked, and can wait, by owner's decision. Step 9 is done: Kiln boots to the desktop, with network and sound working. Claude Code runs on Kiln, signed in. Step 10: part 1 of 4 is done. Part 2 is in progress.
 - Priority, by owner's decision: Kiln boots to the desktop, then work moves to Claude Code on Kiln, to end the restarts into the live image.
 - Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped. Two kernels, the boot loader, the guard and the desktop are on it, with snapshot 5 taken (3 Nov 2026). Kiln now runs from this drive.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
 - Owner wants Chromium compiled for mlrig, after step 9 and once the step 11 settings are on. Not started.
+- Owner wants the Claude desktop app at some point. Not part of step 10. Not started.
 - Baseline: Ubuntu 26.10 on mlrig only. Omarchy is skipped.
 - Screen: mini DisplayPort from the WX 3200, live images included. HDMI into the RTX 4090 is the fallback if a live image shows a black screen.
 
 ## Next step
 
-Step 10, when the owner says to start. To reach Kiln, the owner presses F8, chooses the Crucial, logs in as `indy`, opens a terminal with Super+Return, and starts Claude Code in ~/Projects/kiln.
+Step 10, in four parts, reporting back after each:
+
+1. Sidekick key and rules file. Done.
+2. Hooks for rules 1 and 2, with the change log and `undo`. Hooks go in the protected folder, installed by the owner's hand. `undo` restores only `~/.config` in the home folder, by owner's decision.
+3. Past snapshots in the boot menu.
+4. Tests: break the desktop and recover with `undo`, and boot the rescue kernel and a past snapshot. A fix for the guard's false alarms, installed by the owner's hand.
+
+To reach Kiln, the owner presses F8, chooses the Crucial, logs in as `indy`, and presses Super+Space.
 
 Open, and not holding this up:
 
@@ -31,6 +39,15 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, step 10 part 1
+
+- Owner's decision on decision 5: the sidekick key is Super+Space. It opens Claude Code in ~/Projects/kiln, then hides and shows it, and the chat keeps running while hidden. Script: config/usr/local/bin/kiln-sidekick.
+- Tested by running the script three times: the window opened, hid and came back, with Claude Code still running. The owner then pressed the real key and it works.
+- Rules file: config/claude/CLAUDE.md, copied to ~/.claude/CLAUDE.md for now. A fresh session named all four rules from it. It moves to the protected folder in part 2.
+- Snapshot 6 is the working desktop, taken before this part. It does not cover the home folder.
+- Cowork: the spec and its Claude Doc still say pushes are by the owner's own hand. Please update them to the new rule 7.
+- Cowork: decision 6 says a pop-up on first boot offers the Claude desktop app. There is no record of it being built, or of Anthropic's terms being checked. The owner wants the app at some point, so the spec needs a new place for it.
 
 ### 3 Nov 2026 — Claude Code, first desktop boot
 

@@ -1,0 +1,8 @@
+#!/bin/sh
+# Kiln Linux: the sidekick key (Super+Space). Opens Claude Code the first time,
+# then hides and shows it. A hidden window keeps running, so the chat carries on.
+# The window rule in hyprland.lua places it on the hidden workspace.
+if hyprctl clients -j | grep -q '"class": "kiln-sidekick"'; then
+    exec hyprctl dispatch 'hl.dsp.workspace.toggle_special("sidekick")'
+fi
+exec foot --app-id=kiln-sidekick --working-directory="$HOME/Projects/kiln" claude

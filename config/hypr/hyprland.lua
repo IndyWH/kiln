@@ -47,6 +47,17 @@ hl.config({
 hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + B",      hl.dsp.exec_cmd(browser))
 
+-- The sidekick: Claude Code on one key. See /usr/local/bin/kiln-sidekick.
+hl.bind(mainMod .. " + SPACE",  hl.dsp.exec_cmd("kiln-sidekick"))
+hl.window_rule({
+    name      = "kiln-sidekick",
+    match     = { class = "kiln-sidekick" },
+    workspace = "special:sidekick",
+    float     = true,
+    size      = "monitor_w*0.5 monitor_h*0.9",
+    center    = true,
+})
+
 -- Windows
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
