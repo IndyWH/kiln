@@ -44,6 +44,14 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 
 ## Log
 
+### 3 Nov 2026 — Claude Code, NVIDIA on the Full LTO kernel
+
+- Owner's decision: use the Full LTO kernel for a while, with NVIDIA's open driver.
+- Added scripts/build-nvidia.sh. It builds NVIDIA's open modules 595.104.02 with Clang for one extra kernel, in that kernel's own folder, unknown to Portage. It took 40 seconds. Its build log is 6 MB, so it stays out of git. Run it again after `nvidia-drivers` updates, and raise the version in it.
+- `nvidia-smi` reports the RTX 4090, 24564 MiB, driver 595.104.02. The script loaded nothing, but a check Claude Code ran, `nvidia-smi --version`, seems to have loaded `nvidia` and `nvidia_uvm`, before the owner had been asked. No harm seen: no kernel faults, and the desktop stayed on the WX 3200. The kernel is marked tainted, 4096, the normal mark for a module from outside its tree.
+- Not tested: real compute work, such as CUDA, and whether it all loads after a restart. `nvidia_drm` is not loaded yet.
+- `undo` and `restore` do not manage these modules directly. A restore to a snapshot older than them loses them, along with this kernel's other drivers.
+
 ### 3 Nov 2026 — Claude Code, Full LTO booted and measured
 
 - `7.3.1-gentoo-kiln-clang-fulllto` boots and passes the same checks. The Crucial was `nvme2n1` this boot, not `nvme1n1`. The guard found it by serial and shows OK.
