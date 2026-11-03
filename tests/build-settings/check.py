@@ -61,6 +61,51 @@ def compile_and_run(tmp, conf, label):
               result.stdout + result.stderr)
 
 
+def check_rust(tmp, conf):
+    flags = shlex.split(conf.get("RUSTFLAGS", ""))
+    check("Rust targets this exact CPU", "target-cpu=native" in flags)
+    if not shutil.which("rustc"):
+        print("SKIP  Rust is not installed, so nothing was compiled")
+        return
+    binary = os.path.join(tmp, "rust_test")
+    built = run("rustc", *flags, os.path.join(HERE, "rust_test.rs"), "-o", binary)
+    check("Rust: compiles with these flags, and knows this chip's features",
+          built.returncode == 0, built.stderr[:300])
+    if built.returncode:
+        return
+    for t in THREADS:
+        result = run("taskset", "-c", str(t), binary)
+        check("Rust: runs on thread %d" % t, result.returncode == 0 and result.stdout.strip() == "ok",
+              result.stdout + result.stderr)
+    features = run("rustc", *flags, "--print", "cfg").stdout
+    check("Rust leaves out AVX-512, which this chip does not have", "avx512" not in features)
+
+
+def check_go(tmp, conf):
+    """Go has only broad levels, so v3 is the most this chip can use."""
+    level = conf.get("GOAMD64", "")
+    check("Go uses level v3", level == "v3", level)
+    with open("/proc/cpuinfo") as f:
+        cpu = next(line for line in f if line.startswith("flags")).split()
+    check("This chip has what v3 needs", {"avx2", "bmi1", "bmi2", "fma", "movbe"} <= set(cpu))
+    check("This chip does not have what v4 needs", "avx512f" not in cpu)
+    if not shutil.which("go"):
+        print("SKIP  Go is not installed, so nothing was compiled")
+        return
+    source = os.path.join(tmp, "go_test.go")
+    with open(source, "w") as f:
+        f.write('package main\nimport "fmt"\nfunc main() { fmt.Println("ok") }\n')
+    binary = os.path.join(tmp, "go_test")
+    env = dict(os.environ, GOAMD64=level, GOCACHE=os.path.join(tmp, "go-cache"))
+    built = subprocess.run(["go", "build", "-o", binary, source],
+                           capture_output=True, text=True, env=env)
+    check("Go: compiles at this level", built.returncode == 0, built.stderr[:300])
+    if built.returncode == 0:
+        for t in THREADS:
+            result = run("taskset", "-c", str(t), binary)
+            check("Go: runs on thread %d" % t, result.stdout.strip() == "ok")
+
+
 def enabled(march):
     out = run("gcc", "-march=" + march, "-Q", "--help=target").stdout
     return {line.split()[0] for line in out.splitlines()
@@ -83,8 +128,14 @@ def main():
               sorted(found) == sorted(base["CPU_FLAGS_X86"].split()))
 
         compile_and_run(tmp, base, "Base")
+        check_rust(tmp, base)
+        check_go(tmp, base)
 
         rebuild = read(tmp, True)
+        check("Rebuild keeps Rust on this CPU, with Full LTO",
+              "target-cpu=native" in rebuild.get("RUSTFLAGS", "")
+              and rebuild.get("CARGO_PROFILE_RELEASE_LTO") == "fat")
+        check("Rebuild keeps Go at v3", rebuild.get("GOAMD64") == "v3")
         check("Rebuild turns on LTO and its error checks",
               "-flto" in rebuild["CFLAGS"] and "-Werror=odr" in rebuild["CFLAGS"])
         check("Rebuild keeps -march=native", "-march=native" in rebuild["CFLAGS"])

@@ -63,12 +63,12 @@ Firmware start-up on mlrig already takes about 15.6 seconds before any operating
 3. **Guards first.** Before any disk work, install the guard that blocks writes to every disk except the Crucial drive. Prove it refuses a test write to another disk.
 4. **Hardware analysis.** Claude reads the CPU, graphics, audio, storage and network, and writes a plain-English hardware report into the repo.
 5. **Disk layout.** A boot partition and a btrfs root, with snapshots set up from the start.
-6. **Build settings.** Gentoo's settings files are written for this CPU: build for the exact processor, list its instruction sets, and use link-time optimisation by default. Profile-guided optimisation is used where a package offers it.
+6. **Build settings.** Gentoo's settings files are written for this CPU: build for the exact processor, list its instruction sets, and use link-time optimisation by default. Profile-guided optimisation is used where a package offers it. Rust and Go programs ignore these settings, so they get CPU settings of their own.
 7. **Ready-built base.** Install Gentoo's official ready-built packages first, so the system boots quickly. Check at kickoff which CPU level Gentoo currently offers these for.
 8. **Two kernels.** A kernel configured for mlrig alone, with desktop-friendly scheduling and only the drivers it needs. Gentoo's ready-built generic kernel stays in the boot menu as the rescue kernel.
 9. **Desktop.** Hyprland on Wayland, with configs borrowed from Omarchy and credited. PipeWire for audio. Then a terminal and Firefox.
 10. **The sidekick.** Claude Code on one key, with a rules file that tells it the four rules, and hooks that enforce them (see below).
-11. **Full rebuild.** In the background, rebuild every ready-built package for the i9-13900K, starting with the kernel, graphics and audio. Any package that fails gets safer settings, and the reason is written down.
+11. **Full rebuild.** In the background, rebuild every ready-built package for the i9-13900K, starting with the kernel, graphics and audio. Any package that fails gets safer settings, and the reason is written down. Then a flags audit: check how every installed program was really built, and list each one not built for this CPU, with the reason. The audit runs again after every compiler update.
 12. **Measure again** and compare with the baseline.
 
 ## The lessons file
@@ -103,9 +103,9 @@ The comparison is Ubuntu 26.10 on mlrig. The owner chose this on 2 Nov 2026 and 
 | Boot time | systemd's timing tool, split into firmware, loader, kernel and desktop. Firmware reported separately |
 | Audio latency | The smallest PipeWire buffer that plays without dropouts while the machine is busy compiling |
 | Responsiveness under load | How quickly the system reacts to a waiting task while every core is busy building |
-| CPU speed | The existing benchmark script on mlrig: sysbench and 7-Zip |
+| CPU speed | scripts/measure.sh: sysbench and 7-Zip, on one thread and on all threads, median of 3 |
 
-The benchmark script writes test files on every drive mounted under its media folder. Check what is mounted before running it on either system. Both systems are measured with the WX 3200 driving the screen.
+The script runs no disk tests, so it writes nothing outside the repo. Both systems are measured with the WX 3200 driving the screen.
 
 Input lag is left out of Stage 1. Measuring it properly needs a high-speed camera or special hardware.
 

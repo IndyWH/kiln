@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next, in order, unless the owner changes it: Cowork's prompt on the spec, Rust and Go. The flags audit. Part 4's safety tests, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
+Next, in order, unless the owner changes it: The flags audit. Part 4's safety tests, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,14 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, Cowork's prompt: spec, Rust and Go
+
+- docs/STAGE1_SPEC.md now matches the Claude Doc on steps 6 and 11, the CPU speed row and the benchmark sentence. The owner said to skip plan approval. Still different: both say pushes are by the owner's own hand, and rule 7 has changed.
+- Rust: `RUSTFLAGS` in make.conf targets this exact chip, with `opt-level=3` and `codegen-units=1`. Gentoo's cargo tooling passes it on. rebuild.conf adds Full LTO for step 11. Existing Rust programs change only when rebuilt.
+- Go: `GOAMD64=v3`, as Go has only broad levels and this chip has no AVX-512. So Go cannot be built for this exact chip, and the audit must say so. Go is not installed, so the check tests the setting, not a real build. No Go program is on Kiln yet.
+- tests/build-settings/check.py has new Rust and Go checks: 39 passed, none failed, one skipped for Go. Result: results/build-settings-check.txt.
+- Cowork: the prompt writes the audit at step 11. Claude Code recommends writing it before step 11, for a before figure and to guard the rebuild, and running it after every update, not only compiler updates, as Kiln fetches ready-built packages. The owner has not objected. Please update the spec if agreed.
 
 ### 3 Nov 2026 — Claude Code, ML benchmark
 

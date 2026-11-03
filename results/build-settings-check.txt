@@ -1,0 +1,44 @@
+Compiler: gcc (Gentoo 16.2.1_p20260926 p1) 16.2.1 20260926
+PASS  make.conf has the step 11 line, switched off
+PASS  Base flags have -march=native, and no LTO
+PASS  Base has no lto or pgo
+PASS  Builds run on the @cache section
+PASS  CPU flags match cpuid2cpuflags on this chip
+PASS  Base: compiles with these exact flags
+PASS  Base: runs on thread 0
+PASS  Base: runs on thread 8
+PASS  Base: runs on thread 15
+PASS  Base: runs on thread 16
+PASS  Base: runs on thread 31
+PASS  Rust targets this exact CPU
+PASS  Rust: compiles with these flags, and knows this chip's features
+PASS  Rust: runs on thread 0
+PASS  Rust: runs on thread 8
+PASS  Rust: runs on thread 15
+PASS  Rust: runs on thread 16
+PASS  Rust: runs on thread 31
+PASS  Rust leaves out AVX-512, which this chip does not have
+PASS  Go uses level v3
+PASS  This chip has what v3 needs
+PASS  This chip does not have what v4 needs
+SKIP  Go is not installed, so nothing was compiled
+PASS  make.conf has the step 11 line, switched off
+PASS  Rebuild keeps Rust on this CPU, with Full LTO
+PASS  Rebuild keeps Go at v3
+PASS  Rebuild turns on LTO and its error checks
+PASS  Rebuild keeps -march=native
+PASS  Rebuild turns on lto and pgo
+PASS  Base uses ready-built packages
+PASS  Rebuild stops using ready-built packages
+PASS  Rebuild: compiles with these exact flags
+PASS  Rebuild: runs on thread 0
+PASS  Rebuild: runs on thread 8
+PASS  Rebuild: runs on thread 15
+PASS  Rebuild: runs on thread 16
+PASS  Rebuild: runs on thread 31
+Only with -march=native: -mabm -mshstk
+Only with -march=raptorlake: -mkl -msgx -mwidekl
+PASS  -march=native adds what the chip has and raptorlake leaves out
+PASS  -march=native leaves out what the chip does not report
+PASS  Binary repo is v3, with signatures checked
+Result: all passed
