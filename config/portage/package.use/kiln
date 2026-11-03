@@ -10,7 +10,7 @@ gui-apps/waybar network
 # The compilers themselves, at maximum.
 sys-devel/gcc lto pgo
 sys-devel/binutils pgo
-dev-lang/rust lto
+dev-lang/rust lto -system-llvm
 # PyTorch on the RTX 4090, with every option that works together on this machine.
 # nccl and rocm are for AMD GPUs. mkl and opencl are left out for openblas and cuda.
 sci-ml/pytorch cuda cusparselt distributed fbgemm flash gloo kineto memefficient mimalloc nnpack onednn openblas openmp qnnpack xnnpack

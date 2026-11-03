@@ -1,6 +1,84 @@
-# Kiln Linux: /etc/portage/env/dev-lang/rust. The recipe writes thin LTO when USE=lto is on,
-# so change that one line to Full after it is written. Stop if that does not happen.
+# Kiln Linux: /etc/portage/env/dev-lang/rust. Rust at maximum: Full LTO, jemalloc, this CPU,
+# and PGO for LLVM and then for rustc, trained on this machine on a real program.
+# The recipe has no PGO option, so these hooks run the extra stages. Any failure stops the
+# build, and the installed Rust stays as it was.
+
 post_src_configure() {
-	sed -i -e 's/^\([[:space:]]*\)lto = "thin"/\1lto = "fat"/' "${S}/bootstrap.toml" || die
+	sed -i -e 's/^\([[:space:]]*\)lto = "thin"/\1lto = "fat"/' \
+		-e 's/^\([[:space:]]*\)jemalloc = false/\1jemalloc = true/' \
+		-e 's/^\([[:space:]]*\)link-shared = false/\1link-shared = true/' "${S}/bootstrap.toml" || die
 	grep -q 'lto = "fat"' "${S}/bootstrap.toml" || die "Full LTO did not reach bootstrap.toml"
+	grep -q 'jemalloc = true' "${S}/bootstrap.toml" || die "jemalloc did not reach bootstrap.toml"
+	grep -q 'link-shared = true' "${S}/bootstrap.toml" || die "link-shared did not reach bootstrap.toml"
+}
+
+kiln_x() {
+	einfo "Kiln PGO: x.py $*"
+	RUST_BACKTRACE=1 "${EPYTHON}" ./x.py build -v --config="${S}/bootstrap.toml" \
+		-j"$(makeopts_jobs)" --set rust.lto=off "$@" || die "Kiln PGO: x.py $* failed"
+}
+
+kiln_train() {
+	# $1: build folder. Compiles a real program, and made-up code at several settings.
+	local rustc
+	rustc=$(find "$1" -path '*/stage2/bin/rustc' -type f | head -1)
+	[[ -x ${rustc} ]] || die "Kiln PGO: no stage 2 rustc in $1"
+	"${rustc}" --version || die "Kiln PGO: the instrumented rustc does not run"
+
+	local work="${T}/train" source="${T}/train/made-up.rs" level
+	rm -rf "${work}"
+	mkdir -p "${work}" || die
+	awk 'BEGIN { print "use std::collections::HashMap;"
+		for (i = 0; i < 1500; i++) {
+			printf "pub fn f%d(v: &[u64]) -> HashMap<u64, Vec<u64>> { let mut m = HashMap::new();", i
+			printf " for (n, x) in v.iter().enumerate() { m.entry(x %% %d).or_insert_with(Vec::new)", i + 3
+			printf ".push(x.wrapping_mul(n as u64 + %d)); } m }\n", i } }' > "${source}" || die
+	for level in 0 2 3; do
+		"${rustc}" --edition 2021 --crate-type lib -C opt-level="${level}" -C codegen-units=1 \
+			"${source}" -o "${work}/made-up-${level}.rlib" || die "Kiln PGO: training failed"
+	done
+
+	# A real program, with its real dependencies, in a debug and a release build.
+	local profile
+	for profile in "" --release; do
+		RUSTC="${rustc}" CARGO_HOME="${work}/cargo-home" CARGO_TARGET_DIR="${work}/target${profile}" \
+			RUSTC_BOOTSTRAP=1 RUSTFLAGS="" CARGO_ENCODED_RUSTFLAGS="" \
+			"$(${RUSTC:-rustc} --print sysroot)/bin/cargo" build --offline --locked ${profile} \
+			--manifest-path "${S}/src/tools/cargo/Cargo.toml" -j"$(makeopts_jobs)" \
+			|| die "Kiln PGO: training on cargo failed"
+	done
+	rm -rf "${work}"
+}
+
+pre_src_compile() {
+	local bin=/usr/lib/llvm/22/bin pgo="${WORKDIR}/kiln-pgo"
+	mkdir -p "${pgo}/llvm" "${pgo}/rustc" || die
+
+	einfo "Kiln PGO, stage 1 of 3: LLVM, instrumented"
+	kiln_x --build-dir "${pgo}/build-llvm" --stage 2 --llvm-profile-generate compiler/rustc library/std
+	LLVM_PROFILE_FILE="${pgo}/llvm/default_%m_%p.profraw" kiln_train "${pgo}/build-llvm"
+	"${bin}/llvm-profdata" merge -o "${pgo}/llvm.profdata" "${pgo}"/llvm/*.profraw \
+		|| die "Kiln PGO: could not merge the LLVM profile"
+	[[ -s ${pgo}/llvm.profdata ]] || die "Kiln PGO: the LLVM profile is empty"
+	rm -rf "${pgo}/build-llvm" "${pgo}/llvm"
+
+	einfo "Kiln PGO, stage 2 of 3: rustc, instrumented"
+	kiln_x --build-dir "${pgo}/build-rustc" --stage 2 --llvm-profile-use="${pgo}/llvm.profdata" \
+		--rust-profile-generate="${pgo}/rustc" compiler/rustc library/std
+	LLVM_PROFILE_FILE="${pgo}/rustc/default_%m_%p.profraw" kiln_train "${pgo}/build-rustc"
+	"${bin}/llvm-profdata" merge -o "${pgo}/rustc.profdata" "${pgo}"/rustc/*.profraw \
+		|| die "Kiln PGO: could not merge the rustc profile"
+	[[ -s ${pgo}/rustc.profdata ]] || die "Kiln PGO: the rustc profile is empty"
+	rm -rf "${pgo}/build-rustc" "${pgo}/rustc"
+
+	einfo "Kiln PGO, stage 3 of 3: the final build, with both profiles"
+	# The recipe runs plain x.py build and install, so give them the profile settings.
+	mv x.py x.py.real || die
+	cat > x.py <<-EOF || die
+		import os, sys
+		args = sys.argv[1:]
+		if args[:1] in (["build"], ["install"]):
+		    args += ["--llvm-profile-use=${pgo}/llvm.profdata", "--rust-profile-use=${pgo}/rustc.profdata"]
+		os.execv(sys.executable, [sys.executable, "x.py.real"] + args)
+	EOF
 }

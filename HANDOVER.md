@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next, in order, unless the owner changes it: Part 4's safety tests, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
+Next, when the owner is back: commit today's Rust work, then restart, as Mesa's LLVM was replaced while the desktop ran. Then decide how far to chase Rust. Then, in order, unless the owner changes it: Part 4's safety tests, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,15 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, Rust attempts
+
+- `rust-bin` is the active compiler, by owner's decision, until a source build beats it. `rust-1.98.1`, the latest attempt, stays installed beside it.
+- Test: one made-up program, on one core, in results/compilers/rust.csv. `rust-bin` stayed at about 17.2 s throughout, as the control. Gentoo's LLVM with Full LTO: 23.60 s. Own LLVM, jemalloc and Full LTO: 28.03 s. The same with PGO for LLVM and rustc: 21.31 s. So PGO gained 24%, but it is still 24% slower than `rust-bin`.
+- The PGO stages are hooks in config/portage/env/dev-lang/rust. Training compiles `cargo`, in debug and release, plus made-up code. The whole build took 56 minutes, and worked first time.
+- Not known: why `rust-bin` stays faster. Ideas, none tested: BOLT, which I recall the official build using. Richer training. LLVM's own build settings. Whether programs built by each compiler differ in speed has not been measured.
+- A caution on the test: it is one program, heavy on LLVM's optimiser, on one core, so it may not represent all Rust builds.
+- Not committed yet, as the owner stopped for the day.
 
 ### 3 Nov 2026 — Claude Code, compilers maxed out
 

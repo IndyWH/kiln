@@ -3,41 +3,21 @@
  * Use eselect news read to view new items.
 
 Calculating dependencies ... done!
-Dependency resolution took 0.38 s (backtrack: 1/20).
+Dependency resolution took 0.61 s (backtrack: 0/20).
 
 >>> Verifying ebuild manifests
 >>> Running pre-merge checks for dev-lang/rust-1.98.1
- [32m*[0m Checking for at least 9600 MiB disk space at "/var/cache/portage-build/portage/dev-lang/rust-1.98.1/temp" ...
+ [32m*[0m Checking for at least 11904 MiB disk space at "/var/cache/portage-build/portage/dev-lang/rust-1.98.1/temp" ...
 [A[72C [34;01m[ [32;01mok[34;01m ][0m
->>> Jobs: 0 of 3 complete, 1 running                                    Load avg: 2.7, 13.3, 13.6
->>> Emerging (1 of 3) dev-lang/rust-common-1.98.1::gentoo
->>> Jobs: 0 of 3 complete, 1 running                                    Load avg: 2.7, 13.3, 13.6
->>> Jobs: 0 of 3 complete, 2 running                                    Load avg: 2.7, 13.3, 13.6
->>> Emerging (2 of 3) dev-libs/oniguruma-6.9.10::gentoo
->>> Jobs: 0 of 3 complete, 2 running                                    Load avg: 2.7, 13.3, 13.6
->>> Jobs: 0 of 3 complete, 1 running                                    Load avg: 2.7, 13.1, 13.6
->>> Jobs: 0 of 3 complete, 1 merge wait                                 Load avg: 2.6, 12.9, 13.5
->>> Installing (2 of 3) dev-libs/oniguruma-6.9.10::gentoo
->>> Jobs: 0 of 3 complete, 2 merge wait                                 Load avg: 2.6, 12.9, 13.5
->>> Completed (2 of 3) dev-libs/oniguruma-6.9.10::gentoo
->>> Jobs: 0 of 3 complete                                               Load avg: 2.6, 12.9, 13.5
->>> Installing (1 of 3) dev-lang/rust-common-1.98.1::gentoo
->>> Jobs: 0 of 3 complete                                               Load avg: 2.6, 12.9, 13.5
->>> Jobs: 1 of 3 complete                                               Load avg: 2.6, 12.9, 13.5
->>> Completed (1 of 3) dev-lang/rust-common-1.98.1::gentoo
->>> Jobs: 1 of 3 complete                                               Load avg: 2.5, 12.7, 13.4
->>> Jobs: 2 of 3 complete                                               Load avg: 2.5, 12.7, 13.4
->>> Jobs: 2 of 3 complete, 1 running                                    Load avg: 2.5, 12.7, 13.4
->>> Emerging (3 of 3) dev-lang/rust-1.98.1::gentoo
->>> Jobs: 2 of 3 complete, 1 running                                    Load avg: 2.5, 12.7, 13.4
->>> Jobs: 2 of 3 complete                                               Load avg: 1.72, 1.95, 5.18
->>> Installing (3 of 3) dev-lang/rust-1.98.1::gentoo
->>> Jobs: 2 of 3 complete, 1 merge wait                                 Load avg: 1.72, 1.95, 5.18
->>> Recording dev-lang/rust:1.98.1 in "world" favorites file...
->>> Jobs: 2 of 3 complete                                               Load avg: 1.66, 1.94, 5.15
->>> Completed (3 of 3) dev-lang/rust-1.98.1::gentoo
->>> Jobs: 2 of 3 complete                                               Load avg: 1.66, 1.94, 5.15
->>> Jobs: 3 of 3 complete                                               Load avg: 1.66, 1.94, 5.15
+>>> Jobs: 0 of 1 complete, 1 running                                    Load avg: 0.47, 1.18, 4.02
+>>> Emerging (1 of 1) dev-lang/rust-1.98.1::gentoo
+>>> Jobs: 0 of 1 complete, 1 running                                    Load avg: 0.47, 1.18, 4.02
+>>> Jobs: 0 of 1 complete                                               Load avg: 1.49, 1.84, 3.96
+>>> Installing (1 of 1) dev-lang/rust-1.98.1::gentoo
+>>> Jobs: 0 of 1 complete, 1 merge wait                                 Load avg: 1.49, 1.84, 3.96
+>>> Completed (1 of 1) dev-lang/rust-1.98.1::gentoo
+>>> Jobs: 0 of 1 complete                                               Load avg: 1.49, 1.84, 3.96
+>>> Jobs: 1 of 1 complete                                               Load avg: 1.49, 1.84, 3.96
 
 
  * GNU info directory index is up-to-date.
