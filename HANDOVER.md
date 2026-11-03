@@ -4,9 +4,9 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built. The mlrig kernel boots, with 3 checks failed. The rescue kernel has not been checked, and can wait, by owner's decision. Step 9 is installed but not booted. Claude Code is on Kiln, not signed in.
+- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built. The mlrig kernel boots, with 3 checks failed. The rescue kernel has not been checked, and can wait, by owner's decision. Step 9 is done: Kiln boots to the desktop, with network and sound working. Claude Code runs on Kiln, signed in. Step 10 has not started.
 - Priority, by owner's decision: Kiln boots to the desktop, then work moves to Claude Code on Kiln, to end the restarts into the live image.
-- Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped. Two kernels, the boot loader, the guard and the desktop are on it, with snapshot 5 taken (3 Nov 2026). The drive is unmounted.
+- Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped. Two kernels, the boot loader, the guard and the desktop are on it, with snapshot 5 taken (3 Nov 2026). Kiln now runs from this drive.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
 - Owner wants Chromium compiled for mlrig, after step 9 and once the step 11 settings are on. Not started.
 - Baseline: Ubuntu 26.10 on mlrig only. Omarchy is skipped.
@@ -14,13 +14,12 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-First desktop boot. The owner presses F8, chooses the Crucial, logs in as `indy`, opens a terminal with Super+Return, and starts Claude Code in ~/Projects/kiln. That session checks the desktop, network and sound, pushes nothing, and carries on with step 10.
+Step 10, when the owner says to start. To reach Kiln, the owner presses F8, chooses the Crucial, logs in as `indy`, opens a terminal with Super+Return, and starts Claude Code in ~/Projects/kiln.
 
 Open, and not holding this up:
 
 - The rescue kernel: boot it from the 3-second menu and run `kiln-first-boot-check`, as in docs/FIRST_BOOT.md. It writes to its own folder in /var/log/kiln-first-boot/ on the Crucial. Then copy the results as for the mlrig kernel, with IDs removed.
 - The first-boot guard test always shows 1 failure on Kiln, because it counts the Crucial's own writes. Fixing the test goes through the owner's hand.
-- Keyboard: Hyprland is set to UK, by guess from the locale. The login screen and text consoles are still US. For the owner to confirm.
 - Omarchy's configs are not ported. See the log.
 
 The Crucial shows in F8 as `UEFI OS`, because the `Kiln` entry has gone. If Kiln does not start, Ubuntu is untouched and first, and it can be fixed from the live image.
@@ -32,6 +31,15 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, first desktop boot
+
+- Kiln boots to the desktop on the mlrig kernel. Hyprland runs on the WX 3200, with the Philips at 5120x1440, 120 Hz. No failed services.
+- Wired network works, so matching `en*` fixed it.
+- Sound works through the Philips, and the owner heard the test tone. It defaulted to USB S/PDIF because nothing had been chosen. The owner chose the Philips, the same output as the Ubuntu baseline. See lessons/audio.md.
+- Keyboard: the owner's FIELD75 uses US, so Hyprland is now `us`. The login screen and text consoles were already US.
+- The hook blocked two harmless commands on Kiln, as it read text in them as paths. For the review in step 10.
+- Not tested: the RTX 4090. Its driver is loaded.
 
 ### 3 Nov 2026 — Claude Code, step 9 installed, not booted
 
