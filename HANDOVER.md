@@ -4,7 +4,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1. Steps 3, 4 and 5 are complete. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
+- Stage: Stage 1. Steps 3, 4, 5 and 6 are complete. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
 - Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped, and the new layout is in place (3 Nov 2026). The drive is empty and unmounted.
 - Work can start now.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
@@ -13,13 +13,21 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Spec step 6, build settings, once the owner approves the plan. Mount the Crucial with the last block in docs/DISK_LAYOUT.md. To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
+Spec step 7, ready-built base, once the owner approves the plan. It starts with a trial run, to count what is ready-built and what compiles. Mount the Crucial with the last block in docs/DISK_LAYOUT.md. To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
 
 After any restart of the live system, the guard is gone. Clone the repo and run `sudo guard/install.sh` again before any disk work. The work is on branch stage1-guards until the owner merges it, so use `git clone -b stage1-guards`.
 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, build settings
+
+- Wrote config/portage/ and config/etc/, in the repo only. No disk was written to. They go onto the Crucial in step 7.
+- `-march=native`, the 21 CPU flags from `cpuid2cpuflags`, Gentoo's v3 ready-built packages, and `en_GB.UTF-8`.
+- LTO and PGO are in config/portage/rebuild.conf, and turn on at step 11, by owner's decision. The Claude Doc says LTO by default. Cowork: this is a change of timing, not of the goal.
+- tests/build-settings/check.py passes, including on fast and efficient cores. It read the files with Portage's parser, but the live image has no package tree, so the full Portage run comes in step 7.
+- Cowork: Hyprland is not in Gentoo's main repo or GURU. The Gentoo wiki recommends the third-party `hyproverlay`. For the owner to decide at step 9.
 
 ### 3 Nov 2026 — Claude Code, disk layout
 
