@@ -4,7 +4,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built. The mlrig kernel boots, with 3 checks failed. The rescue kernel has not been checked, and can wait, by owner's decision. Step 9 is done: Kiln boots to the desktop, with network and sound working. Claude Code runs on Kiln, signed in. Step 10: part 1 of 4 is done. Part 2 is installed and mostly proved, but `undo` has not yet run for real. Stopped here by owner's decision.
+- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built. The mlrig kernel boots, with 3 checks failed. The rescue kernel has not been checked, and can wait, by owner's decision. Step 9 is done: Kiln boots to the desktop, with network and sound working. Claude Code runs on Kiln, signed in. Step 10: parts 1 and 2 of 4 are done. Part 3 has not started.
 - Priority, by owner's decision: Kiln boots to the desktop, then work moves to Claude Code on Kiln, to end the restarts into the live image.
 - Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped. Two kernels, the boot loader, the guard and the desktop are on it, with snapshot 5 taken (3 Nov 2026). Kiln now runs from this drive.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
@@ -15,17 +15,12 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Finish part 2: the real `undo` test. Do not start part 3 until it passes. `undo` takes back the newest change, so the test makes its own:
-
-1. The owner opens a terminal with Super+Return and runs `cd ~/Projects/kiln && sudo sidekick/install.sh`. This updates the installed hook, which is older than the repo copy. Claude Code does not need a restart for this update.
-2. Claude removes the old `kiln-test.txt` and `kiln-test-refused.txt` from ~/.config, then creates a new `kiln-undo-test.txt` there, as two separate changes. The owner approves each.
-3. The owner runs `undo` once only, and presses `y`. It should name the `kiln-undo-test.txt` change. A second `undo` would bring back the old test files, and a third would remove the mouse buttons.
-4. Claude checks that `kiln-undo-test.txt` has gone, the old test files are still gone, and the mouse buttons are still in ~/.config/hypr/hyprland.lua.
+Part 3 of step 10, when the owner says to start. `undo` takes back the newest change, so running it now would bring back two old test files, and then remove the mouse buttons.
 
 Step 10, in four parts, reporting back after each:
 
 1. Sidekick key and rules file. Done.
-2. Hooks for rules 1 and 2, with the change log and `undo`. Hooks go in the protected folder, installed by the owner's hand. `undo` restores only `~/.config` in the home folder, by owner's decision. Installed. Waiting for the `undo` test.
+2. Hooks for rules 1 and 2, with the change log and `undo`. Hooks go in the protected folder, installed by the owner's hand. `undo` restores only `~/.config` in the home folder, by owner's decision. Done.
 3. Past snapshots in the boot menu.
 4. Tests: break the desktop and recover with `undo`, and boot the rescue kernel and a past snapshot. A fix for the guard's false alarms, installed by the owner's hand.
 
@@ -46,6 +41,12 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, step 10 part 2, undo proved
+
+- The owner ran the real `undo`, on change #9. It removed only the test file. The earlier changes, the mouse buttons and the log stayed as they were, and the guard still shows OK.
+- This proves `undo` on one new file. Putting back a changed file, and recovering a broken desktop, are tested in part 4.
+- The two fixes below are now installed.
 
 ### 3 Nov 2026 — Claude Code, step 10 part 2, not yet proven
 
