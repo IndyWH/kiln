@@ -40,6 +40,7 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 - Keyboard: the owner's FIELD75 uses US, so Hyprland is now `us`. The login screen and text consoles were already US.
 - The hook blocked two harmless commands on Kiln, as it read text in them as paths. For the review in step 10.
 - Not tested: the RTX 4090. Its driver is loaded.
+- Owner decision: rule 7 changed. Claude Code now pushes to GitHub only when the owner asks, each time. The owner saved a token limited to the kiln repo on Kiln, in ~/.git-credentials. Cowork: note the new rule.
 
 ### 3 Nov 2026 — Claude Code, step 9 installed, not booted
 
