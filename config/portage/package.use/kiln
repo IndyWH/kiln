@@ -1,0 +1,5 @@
+# Kiln Linux, mlrig: /etc/portage/package.use/kiln
+# The kernel installer needs this to build its start-up image.
+sys-kernel/installkernel dracut
+# Firefox needs this.
+media-libs/libvpx postproc

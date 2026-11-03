@@ -1,0 +1,8 @@
+# Kiln Linux, mlrig: /etc/fstab
+# By label, so this never depends on a device name. Layout: docs/DISK_LAYOUT.md
+LABEL=KILN-ROOT  /            btrfs  noatime,compress=zstd:1,subvol=@           0 0
+LABEL=KILN-ROOT  /home        btrfs  noatime,compress=zstd:1,subvol=@home       0 0
+LABEL=KILN-ROOT  /.snapshots  btrfs  noatime,compress=zstd:1,subvol=@snapshots  0 0
+LABEL=KILN-ROOT  /var/log     btrfs  noatime,compress=zstd:1,subvol=@log        0 0
+LABEL=KILN-ROOT  /var/cache   btrfs  noatime,compress=zstd:1,subvol=@cache      0 0
+LABEL=KILNBOOT   /boot        vfat   noatime,fmask=0177,dmask=0077              0 2

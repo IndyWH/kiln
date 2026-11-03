@@ -1,0 +1,19 @@
+DEVICE         SERIAL         MODEL                  STATE
+dm-0           -                                     locked
+dm-1           -                                     locked
+nvme0n1        ****785N       Samsung SSD 990 PRO 2T locked
+nvme0n1p1                                            locked
+nvme0n1p2                                            locked
+nvme1n1        2128E5B7DBBC   CT1000P2SSD8           writable (the Crucial)
+nvme1n1p1                                            writable (the Crucial)
+nvme1n1p2                                            writable (the Crucial)
+nvme2n1        ****715T       Samsung SSD 990 PRO 2T locked
+nvme2n1p1                                            locked
+sda            ****5864       WDC WD20EZRX-00D       locked
+sda1                                                 locked
+sdb            ****778W       Samsung SSD 870        locked
+sdb1                                                 locked
+sdc            ****0000       0ASG                   locked
+sdc1                                                 locked
+sdc2                                                 locked
+Result: OK

@@ -36,6 +36,8 @@ Full report: `docs/HARDWARE.md`.
 ## Tool pitfalls
 
 - `grep` on the live image is `ugrep`, which goes down into folders by itself. A wildcard path under `/sys` can match folders and produce a huge output. Name exact files.
+- To work inside the new system, use `chroot`, so the hook can still read the commands. `arch-chroot` would hide them, because the hook does not know it.
+- `/dev` is connected inside the chroot, so the kernel lock is what protects the other disks there.
 - Hardware output can hide IDs. `pactl info` puts the webcam's serial in the default source name, and `kscreen-doctor` prints a unique screen ID. Filter by keeping known-safe lines, and run a search for IDs, before anything goes in the public repo.
 - `sgdisk --zap-all` on a locked disk prints `GPT data structures destroyed!` and exits 0, although the kernel refused every write. Never trust its exit code. Read the partition table back after any change.
 - A write-mode open of a locked disk succeeds. The refusal comes at the write. So a successful open proves nothing.

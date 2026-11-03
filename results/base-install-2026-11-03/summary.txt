@@ -1,0 +1,40 @@
+Step 7 part 2: ready-built base on the Crucial, 3 Nov 2026
+
+STATUS: base installed, first snapshot taken, Crucial unmounted. Kiln cannot boot
+yet: it has no kernel or boot loader until step 8.
+
+Starter system: stage3-amd64-desktop-systemd-20261101T164556Z. Signature and
+checksum good.
+
+Install: 425 of 425 packages, emerge exit 0. 399 ready-built, 26 not.
+Machine time for the install: 28 minutes (00:35:39 to 01:03:40 UTC).
+Whole of part 2, including downloads and setup: about 31 minutes.
+
+What is on the system now, 568 packages:
+  398 built by Gentoo at x86-64-v3
+   26 built on this machine with -march=native, or install-only data
+  143 still from the starter system, built generically. --emptytree did not
+      replace them. They are probably only needed to build other programs, with
+      examples such as cmake, vala, rust-bin and docbook, but they were not
+      checked one by one. Step 11 can rebuild them.
+    1 not accounted for: 398 + 26 + 143 is 567. It may have no CFLAGS file. Not
+      looked into.
+
+Signatures: Portage is set to require them. By hand, the image and metadata of
+one package (glibc) checked out as Good, from Gentoo's release key. That is one
+package checked by hand, not all of them.
+
+Microcode: Gentoo's package holds revision 0x137 (18 Feb 2026) for this chip. The
+BIOS gives 0x12f. Whether the kernel's warning goes is checked at first boot.
+
+Snapshot 1, base installed: read-only, in @snapshots. Hourly snapshots are off.
+
+Other disks: write counts, discards, flushes and lock flags did not change. All
+still show 0 writes. Boot order did not change, with Ubuntu first.
+Crucial: about 10 GB written (21.4 million sectors). Both filesystems check clean.
+
+Left as they are, for later steps:
+  15 packages that depclean would remove. They are clang and LLVM parts that
+  mesa needed to compile. Step 11 would want them again.
+  18 unread news items from Gentoo, all from the starter system's whole history.
+  They have been listed by title but not read in full.

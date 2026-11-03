@@ -4,8 +4,8 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1. Steps 3, 4, 5 and 6 are complete. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
-- Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped, and the new layout is in place (3 Nov 2026). The drive is empty and unmounted.
+- Stage: Stage 1. Steps 3, 4, 5, 6 and 7 are complete. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
+- Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped. The ready-built base is installed, with snapshot 1 taken (3 Nov 2026). The drive is unmounted. It cannot boot until step 8.
 - Work can start now.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
 - Baseline: Ubuntu 26.10 on mlrig only. Omarchy is skipped.
@@ -13,13 +13,21 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Spec step 7, part 2: install the ready-built base on the Crucial, once the owner approves. The trial run is done. Mount the Crucial with the last block in docs/DISK_LAYOUT.md. To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
+Spec step 8, two kernels, once the owner approves the plan. It must put the disk guard on Kiln before first boot, keep Ubuntu first in the boot order, and include the NVIDIA and `cp210x` drivers. Mount the Crucial with the last block in docs/DISK_LAYOUT.md. To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
 
 After any restart of the live system, the guard is gone. Clone the repo and run `sudo guard/install.sh` again before any disk work. The work is on branch stage1-guards until the owner merges it, so use `git clone -b stage1-guards`.
 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, ready-built base installed
+
+- Installed on the Crucial by serial: 425 packages, 399 ready-built, in 28 minutes of machine time. Replaced the starter system with v3 packages, by owner's decision. Results: results/base-install-2026-11-03/summary.txt.
+- Snapshot 1, base installed, is in place. `snapper` config: config/snapper/root. Hourly snapshots are off.
+- Other disks: all still at 0 writes and locked. Boot order unchanged.
+- 143 build tools stay on the generic starter build until step 11. Step 11 needs `--with-bdeps=y`.
+- The fstab uses labels, so the public repo holds no unique IDs. config/etc/fstab.
 
 ### 3 Nov 2026 — Claude Code, step 7 trial
 
