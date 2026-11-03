@@ -1,0 +1,13 @@
+Kernel: 7.3.1-gentoo-kiln-clang-fulllto, 2026-11-03 13:24
+Lower is better:
+  Task switching, sockets:  2.460 s
+  Task switching, pipes:    2.428 s
+  Compile a kernel:         76.3 s
+  Wake-up delay, 99%:       62 microseconds
+  Wake-up delay, 99.9%:     1197 microseconds
+  Wake-up delay, worst:     3361 microseconds
+Higher is better:
+  sysbench, 1 thread:       1734.43
+  sysbench, all threads:    40335.37
+  7-Zip, 1 thread:          8728
+  7-Zip, all threads:       170838

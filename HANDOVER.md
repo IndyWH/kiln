@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next: boot and benchmark `7.3.1-gentoo-kiln-clang-fulllto`, then `7.3.1-gentoo-kiln-clang-thinlto` as a comparison, if the owner keeps it. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
+Next: boot and benchmark `7.3.1-gentoo-kiln-clang-thinlto`, which the owner keeps as a comparison. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,13 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, Full LTO booted and measured
+
+- `7.3.1-gentoo-kiln-clang-fulllto` boots and passes the same checks. The Crucial was `nvme2n1` this boot, not `nvme1n1`. The guard found it by serial and shows OK.
+- Against Clang without LTO: pipes 19% slower, 2.428 against 2.039 s, and their ranges do not overlap, so this looks real. Sockets 1% faster, kernel compile the same, sysbench and 7-Zip within 0.5%.
+- Wake-up delay is better: 99.9% 1197 against 1726 microseconds, and worst 3361 against 4698. It is one run each, so this needs repeating. 99% 62 against 59.
+- Why pipes got slower is not known. Full LTO was used without a profile to guide it.
 
 ### 3 Nov 2026 — Claude Code, Full LTO built, not booted
 
