@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next: the owner tries the Omarchy-based desktop, then decides how to add a status bar, launcher, notifications, lock screen and wallpaper.
+Next: the owner chooses. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,14 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, bar, launcher and screen-off
+
+- Owner's decisions: separate small programs rather than Omarchy's shell, and the screen turns off after 10 minutes idle.
+- Installed from Gentoo: `gui-apps/waybar` with the `network` flag, `gui-apps/wofi` and `gui-apps/swayidle`. Fuzzel and Omarchy's launcher have no Gentoo recipe. Settings: config/waybar/, config/wofi/, and kiln-apps and kiln-idle in config/usr/local/bin/.
+- Super+R opens the launcher, and Super+Shift+Space hides the bar. Both are new. The shortcuts image now lists Super+R.
+- Seen running: the bar sits at the top, 36 pixels tall, and windows moved below it. The idle timer is running.
+- The owner tried the bar and launcher, and reports all works. The bar, swaybg and the idle timer start at login, which is proved at the next restart.
 
 ### 3 Nov 2026 — Claude Code, gaps, layout and desktop shortcuts
 

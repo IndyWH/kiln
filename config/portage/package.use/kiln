@@ -5,3 +5,5 @@ sys-kernel/installkernel dracut systemd systemd-boot
 sys-apps/systemd boot
 # Firefox needs this.
 media-libs/libvpx postproc
+# The top bar shows the network state.
+gui-apps/waybar network

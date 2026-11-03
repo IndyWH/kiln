@@ -21,6 +21,8 @@ hl.monitor({
 hl.on("hyprland.start", function ()
     hl.exec_cmd("dbus-update-activation-environment --systemd --all")
     hl.exec_cmd("swaybg --image ~/.local/share/kiln/shortcuts.png --mode center --color '#000000'")
+    hl.exec_cmd("waybar")
+    hl.exec_cmd("kiln-idle")
 end)
 
 -- Window layout. On a wide screen, every window gets an equal column: 2 halves, 3
@@ -222,6 +224,8 @@ hl.bind("SUPER + B",              hl.dsp.exec_cmd(browser))
 hl.bind("SUPER + SHIFT + B",      hl.dsp.exec_cmd(browser))
 hl.bind("SUPER + SHIFT + RETURN", hl.dsp.exec_cmd(browser))
 hl.bind("SUPER + SHIFT + ALT + B", hl.dsp.exec_cmd(browser .. " --private-window"))
+hl.bind("SUPER + R",              hl.dsp.exec_cmd("kiln-apps"))
+hl.bind("SUPER + SHIFT + SPACE",  hl.dsp.exec_cmd("pkill -SIGUSR1 -x waybar"))
 
 -- Clipboard. Key down and up are sent separately, because send_shortcut can leave a
 -- key stuck. A terminal gets Ctrl+Shift, because Ctrl+C there stops what is running.

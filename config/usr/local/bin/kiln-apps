@@ -1,0 +1,4 @@
+#!/bin/sh
+# Kiln Linux: opens the app launcher, or closes it if it is already open.
+pkill -x wofi && exit 0
+exec wofi --show drun --insensitive --prompt Apps --width 900 --height 600

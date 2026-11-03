@@ -1,0 +1,6 @@
+#!/bin/sh
+# Kiln Linux: turns the screen off after 10 minutes idle, to spare the OLED panel.
+# A key press or mouse move turns it back on.
+off='hyprctl dispatch "hl.dsp.dpms({ action = \"disable\" })"'
+on='hyprctl dispatch "hl.dsp.dpms({ action = \"enable\" })"'
+exec swayidle -w timeout 600 "$off" resume "$on"

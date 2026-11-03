@@ -14,14 +14,15 @@ WIDTH, HEIGHT = 5120, 1440
 COLUMNS = (
     (("Super + Enter", "Terminal"),
      ("Super + B", "Browser"),
+     ("Super + R", "Apps"),
      ("Super + Space", "Claude"),
      ("Super + W", "Close window"),
-     ("Super + T", "Float window"),
      ("Super + F", "Full screen")),
     (("Super + 1 to 0", "Go to workspace"),
      ("Super + Shift + 1 to 0", "Move window there"),
      ("Super + arrows", "Move between windows"),
      ("Super + C / V", "Copy / paste"),
+     ("Super + T", "Float window"),
      ("Super + Shift + E", "Log out")),
 )
 KEY_COLOUR = "#7aa2f7"

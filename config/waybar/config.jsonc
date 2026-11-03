@@ -1,0 +1,50 @@
+// Kiln Linux, mlrig: ~/.config/waybar/config.jsonc
+{
+    "layer": "top",
+    "position": "top",
+    "height": 36,
+    "spacing": 0,
+    "modules-left": ["custom/apps", "hyprland/workspaces"],
+    "modules-center": ["clock"],
+    "modules-right": ["cpu", "memory", "network", "pulseaudio", "custom/claude"],
+
+    "custom/apps": {
+        "format": "Apps",
+        "tooltip": false,
+        "on-click": "kiln-apps"
+    },
+    "custom/claude": {
+        "format": "Claude",
+        "tooltip": false,
+        "on-click": "kiln-sidekick"
+    },
+    "hyprland/workspaces": {
+        "format": "{id}",
+        "on-click": "activate"
+    },
+    "clock": {
+        "format": "{:%a %-d %b  %H:%M}",
+        "tooltip": false
+    },
+    "cpu": {
+        "format": "CPU {usage}%",
+        "interval": 5
+    },
+    "memory": {
+        "format": "RAM {percentage}%",
+        "interval": 5
+    },
+    "network": {
+        "format-ethernet": "Wired",
+        "format-wifi": "Wi-Fi {signalStrength}%",
+        "format-linked": "No internet",
+        "format-disconnected": "No network",
+        "tooltip": false
+    },
+    "pulseaudio": {
+        "format": "Sound {volume}%",
+        "format-muted": "Muted",
+        "tooltip": false,
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    }
+}

@@ -1,0 +1,30 @@
+/* Kiln Linux: the app launcher, in the same colours as the bar. */
+* {
+    font-family: "DejaVu Sans", sans-serif;
+    font-size: 24px;
+}
+
+window {
+    background-color: #000000;
+    border: 2px solid #7aa2f7;
+}
+
+#input {
+    margin: 10px;
+    padding: 8px;
+    color: #c0caf5;
+    background-color: #1a1b26;
+    border: none;
+    border-radius: 0;
+}
+
+#entry {
+    padding: 8px 14px;
+    color: #a9b1d6;
+}
+
+#entry:selected {
+    color: #000000;
+    background-color: #7aa2f7;
+    outline: none;
+}
