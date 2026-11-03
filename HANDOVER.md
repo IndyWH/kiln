@@ -44,6 +44,14 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 
 ## Log
 
+### 3 Nov 2026 — Claude Code, 7.3.1 GCC booted and measured
+
+- `7.3.1-gentoo-kiln-gcc` boots. No failed services, the guard shows OK, and network, sound setup and desktop programs are running. The bar, shortcuts and screen-off start at login, and the owner opened the terminals seen, so no windows open by themselves. `nvidia-smi` fails here, as expected, because this kernel has no NVIDIA modules. The owner reported no pointer. The mouse itself worked. Setting `no_hardware_cursors = 1` brought the pointer back.
+- That setting is in ~/.config/hypr/hyprland.lua only, not in the repo. Not known yet: whether the cause is 7.3.1, or the first full restart with the Omarchy settings. To find out, boot `mlrig` without the setting. Until then, do not copy the repo's hyprland.lua over the live one.
+- Compared with 6.18 `mlrig`: pipes 40% faster, sockets 9% faster. sysbench and 7-Zip 2% or less better, and kernel compile about the same. Wake-up delay under load is worse: 99% 77 against 61 microseconds, 99.9% 1705 against 842, and worst 5702 against 4850.
+- Caution: the wake-up test is one 30-second run, so it needs repeating before anyone trusts it. Also not equal between the runs: 6.18 had the NVIDIA driver loaded and started from a higher load, and the pointer setting differs.
+- No problem was seen by the kernel during the test beyond the two minor errors at start-up.
+
 ### 3 Nov 2026 — Claude Code, kernel benchmark
 
 - Added scripts/bench-kernel.sh, about 10 minutes, for comparing kernels: hackbench, sysbench, 7-Zip, compiling a kernel, and wake-up delay under load. Results: results/kernel-bench/table.csv. Tools installed: sysbench, 7zip, and rt-tests, from Gentoo's testing branch. scripts/measure.sh stays the full comparison with Ubuntu. It also needs `pw-cat`, which is not on Kiln, so step 12 needs pipewire's `extra` flag.

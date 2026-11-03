@@ -1,0 +1,13 @@
+Kernel: 7.3.1-gentoo-kiln-gcc, 2026-11-03 12:25
+Lower is better:
+  Task switching, sockets:  2.498 s
+  Task switching, pipes:    2.030 s
+  Compile a kernel:         76.6 s
+  Wake-up delay, 99%:       77 microseconds
+  Wake-up delay, 99.9%:     1705 microseconds
+  Wake-up delay, worst:     5702 microseconds
+Higher is better:
+  sysbench, 1 thread:       1735.06
+  sysbench, all threads:    40387.68
+  7-Zip, 1 thread:          8739
+  7-Zip, all threads:       171355
