@@ -1,0 +1,12 @@
+[Unit]
+Description=Kiln: keep past snapshots in the boot menu
+RequiresMountsFor=/.snapshots /boot
+
+[Service]
+Type=oneshot
+# A new snapshot folder appears before snapper has finished filling it.
+ExecStartPre=/usr/bin/sleep 2
+ExecStart=/usr/bin/python3 -B /usr/local/bin/kiln-snapshot-menu
+
+[Install]
+WantedBy=multi-user.target

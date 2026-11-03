@@ -4,7 +4,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built. The mlrig kernel boots, with 3 checks failed. The rescue kernel has not been checked, and can wait, by owner's decision. Step 9 is done: Kiln boots to the desktop, with network and sound working. Claude Code runs on Kiln, signed in. Step 10: parts 1 and 2 of 4 are done. Part 3 has not started.
+- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built. The mlrig kernel boots, with 3 checks failed. The rescue kernel has not been checked, and can wait, by owner's decision. Step 9 is done: Kiln boots to the desktop, with network and sound working. Claude Code runs on Kiln, signed in. Step 10: parts 1 and 2 of 4 are done. Part 3 is built, and has not yet been booted.
 - Priority, by owner's decision: Kiln boots to the desktop, then work moves to Claude Code on Kiln, to end the restarts into the live image.
 - Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped. Two kernels, the boot loader, the guard and the desktop are on it, with snapshot 5 taken (3 Nov 2026). Kiln now runs from this drive.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
@@ -15,13 +15,13 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Part 3 of step 10, when the owner says to start. `undo` takes back the newest change, so running it now would bring back two old test files, and then remove the mouse buttons.
+Part 4 of step 10, when the owner says to start. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
 Step 10, in four parts, reporting back after each:
 
 1. Sidekick key and rules file. Done.
 2. Hooks for rules 1 and 2, with the change log and `undo`. Hooks go in the protected folder, installed by the owner's hand. `undo` restores only `~/.config` in the home folder, by owner's decision. Done.
-3. Past snapshots in the boot menu.
+3. Past snapshots in the boot menu. Built, not booted.
 4. Tests: break the desktop and recover with `undo`, and boot the rescue kernel and a past snapshot. A fix for the guard's false alarms, installed by the owner's hand.
 
 To reach Kiln, the owner presses F8, chooses the Crucial, logs in as `indy`, and presses Super+Space.
@@ -41,6 +41,16 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, step 10 part 3, not booted
+
+- The boot menu now lists the 5 newest usable snapshots, newest first, after the two kernels. Program: config/usr/local/bin/kiln-snapshot-menu. It updates itself when snapshots change. 9 tests pass.
+- Read back: the mlrig kernel is still the default and the rescue kernel is still listed. Firmware boot order is unchanged, with Ubuntu first. The guard shows OK.
+- A snapshot is left out unless it holds the disk guard and the kernel's drivers, because a boot without the guard would leave every disk unlocked.
+- Not proved: nothing has booted from a snapshot yet. Snapshots boot read-only, so some services may complain. `/home` and logs stay live and current.
+- Open for the owner: the 5 newest can all be small changes, which pushes out milestones. Snapshot 6, the first working desktop, has already left the menu. It is still on disk.
+- Open for the owner: making a past snapshot permanent has no command yet. A snapshot boot is for looking and rescuing, and `undo` cannot write to a read-only system from there.
+- Cowork: the spec asks only to boot a past snapshot. Whether Stage 1 also needs a restore command is for the spec.
 
 ### 3 Nov 2026 — Claude Code, step 10 part 2, undo proved
 

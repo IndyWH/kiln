@@ -1,0 +1,9 @@
+[Unit]
+Description=Kiln: update the boot menu when snapshots change
+RequiresMountsFor=/.snapshots
+
+[Path]
+PathChanged=/.snapshots
+
+[Install]
+WantedBy=multi-user.target
