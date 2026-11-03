@@ -15,11 +15,12 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
-Finish part 2: the real `undo` test. Do not start part 3 until it passes. The owner opens a terminal with Super+Return and runs the line below, pressing `y` when asked. It should ask twice, for `kiln-test-refused.txt` and then `kiln-test.txt`. The third `undo` should say there is nothing to undo, and neither file should be left in ~/.config. The install also updates the installed hook, which is older than the repo copy. Claude Code does not need a restart for this update.
+Finish part 2: the real `undo` test. Do not start part 3 until it passes. `undo` takes back the newest change, so the test makes its own:
 
-`cd ~/Projects/kiln && sudo sidekick/install.sh && undo; undo; undo; ls ~/.config`
-
-Keep it as one line, because `undo` reads its answer from the terminal, and pasted lines would count as answers.
+1. The owner opens a terminal with Super+Return and runs `cd ~/Projects/kiln && sudo sidekick/install.sh`. This updates the installed hook, which is older than the repo copy. Claude Code does not need a restart for this update.
+2. Claude removes the old `kiln-test.txt` and `kiln-test-refused.txt` from ~/.config, then creates a new `kiln-undo-test.txt` there, as two separate changes. The owner approves each.
+3. The owner runs `undo` once only, and presses `y`. It should name the `kiln-undo-test.txt` change. A second `undo` would bring back the old test files, and a third would remove the mouse buttons.
+4. Claude checks that `kiln-undo-test.txt` has gone, the old test files are still gone, and the mouse buttons are still in ~/.config/hypr/hyprland.lua.
 
 Step 10, in four parts, reporting back after each:
 
@@ -53,7 +54,8 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 - Not proved: `undo` on real snapshots. Its tests use a stand-in for `snapper`. 18 tests pass.
 - Two fixes are in the repo but not yet installed: `undo` skips a false alarm that changed nothing, and the guard's status check no longer asks.
 - Known limits: the hook reads command text, so it asks about some commands that only read, such as ones using `$(( ))`. Refused changes leave an unused snapshot and a small file in /var/log/kiln/pending. Claude could still edit the log, as it is not a protected file. Home snapshots hold copies of the saved GitHub token, on this machine only.
-- Two test files are in ~/.config until the `undo` test removes them.
+- Two old test files are in ~/.config until the `undo` test clears them.
+- Owner's request: the mouse's forward button copies, back pastes, and middle opens or hides the sidekick. Those buttons lose their usual jobs everywhere, including in Firefox. The owner tried them in a terminal and in Firefox, and they work.
 - Cowork: the spec says "a snapshot before every change". Commits and edits inside the repo do not get one, as the repo is not the system, and `git push` is asked about but has no snapshot.
 
 ### 3 Nov 2026 — Claude Code, step 10 part 1

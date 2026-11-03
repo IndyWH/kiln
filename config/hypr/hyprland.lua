@@ -58,6 +58,19 @@ hl.window_rule({
     center    = true,
 })
 
+-- Mouse buttons: forward copies, back pastes, middle opens or hides the sidekick.
+-- A terminal gets Ctrl+Shift, because Ctrl+C there would stop what is running.
+local function clipboard(key)
+    return function ()
+        local window = hl.get_active_window()
+        local in_terminal = window and (window.class == "foot" or window.class == "kiln-sidekick")
+        hl.dispatch(hl.dsp.send_shortcut({ mods = in_terminal and "CTRL SHIFT" or "CTRL", key = key }))
+    end
+end
+hl.bind("mouse:276", clipboard("C"))
+hl.bind("mouse:275", clipboard("V"))
+hl.bind("mouse:274", hl.dsp.exec_cmd("kiln-sidekick"))
+
 -- Windows
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))

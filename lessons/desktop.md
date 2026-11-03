@@ -10,4 +10,5 @@ Hyprland, graphics and the screen.
 - Hyprland 0.57 reads only Lua config, in `~/.config/hypr/hyprland.lua`, and needs Lua 5.5. Gentoo stops at 5.4. Check a config with `Hyprland --verify-config --config <file>`. It works in a chroot.
 - Gentoo still masks the Hyprland names after moving them out of its main repo, so a separate repo needs `package.unmask` lines ending in `::kiln`.
 - In Hyprland 0.57, `hyprctl dispatch` takes Lua, such as `hyprctl dispatch 'hl.dsp.workspace.toggle_special("sidekick")'`. A window with the rule `workspace = "special:sidekick"` opens with that workspace showing.
+- Mouse copy and paste: `hl.bind` takes a Lua function, and `hl.dsp.send_shortcut({ mods, key })` works with `hl.dispatch`. Check `hl.get_active_window().class`, and send Ctrl+Shift in a terminal, because Ctrl+C there stops what is running. Forward is `mouse:276`, back is `mouse:275`, middle is `mouse:274`. Hyprland's Lua definitions are in `/usr/share/hypr/stubs/hl.meta.lua`.
 - `AQ_DRM_DEVICES` is split by colons, so it cannot take a by-path card name, which has colons in it. `kiln-session` resolves the name to `/dev/dri/cardN` first.
