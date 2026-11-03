@@ -1,0 +1,3 @@
+#!/bin/sh
+# Kiln Linux: rolls back the last change the sidekick made. Works with Claude off.
+exec sudo /usr/bin/python3 /usr/local/lib/kiln-guard/kiln_rules.py undo "$@"

@@ -19,6 +19,10 @@ Write only to the Crucial P2. Every other disk is never touched. The disk guard 
 
 What has been learnt about this machine is in `~/Projects/kiln/lessons/`. Read `lessons/CLAUDE.md`, then only the section you need. Add a finding when you learn one.
 
-## Status
+## How the rules are enforced
 
-The hooks for rules 1 and 2, the change log and `undo` are still being built, in step 10 of the Stage 1 spec. Until they are in, follow rules 1 and 2 by hand.
+Hooks run before any change. A snapshot is taken, the change goes in `/var/log/kiln/changes.log`, and the owner is asked. Commands that only read, and work inside the repo, do not ask.
+
+- Give every command that changes the system a plain-English description, because the owner reads it when approving. Before editing a file outside the repo, say in plain English what the edit does.
+- `undo` restores the system and the settings in `~/.config`. It does not touch the owner's other files, or kernels in `/boot`.
+- The hooks read command text, so they can misjudge. Follow the rules even where a hook would not catch it.

@@ -4,7 +4,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built. The mlrig kernel boots, with 3 checks failed. The rescue kernel has not been checked, and can wait, by owner's decision. Step 9 is done: Kiln boots to the desktop, with network and sound working. Claude Code runs on Kiln, signed in. Step 10: part 1 of 4 is done. Part 2 is in progress.
+- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built. The mlrig kernel boots, with 3 checks failed. The rescue kernel has not been checked, and can wait, by owner's decision. Step 9 is done: Kiln boots to the desktop, with network and sound working. Claude Code runs on Kiln, signed in. Step 10: part 1 of 4 is done. Part 2 is installed and mostly proved, but `undo` has not yet run for real. Stopped here by owner's decision.
 - Priority, by owner's decision: Kiln boots to the desktop, then work moves to Claude Code on Kiln, to end the restarts into the live image.
 - Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped. Two kernels, the boot loader, the guard and the desktop are on it, with snapshot 5 taken (3 Nov 2026). Kiln now runs from this drive.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
@@ -15,10 +15,16 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Next step
 
+Finish part 2: the real `undo` test. Do not start part 3 until it passes. The owner opens a terminal with Super+Return and runs the line below, pressing `y` when asked. It should ask twice, for `kiln-test-refused.txt` and then `kiln-test.txt`. The third `undo` should say there is nothing to undo, and neither file should be left in ~/.config. The install also updates the installed hook, which is older than the repo copy. Claude Code does not need a restart for this update.
+
+`cd ~/Projects/kiln && sudo sidekick/install.sh && undo; undo; undo; ls ~/.config`
+
+Keep it as one line, because `undo` reads its answer from the terminal, and pasted lines would count as answers.
+
 Step 10, in four parts, reporting back after each:
 
 1. Sidekick key and rules file. Done.
-2. Hooks for rules 1 and 2, with the change log and `undo`. Hooks go in the protected folder, installed by the owner's hand. `undo` restores only `~/.config` in the home folder, by owner's decision.
+2. Hooks for rules 1 and 2, with the change log and `undo`. Hooks go in the protected folder, installed by the owner's hand. `undo` restores only `~/.config` in the home folder, by owner's decision. Installed. Waiting for the `undo` test.
 3. Past snapshots in the boot menu.
 4. Tests: break the desktop and recover with `undo`, and boot the rescue kernel and a past snapshot. A fix for the guard's false alarms, installed by the owner's hand.
 
@@ -39,6 +45,16 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, step 10 part 2, not yet proven
+
+- Added sidekick/: the rules hook, `undo`, its settings and an install script. The owner installed it by hand. The hook and rules file sit in protected places. Log: /var/log/kiln/changes.log. Home snapshots are on, and old snapshots are now cleaned up, as that timer was off.
+- Proved live: a change with no explanation is refused. The owner sees the explanation in the approval question. Saying No stops the change, and the log shows it asked but not done. Each change gets before and after snapshots, which show exactly the files changed.
+- Not proved: `undo` on real snapshots. Its tests use a stand-in for `snapper`. 18 tests pass.
+- Two fixes are in the repo but not yet installed: `undo` skips a false alarm that changed nothing, and the guard's status check no longer asks.
+- Known limits: the hook reads command text, so it asks about some commands that only read, such as ones using `$(( ))`. Refused changes leave an unused snapshot and a small file in /var/log/kiln/pending. Claude could still edit the log, as it is not a protected file. Home snapshots hold copies of the saved GitHub token, on this machine only.
+- Two test files are in ~/.config until the `undo` test removes them.
+- Cowork: the spec says "a snapshot before every change". Commits and edits inside the repo do not get one, as the repo is not the system, and `git push` is asked about but has no snapshot.
 
 ### 3 Nov 2026 — Claude Code, step 10 part 1
 
