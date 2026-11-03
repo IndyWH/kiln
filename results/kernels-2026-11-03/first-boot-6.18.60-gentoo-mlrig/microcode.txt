@@ -1,0 +1,5 @@
+[    0.000000] Command line: initrd=\[ID removed]\6.18.60-gentoo-mlrig\microcode-amd initrd=\[ID removed]\6.18.60-gentoo-mlrig\microcode-intel initrd=\[ID removed]\6.18.60-gentoo-mlrig\initrd root=LABEL=KILN-ROOT rootflags=subvol=@ rw rd.lvm=0 rd.md=0 rd.luks=0 rd.dm=0 systemd.gpt_auto=0 systemd.machine_id=[ID removed]
+[    0.097276] Kernel command line: initrd=\[ID removed]\6.18.60-gentoo-mlrig\microcode-amd initrd=\[ID removed]\6.18.60-gentoo-mlrig\microcode-intel initrd=\[ID removed]\6.18.60-gentoo-mlrig\initrd root=LABEL=KILN-ROOT rootflags=subvol=@ rw rd.lvm=0 rd.md=0 rd.luks=0 rd.dm=0 systemd.gpt_auto=0 systemd.machine_id=[ID removed]
+[    4.615580] microcode: Current revision: 0x00000137
+[    4.615588] microcode: Updated early from: 0x0000012f
+microcode	: 0x137

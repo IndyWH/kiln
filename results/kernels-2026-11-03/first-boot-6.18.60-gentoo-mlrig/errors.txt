@@ -1,0 +1,9 @@
+Nov 03 08:24:27 mlrig kernel: i2c i2c-1: Failed to register i2c client ITE8853:00 at 0x4e (-16)
+Nov 03 08:24:33 mlrig (udev-worker)[794]: tpmrm0: Failed to find and pin callout binary "/usr/lib/udev/tpm2_id": No such file or directory
+Nov 03 08:24:33 mlrig kernel: 
+Nov 03 08:24:35 mlrig kernel: ACPI BIOS Error (bug): Failure creating named object [\_SB.PC00.PEG1.PEGP._DSM.USRG], AE_ALREADY_EXISTS (20250807/dsfield-184)
+Nov 03 08:24:35 mlrig kernel: ACPI Error: AE_ALREADY_EXISTS, CreateBufferField failure (20250807/dswload2-477)
+Nov 03 08:24:35 mlrig kernel: ACPI Error: Aborting method \_SB.PC00.PEG1.PEGP._DSM due to previous error (AE_ALREADY_EXISTS) (20250807/psparse-543)
+Nov 03 08:24:35 mlrig kernel: ACPI BIOS Error (bug): Failure creating named object [\_SB.PC00.PEG1.PEGP._DSM.USRG], AE_ALREADY_EXISTS (20250807/dsfield-184)
+Nov 03 08:24:35 mlrig kernel: ACPI Error: AE_ALREADY_EXISTS, CreateBufferField failure (20250807/dswload2-477)
+Nov 03 08:24:35 mlrig kernel: ACPI Error: Aborting method \_SB.PC00.PEG1.PEGP._DSM due to previous error (AE_ALREADY_EXISTS) (20250807/psparse-543)

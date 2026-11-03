@@ -1,0 +1,4 @@
+nvme0n1 ro=1 writes=0 sectors=0 discards=0 flushes=0
+nvme2n1 ro=1 writes=0 sectors=0 discards=0 flushes=0
+sda ro=1 writes=0 sectors=0 discards=0 flushes=0
+sdb ro=1 writes=0 sectors=0 discards=0 flushes=0

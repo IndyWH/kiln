@@ -18,3 +18,5 @@ The boot loader, firmware entries and start-up.
 - The boot partition has no snapshots. Snapshots of the main system do not include kernels on `/boot`.
 - Booting a past snapshot from the menu is not built yet. It belongs to step 10.
 - Set `/etc/resolv.conf` to the `systemd-resolved` link last. It points at nothing inside a chroot, so DNS stops working there.
+- First boot, 3 Nov 2026: the `Kiln` firmware entry was gone by the next live start. Entry 0001 is now `UEFI OS`, on the Crucial boot partition, and second in the order. No session removed it, so the firmware probably replaced it. Rely on the fallback copy, and read the entries by partition, not by name.
+- The first-boot guard test counts writes to the Crucial, so it always fails when run from Kiln, because a running Kiln writes to its own drive. Only that one line fails. The line for the other disks is the one that matters.

@@ -4,20 +4,23 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 ## Current state
 
-- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built but has not been booted. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
+- Stage: Stage 1. Steps 3 to 7 are complete. Step 8 is built. The mlrig kernel boots, with 3 checks failed. The rescue kernel has not been checked. The guard is installed on the live system, every disk except the Crucial is locked, and the hook is live.
 - Target: mlrig, Crucial P2 1 TB drive only. Omarchy has been wiped. Two kernels, the boot loader and the guard are on it, with snapshot 3 taken (3 Nov 2026). The drive is unmounted.
-- Work can start now.
 - Owner decisions: all ten decided. See the Answer column in docs/STAGE1_SPEC.md.
+- Owner wants Chromium compiled for mlrig, after step 9 and once the step 11 settings are on. Not started.
 - Baseline: Ubuntu 26.10 on mlrig only. Omarchy is skipped.
 - Screen: mini DisplayPort from the WX 3200, live images included. HDMI into the RTX 4090 is the fallback if a live image shows a black screen.
 
 ## Next step
 
-Spec step 8 part 4, first boot. The owner presses F8, chooses Kiln, logs in as root and runs `kiln-first-boot-check`. Then the same with the rescue kernel, from the boot menu. It prints PASS or FAIL for each check, and saves results to /var/log/kiln-first-boot/ on the Crucial.
+Finish spec step 8 part 4. Two things are open, for the owner to order:
 
-Then the owner starts the live system again, with a new Claude Code session. That session mounts the Crucial with the last block in docs/DISK_LAYOUT.md, read-only if it can, reads the results, removes IDs, and commits them to results/kernels-2026-11-03/. Check that the boot order still starts with 0000.
+- The rescue kernel: boot it from the 3-second menu and run `kiln-first-boot-check`, as in docs/FIRST_BOOT.md. It writes to its own folder in /var/log/kiln-first-boot/ on the Crucial. Then copy the results as for the mlrig kernel, with IDs removed.
+- The wired network on Kiln: find out why `eno2` does not come up. Needs `journalctl` and `networkctl` on Kiln itself, because the live image has no `journalctl`.
 
-If F8 does not show `Kiln`, the Crucial should appear as `UEFI OS`, from the fallback copy. If Kiln does not start, Ubuntu is untouched and first, and it can be fixed from the live image.
+Also for the owner: the first-boot guard test always shows 1 failure on Kiln, because it counts the Crucial's own writes. Fixing the test goes through the owner's hand.
+
+The Crucial shows in F8 as `UEFI OS`, because the `Kiln` entry has gone. If Kiln does not start, Ubuntu is untouched and first, and it can be fixed from the live image.
 
 To re-test the guard after any change, the owner runs `sudo tests/guard/fake_disks.sh --installed-rule` in a terminal, because the hook blocks Claude from running it.
 
@@ -26,6 +29,16 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, first boot results
+
+- mlrig kernel: 18 checks passed, 3 failed. Failed: wired link, internet, and the guard test on fake disks. Results: results/kernels-2026-11-03/summary.txt, and first-boot-6.18.60-gentoo-mlrig/ beside it, with IDs removed.
+- The guard test failure is the test counting the Crucial's own writes. 31 of 32 passed, and the other disks stayed at 0 writes.
+- Wired network: `systemd-networkd` ran, and its settings file is in place, but the log never shows `eno2` coming up. The same port works on the live system. Cause not found.
+- Rescue kernel: not checked. There are no results for it. The login records show two boots, both the mlrig kernel, with root logged in only on the first.
+- Boot order is 0000,0001,0002, with Ubuntu first. The `Kiln` entry has gone, and 0001 is `UEFI OS` on the Crucial. No session removed it. Cowork: docs/FIRST_BOOT.md tells the owner to choose Kiln.
+- This session mounted the Crucial read-only and has unmounted it. All disks show 0 writes.
+- Owner decision: Chromium is to be compiled for mlrig, after step 9 and once the step 11 settings are on. Not started.
 
 ### 3 Nov 2026 — Claude Code, step 8 built, not booted
 

@@ -1,0 +1,62 @@
+=== Fake-disk proof
+Kernel: 6.18.60-gentoo-mlrig
+
+=== Real disks before (these must not change)
+nvme0n1 ro=1 writes=0 sectors=0 discards=0 flushes=0
+nvme1n1 ro=0 writes=1329 sectors=54499 discards=0 flushes=22
+nvme2n1 ro=1 writes=0 sectors=0 discards=0 flushes=0
+sda ro=1 writes=0 sectors=0 discards=0 flushes=0
+sdb ro=1 writes=0 sectors=0 discards=0 flushes=0
+
+=== 1. Fake disk in memory: the write test can see a write
+Fake disk: /dev/loop0, partition /dev/loop0p1
+PASS  Unlocked disk accepts a write
+PASS  That write changed the data, so the test can detect one
+PASS  Unlocked partition accepts a write
+PASS  That write changed the data too
+PASS  Unlocked partition mounts read-write
+
+=== 2. Locking sends no write: it opens the device read-only
+PASS  The guard locked the fake disk
+PASS  The lock step opened the device
+PASS  Opens for writing during the lock
+PASS  The lock is the kernel's read-only flag (BLKROSET)
+
+=== 3. Locked disk refuses every kind of write
+PASS  Kernel flag on the disk
+PASS  Kernel flag on the partition
+PASS  dd to the disk refused
+PASS  dd to the partition refused
+PASS  Direct write from a program, disk refused
+PASS  Direct write from a program, partition refused
+PASS  blkdiscard on the disk refused
+PASS  blkdiscard on the partition refused
+PASS  mkfs on the partition refused
+PASS  mkfs on the disk refused
+PASS  Partition wipe refused
+PASS  Partition table change: kernel refused 2 writes
+PASS  Partition table change: writes that landed
+PASS  Read-write mount refused
+PASS  Data on the fake disk is unchanged
+
+=== 4. Guard refuses to lock or change what it should not
+PASS  Bad device name refused
+
+=== 7. New fake disk with the rule installed on the system
+Fake disk: sdc (model scsi_debug      )
+PASS  It was locked when it appeared
+PASS  dd to the new disk refused
+PASS  Direct write from a program refused
+PASS  mkfs on the new disk refused
+PASS  Its data is unchanged
+
+=== Real disks after
+nvme0n1 ro=1 writes=0 sectors=0 discards=0 flushes=0
+nvme1n1 ro=0 writes=1819 sectors=68899 discards=0 flushes=23
+nvme2n1 ro=1 writes=0 sectors=0 discards=0 flushes=0
+sda ro=1 writes=0 sectors=0 discards=0 flushes=0
+sdb ro=1 writes=0 sectors=0 discards=0 flushes=0
+PASS  Other real disks: write counts and lock flags unchanged
+FAIL  The Crucial: write count and lock flag unchanged (got nvme1n1 ro=0 writes=1819 sectors=68899 discards=0 flushes=23, wanted nvme1n1 ro=0 writes=1329 sectors=54499 discards=0 flushes=22)
+
+=== Result: 31 passed, 1 failed

@@ -1,7 +1,7 @@
 Step 8 parts 1 to 3: two kernels and boot loader on the Crucial, 3 Nov 2026
 
-STATUS: built and installed. NOT YET BOOTED, so nothing below proves Kiln starts.
-The first-boot check is part 4.
+STATUS: the mlrig kernel booted and was checked. The rescue kernel has NOT been checked.
+Part 4 results are at the end of this file.
 
 Kernels, both 6.18.60, Gentoo stable:
   6.18.60-gentoo-mlrig     built here, 3 min, 101 MB modules. Default.
@@ -40,3 +40,29 @@ Left as it is:
   could be cut to this chip, which may help boot time at step 12.
   18 Gentoo news items unread. The kernel installer and dracut ones were read.
   The kernel is Gentoo stable 6.18. Ubuntu runs 7.3.0. Step 12 must say so.
+
+Step 8 part 4: first boot, 3 Nov 2026
+Files: first-boot-6.18.60-gentoo-mlrig/. Read from the Crucial with a read-only mount.
+
+mlrig kernel: 18 passed, 3 failed.
+  Passed: guard on and other disks locked with 0 writes, Ubuntu first, microcode 0x137,
+  WX 3200 on amdgpu, all drivers loaded, serial adapter, RTX 4090 seen by nvidia-smi,
+  nouveau off, 32 threads, no failed services.
+  FAIL Wired network has a link. The log never shows eno2 coming up. Cause not found.
+  FAIL Internet works. Follows from the failure above.
+  FAIL Guard test on fake disks. 31 of 32 passed. The one failure is the test counting
+  writes to the Crucial, which a running Kiln makes itself. Other disks were unchanged.
+  Boot: 24.5 s firmware, 3.8 s loader, 5.3 s kernel, 4.9 s initrd, 3.4 s userspace.
+
+Rescue kernel: NOT CHECKED. No results folder exists. The login records on the Crucial
+show two boots, 08:24 and 08:26, both the mlrig kernel. Root logged in only on the first.
+
+Boot order from the live system: 0000,0001,0002. 0000 is Ubuntu, on the Ubuntu drive.
+  0001 is UEFI OS on the Crucial boot partition. 0002 is the Ventoy drive, which started
+  this session. The Kiln entry is no longer listed. No session removed it.
+
+Live session: the write counters for all disks stayed at 0, the Crucial included.
+IDs removed from the copies: MAC addresses, UUIDs, machine ID, USB serials. Two public
+ASUS certificate hashes and a firmware variable ID went with them. Checked: no disk
+serial, partition ID or MAC address from this machine is left in them. The Crucial's
+serial stays, as it is already public. Other disks show only their last 4 characters.

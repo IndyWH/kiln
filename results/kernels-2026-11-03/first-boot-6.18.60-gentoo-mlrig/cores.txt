@@ -1,0 +1,3 @@
+threads 32
+fast 0-15
+efficient 16-31

@@ -1,0 +1,22 @@
+Kernel: 6.18.60-gentoo-mlrig
+PASS  Guard status is OK
+PASS  Guard start-up service ran
+PASS  Other disks locked, 0 writes
+PASS  Ubuntu is still first in the boot order
+PASS  Microcode revision is 0x137
+PASS  Old microcode warning has gone
+PASS  WX 3200 uses amdgpu
+PASS  Driver igc is loaded
+PASS  Driver snd_hda_intel is loaded
+PASS  Driver snd_usb_audio is loaded
+PASS  Driver cp210x is loaded
+PASS  Driver iwlmvm is loaded
+PASS  Driver btusb is loaded
+PASS  Serial adapter has a port
+FAIL  Wired network has a link
+FAIL  Internet works
+PASS  nvidia-smi sees the RTX 4090
+PASS  nouveau is not loaded
+PASS  All 32 threads are on
+PASS  No failed services
+FAIL  Guard test on fake disks
