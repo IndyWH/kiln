@@ -1,0 +1,2 @@
+date,kernel,hackbench_socket_s,hackbench_pipe_s,sysbench_1,sysbench_all,sevenzip_1,sevenzip_all,compile_s,wake_p99_us,wake_p999_us,wake_worst_us
+2026-11-03 12:06,6.18.60-gentoo-mlrig,2.750,3.382,1734.12,40094.00,8602,168915,76.8,61,842,4850

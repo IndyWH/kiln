@@ -3,3 +3,5 @@
 dev-cpp/glaze ~amd64
 # Newer kernels to choose from at boot. The default stays on stable 6.18.
 =sys-kernel/gentoo-sources-7.3.1 ~amd64
+# hackbench and cyclictest, for measuring kernels. Gentoo has no stable copy.
+dev-util/rt-tests ~amd64

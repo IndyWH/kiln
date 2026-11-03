@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next: the owner restarts and chooses `7.3.1-gentoo-kiln-gcc` from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it. Then the same for `7.3.1-gentoo-kiln-clang`. The first restart also checks that no windows open at login, and that the bar, shortcuts and screen-off start by themselves. After that, 7.4-rc1, then the overfired 7.3.1. Still missing from the desktop: notifications, a lock screen and screenshots.
+Next: the owner restarts and chooses `7.3.1-gentoo-kiln-gcc` from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Then the same for `7.3.1-gentoo-kiln-clang`. The first restart also checks that no windows open at login, and that the bar, shortcuts and screen-off start by themselves. After that, 7.4-rc1, then the overfired 7.3.1. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,13 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, kernel benchmark
+
+- Added scripts/bench-kernel.sh, about 10 minutes, for comparing kernels: hackbench, sysbench, 7-Zip, compiling a kernel, and wake-up delay under load. Results: results/kernel-bench/table.csv. Tools installed: sysbench, 7zip, and rt-tests, from Gentoo's testing branch. scripts/measure.sh stays the full comparison with Ubuntu. It also needs `pw-cat`, which is not on Kiln, so step 12 needs pipewire's `extra` flag.
+- First result, 6.18.60 `mlrig`: sockets 2.750 s, pipes 3.382 s, kernel compile 76.8 s. Wake-up 99% 61, 99.9% 842, worst 4850 microseconds. sysbench 1734 and 40094. 7-Zip 8602 and 168915. Repeats were close together.
+- Found: 7-Zip scores about 18% to 20% below Ubuntu's baseline. sysbench is about 2% above. Kiln's 7-Zip is a ready-built v3 package, without its `uasm` or `jwasm` flag, which is likely why, but this is not proved. Run settings also differ: 2 passes here and 10 on Ubuntu, a different 7-Zip version, a different kernel, and the performance governor here against Ubuntu's powersave governor with performance profile.
+- Cowork: the benchmark is new. Step 12 is unchanged.
 
 ### 3 Nov 2026 — Claude Code, 7.3.1 with Clang, not booted
 

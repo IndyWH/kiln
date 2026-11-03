@@ -1,0 +1,135 @@
+Kernel: 6.18.60-gentoo-mlrig
+Compiler of this kernel: root@livecd) (gcc (Gentoo 16.2.1_p20260926 p1) 16.2.1 20260926, GNU ld
+Load before starting: 0.36 4.79 5.48
+Governor during the test: performance, usually powersave
+Task switching, processes and sockets
+Running in process mode with 16 groups using 40 file descriptors each (== 640 tasks)
+Each sender will pass 2000 messages of 100 bytes
+Time: 0.525
+Task switching, threads and pipes
+Running in threaded mode with 16 groups using 40 file descriptors each (== 640 tasks)
+Each sender will pass 2000 messages of 100 bytes
+Time: 0.420
+CPU speed: sysbench
+sysbench 1.0.20 (using system LuaJIT 2.1.1787165859)
+
+Running the test with following options:
+Number of threads: 1
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second:  1732.86
+
+General statistics:
+    total time:                          2.0004s
+    total number of events:              3468
+
+Latency (ms):
+         min:                                    0.57
+         avg:                                    0.58
+         max:                                    0.69
+         95th percentile:                        0.58
+         sum:                                 2000.04
+
+Threads fairness:
+    events (avg/stddev):           3468.0000/0.00
+    execution time (avg/stddev):   2.0000/0.00
+
+sysbench 1.0.20 (using system LuaJIT 2.1.1787165859)
+
+Running the test with following options:
+Number of threads: 32
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second: 40321.53
+
+General statistics:
+    total time:                          2.0007s
+    total number of events:              80706
+
+Latency (ms):
+         min:                                    0.57
+         avg:                                    0.79
+         max:                                    5.61
+         95th percentile:                        1.14
+         sum:                                63996.50
+
+Threads fairness:
+    events (avg/stddev):           2522.0625/709.10
+    execution time (avg/stddev):   1.9999/0.00
+
+CPU speed: 7-Zip
+
+7-Zip (z) 26.03 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-09-03
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:524288
+
+ mt=1 d25
+Compiler:  ver:14.3.1 20260604 GCC 14.3.1 : AVX2
+Linux : 6.18.60-gentoo-mlrig : #2 SMP PREEMPT_DYNAMIC Tue Nov  3 08:01:59 GMT 2026 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:madvise hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  4292  4561  5463  5473  5490  5489  5488
+
+RAM size:   96328 MB (LP),  # CPU hardware threads:  32
+RAM usage:    437 MB (LP),  # Benchmark threads:      1
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:      13764    99  13489  13391  |      75257   100   6433   6426
+23:      10880   100  11068  11086  |      74781   100   6497   6473
+24:       8961   100   9664   9635  |      74198   100   6483   6514
+25:       7886   100   9011   9005  |      73256   100   6523   6520
+----------------------------------  | ------------------------------
+Avr:     10373   100  10808  10779  |      74373   100   6484   6483
+Tot:             100   8646   8631
+
+7-Zip (z) 26.03 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-09-03
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:524288
+
+ mt=32 d25
+Compiler:  ver:14.3.1 20260604 GCC 14.3.1 : AVX2
+Linux : 6.18.60-gentoo-mlrig : #2 SMP PREEMPT_DYNAMIC Tue Nov  3 08:01:59 GMT 2026 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:madvise hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  5493  5474  5463  5469  5465  5480  5481
+16T CPU Freq (MHz): 1416% 4289   1424% 4371  
+32T CPU Freq (MHz): 2935% 4287   2933% 4296  
+
+RAM size:   96328 MB (LP),  # CPU hardware threads:  32
+RAM usage:   7119 MB (LP),  # Benchmark threads:     32
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:     209430  2771   7352 203734  |    1560189  2781   4783 133021
+23:     183901  2630   7125 187374  |    1669262  3060   4719 144414
+24:     183417  2854   6910 197211  |    1635580  3061   4689 143517
+25:     180482  2865   7192 206068  |    1598790  3067   4638 142245
+----------------------------------  | ------------------------------
+Avr:    189308  2780   7145 198597  |    1615955  2992   4707 140799
+Tot:            2886   5926 169698
+Responsiveness under load, 5 seconds
+Unable to change scheduling policy!
+either run as root or join realtime group

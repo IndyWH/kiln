@@ -1,0 +1,13 @@
+Kernel: 6.18.60-gentoo-mlrig, 2026-11-03 12:06
+Lower is better:
+  Task switching, sockets:  2.750 s
+  Task switching, pipes:    3.382 s
+  Compile a kernel:         76.8 s
+  Wake-up delay, 99%:       61 microseconds
+  Wake-up delay, 99.9%:     842 microseconds
+  Wake-up delay, worst:     4850 microseconds
+Higher is better:
+  sysbench, 1 thread:       1734.12
+  sysbench, all threads:    40094.00
+  7-Zip, 1 thread:          8602
+  7-Zip, all threads:       168915
