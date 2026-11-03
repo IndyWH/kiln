@@ -1,3 +1,4 @@
 date,kernel,hackbench_socket_s,hackbench_pipe_s,sysbench_1,sysbench_all,sevenzip_1,sevenzip_all,compile_s,wake_p99_us,wake_p999_us,wake_worst_us
 2026-11-03 12:06,6.18.60-gentoo-mlrig,2.750,3.382,1734.12,40094.00,8602,168915,76.8,61,842,4850
 2026-11-03 12:25,7.3.1-gentoo-kiln-gcc,2.498,2.030,1735.06,40387.68,8739,171355,76.6,77,1705,5702
+2026-11-03 12:42,7.3.1-gentoo-kiln-clang,2.488,2.039,1733.21,40397.77,8781,171635,76.5,59,1726,4698

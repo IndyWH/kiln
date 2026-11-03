@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next: the owner restarts and chooses `7.3.1-gentoo-kiln-gcc` from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Then the same for `7.3.1-gentoo-kiln-clang`. The first restart also checks that no windows open at login, and that the bar, shortcuts and screen-off start by themselves. After that, 7.4-rc1, then the overfired 7.3.1. Still missing from the desktop: notifications, a lock screen and screenshots.
+Next: 7.4-rc1 with GCC and Clang, for testing only, never as the default. Then the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,13 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 3 Nov 2026 — Claude Code, 7.3.1 Clang booted and measured
+
+- `7.3.1-gentoo-kiln-clang` boots and passes the same checks as GCC. Its pointer works with the same live setting. The owner thinks the Omarchy config caused the missing pointer, which fits, as it first showed at the first full restart after that change. Not proved until `mlrig` is booted without the setting.
+- Clang against GCC on 7.3.1, both without LTO: a tie. Sockets 2.488 against 2.498 s, pipes 2.039 against 2.030 s, kernel compile 76.5 against 76.6 s. sysbench and 7-Zip within 0.5%.
+- Wake-up 99.9% is 1726 microseconds on Clang and 1705 on GCC, against 842 on 6.18. Two 7.3.1 runs agreeing makes this more likely a real change than chance, but 6.18 has only one run, and it had the NVIDIA driver loaded. Wake-up 99% moved around: 59 on Clang, 77 on GCC, 61 on 6.18, so that figure is noisy at one run each.
+- Next, in the agreed order: 7.4-rc1 with GCC and Clang.
 
 ### 3 Nov 2026 — Claude Code, 7.3.1 GCC booted and measured
 
