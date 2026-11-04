@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Next, when the owner is back: commit today's Rust work, then restart, as Mesa's LLVM was replaced while the desktop ran. Then decide how far to chase Rust. Then, in order, unless the owner changes it: Part 4's safety tests, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
+Now: the cause of Rust's slowness is found, see the log of 4 Nov. The overfire options and a real-program test run in memory first, with `scripts/rust-llvm-lab.sh`. Then the owner approves the winning recipe and a real `emerge` tests it. Then write the first story and report. After that, in order, unless the owner changes it: Part 4's safety tests, then the new login screen, as `tuigreet` is plain text and the owner finds it appalling. Claude Code suggests trying `gtkgreet` first. Then the rest of Part 4, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,17 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 4 Nov 2026 — Claude Code, why Rust was slower
+
+- The restart after Mesa's LLVM change went fine: no failed services, on the Full LTO kernel.
+- Found on the one-core test: the whole gap to `rust-bin` is in `libLLVM`. Our driver with the official `libLLVM` matches `rust-bin`, at 17.2 s. Results: results/rust-gap/runs.csv. Tool: scripts/rust-llvm-lab.sh. Predictions: docs/HYPOTHESES.md.
+- With `rust-bin` at about 17.16 s: installed 21.24 s, `-DNDEBUG` restored 18.6 s, adding ThinLTO 17.98 s, adding BOLT 17.34 s, 1% behind. The last 1% is not explained.
+- Biggest cause: Gentoo's recipe replaces CMake's release flags with ours, which drops `-DNDEBUG`, so LLVM's C `assert` stays on despite `assertions = false`. With that section the lab got 21.33 s, and without it 18.61 s. The installed library calls `__assert_fail`.
+- Correction: the log's "own LLVM with Full LTO" and "the same with PGO" were wrong for LLVM. `rust.lto` covers only the Rust half, and the recipe removes LTO from LLVM. The 28.03 s came out as 26.76 s in the lab, and the 1.27 s left over is not explained.
+- Also tested, on ThinLTO: Full LTO 18.13 s against 17.98 s, with no BOLT. Gentoo's safety settings off 17.83 s. Generic CPU 18.25 s. Static libstdc++ 17.99 s.
+- Limits: one made-up test, with similar code in the training. Proved in the lab only, and not through a real `emerge`. Nothing is installed, and `rust-bin` stays active. Whether this is known to Gentoo has not been checked.
+- Owner's decisions: two new folders, not yet created. `kiln-stories/`: overfiring that went badly, and how it was troubleshot, for people to read, first story this one. `ai-bug-reports/`: one report per proved bug in another project, named project first, starting with short mlrig specs, with a status line. It is only for developers who come to the repo to read it. Claude Code files nothing with any project. Cowork: both are new for the spec.
 
 ### 3 Nov 2026 — Claude Code, Rust attempts
 

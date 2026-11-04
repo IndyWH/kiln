@@ -1,0 +1,20 @@
+date,name,median_s,runs,rust_bin_before,rust_bin_after,note
+2026-11-04 11:42,plain,22.81,22.81 22.82 22.81,17.21,17.14,no PGO no LTO: calibration against 28.03 s of 3 Nov
+2026-11-04 11:44,ours,21.24,21.25 21.23 21.24,17.13,17.16,the installed build: calibration against 21.31 s
+2026-11-04 11:55,pgo-nolto,18.58,18.60 18.58 18.57,17.16,17.13,lab PGO, no LTO: should match the installed 21.24 s
+2026-11-04 12:02,pgo-thin,17.98,17.98 17.96 17.98,17.17,17.15,lab PGO, ThinLTO, as the official build
+2026-11-04 14:00,pgo-full,18.13,18.14 18.13 18.11,17.16,17.15,lab PGO, Full LTO
+2026-11-04 14:14,thin-nohard,18.90,18.90 18.86 18.90,17.16,17.15,ThinLTO PGO, Gentoo safety defaults off
+2026-11-04 14:20,thin-static,17.99,17.99 18.00 17.99,17.17,17.14,ThinLTO PGO, static libstdc++ and Bsymbolic, as official
+2026-11-04 14:25,thin-generic,18.25,18.26 18.23 18.25,17.18,17.17,ThinLTO PGO, generic CPU, as official
+2026-11-04 14:41,thin-nohard2,17.83,17.83 17.85 17.82,17.16,17.14,ThinLTO PGO, safety defaults off, with a matching profile
+2026-11-04 14:47,thin-q,17.99,18.00 17.97 17.99,17.15,17.17,ThinLTO PGO, relocations kept for BOLT
+2026-11-04 14:56,thin-q2,17.98,17.98 18.00 17.98,17.17,17.15,ThinLTO PGO, linked as official, ready for BOLT
+2026-11-04 17:05,thin-q3,17.98,17.99 17.98 17.96,17.18,17.13,ThinLTO PGO, Bsymbolic, ready for BOLT
+2026-11-04 17:40,thin-bolt,17.34,17.33 17.34 17.35,17.17,17.16,ThinLTO PGO BOLT, official BOLT settings
+2026-11-04 17:48,boot-plain,22.82,22.82 22.82 22.82,17.15,17.15,real build system, no PGO, no LTO
+2026-11-04 17:54,boot-use,18.57,18.58 18.57 18.56,17.16,17.15,real build system, using the lab profile
+2026-11-04 18:08,boot-use2,18.61,18.62 18.61 18.60,17.19,17.14,real build system, its own profile
+2026-11-04 18:15,boot-insrc,18.58,18.58 18.59 18.58,17.14,17.15,real build system, build folder inside the source, profile from outside
+2026-11-04 19:00,r-plain,26.76,26.76 26.82 26.74,17.18,17.15,recipe's flag section, no PGO: predicted 28.0 s
+2026-11-04 19:15,r-use,21.33,21.33 21.35 21.32,17.20,17.16,recipe's flag section, own profile: predicted 21.2 s
