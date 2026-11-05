@@ -29,3 +29,4 @@ date,name,median_s,runs,rust_bin_before,rust_bin_after,note
 2026-11-05 00:25,rich-full-bolt,17.42,17.46 17.42 17.42,17.17,17.16,Full LTO PGO BOLT, richer training
 2026-11-05 07:49,cs-full,17.74,17.76 17.74 17.74,17.16,17.15,Full LTO, both profiles
 2026-11-05 07:58,cs-full-bolt,17.31,17.31 17.35 17.31,17.15,17.18,Full LTO, both profiles, BOLT
+2026-11-05 15:37,ours,17.67,17.71 17.67 17.66,17.17,17.17,Real emerge, Full LTO, both profiles, LLD default, no BOLT

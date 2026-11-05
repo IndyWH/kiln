@@ -1,12 +1,13 @@
-# Kiln Linux: /etc/portage/env/dev-lang/rust. Rust at maximum: Full LTO on the Rust half, ThinLTO
-# on LLVM, jemalloc, this CPU, two PGO profiles for LLVM and one for rustc, trained on this machine
-# on a real program, and Rust's own LLD as the default linker. results/rust-gap/ has the tests.
+# Kiln Linux: /etc/portage/env/dev-lang/rust. Rust at maximum: Full LTO on both halves, jemalloc,
+# this CPU, two PGO profiles for LLVM and one for rustc, trained on this machine on a real
+# program, and Rust's own LLD as the default linker. results/rust-gap/ has the tests.
 # The recipe has no PGO option, so these hooks run the extra stages. Any failure stops the
 # build, and the installed Rust stays as it was.
 
 post_src_configure() {
 	local toml="${S}/bootstrap.toml" triple=x86_64-unknown-linux-gnu
 	grep -q 'thin-lto' "${toml}" && die "the recipe now sets thin-lto, so check these hooks"
+	grep -q '^\[llvm\.build-config\]$' "${toml}" || die "no [llvm.build-config] section in bootstrap.toml"
 	grep -q "^\[target\.${triple}\]" "${toml}" || die "no target section for ${triple} in bootstrap.toml"
 	# LLD needs lld = true, and an override that rust-bin has by default. The override refuses to
 	# run with default-linker set, so that line goes: rustc then calls plain cc, as rust-bin does.
@@ -15,14 +16,14 @@ post_src_configure() {
 		-e 's/^\([[:space:]]*\)link-shared = false/\1link-shared = true/' \
 		-e 's/^\([[:space:]]*\)lld = false/\1lld = true/' \
 		-e '/^[[:space:]]*default-linker = /d' \
-		-e 's/^\[llvm\]$/[llvm]\nthin-lto = true/' \
+		-e 's/^\[llvm\.build-config\]$/&\nLLVM_ENABLE_LTO = "Full"\nLLVM_ENABLE_LLD = "ON"/' \
 		-e "s/^\[target\.${triple}\]$/&\ndefault-linker-linux-override = \"self-contained-lld-cc\"/" \
 		"${toml}" || die
 	grep -q 'lto = "fat"' "${toml}" || die "Full LTO did not reach bootstrap.toml"
 	grep -q 'jemalloc = true' "${toml}" || die "jemalloc did not reach bootstrap.toml"
 	grep -q 'link-shared = true' "${toml}" || die "link-shared did not reach bootstrap.toml"
 	grep -q '^[[:space:]]*lld = true' "${toml}" || die "lld did not reach bootstrap.toml"
-	grep -q '^thin-lto = true' "${toml}" || die "ThinLTO on LLVM did not reach bootstrap.toml"
+	grep -q '^LLVM_ENABLE_LTO = "Full"' "${toml}" || die "Full LTO on LLVM did not reach bootstrap.toml"
 	grep -q '^default-linker-linux-override' "${toml}" || die "the LLD default did not reach bootstrap.toml"
 }
 

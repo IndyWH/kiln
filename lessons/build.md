@@ -42,6 +42,7 @@ Build settings for this CPU, and each package that needed safer settings, with t
 - An empty `CARGO_ENCODED_RUSTFLAGS` beats `RUSTFLAGS`, without saying so. Unset it. After any test with flags, check the output shows they took effect: `readelf -p .comment` names the linker.
 - A one-core made-up test misses linking. `cargo build --timings` shows which step differs, and a single long step points away from the compiler.
 - BOLT crashes on input built with `-fsplit-machine-functions`. It does its own splitting, so leave that option out.
+- Installing `dev-lang/rust` made it the active Rust, over `rust-bin`. Check `eselect rust list` after any Rust install. Portage deletes the build log after a success, so save anything needed from it while the build runs.
 - PGO for Rust works through hooks in `env/dev-lang/rust`, as the recipe has no option. It needs `link-shared = true`, and Clang to build LLVM. Train LLVM first, then rustc, one at a time.
 - uv ignores system packages when it resolves, even in an environment made with `--system-site-packages`. Use `uv pip install --excludes FILE` or `UV_EXCLUDE`, or it fetches a generic PyTorch and CUDA.
 - `dev-python/uv` changes upstream's Full LTO to thin. `CARGO_PROFILE_RELEASE_LTO=fat` in `env/rust-overfire.conf` asks for it back. `rebuild.conf` does the same for all Rust programs at step 11.

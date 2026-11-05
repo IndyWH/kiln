@@ -1,0 +1,27 @@
+
+ * IMPORTANT: 21 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+Calculating dependencies ... done!
+Dependency resolution took 0.35 s (backtrack: 0/20).
+
+>>> Verifying ebuild manifests
+>>> Running pre-merge checks for dev-lang/rust-1.98.1
+ [32m*[0m Checking for at least 11904 MiB disk space at "/var/cache/portage-build/portage/dev-lang/rust-1.98.1/temp" ...
+[A[72C [34;01m[ [32;01mok[34;01m ][0m
+>>> Jobs: 0 of 1 complete, 1 running                                    Load avg: 0.12, 2.51, 3.55
+>>> Emerging (1 of 1) dev-lang/rust-1.98.1::gentoo
+>>> Jobs: 0 of 1 complete, 1 running                                    Load avg: 0.12, 2.51, 3.55
+>>> Jobs: 0 of 1 complete                                               Load avg: 1.41, 1.86, 2.20
+>>> Installing (1 of 1) dev-lang/rust-1.98.1::gentoo
+>>> Jobs: 0 of 1 complete, 1 merge wait                                 Load avg: 1.41, 1.86, 2.20
+>>> Completed (1 of 1) dev-lang/rust-1.98.1::gentoo
+>>> Jobs: 0 of 1 complete                                               Load avg: 1.38, 1.85, 2.20
+>>> Jobs: 1 of 1 complete                                               Load avg: 1.38, 1.85, 2.20
+
+
+ * GNU info directory index is up-to-date.
+
+ * IMPORTANT: 21 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+

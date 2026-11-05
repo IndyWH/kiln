@@ -70,7 +70,7 @@ Everything else we could think of, run overnight with `rust-bin` timed before an
 | Full LTO, two profiles, BOLT | 17.31 s | 31.52 s | 45.17 s |
 | ThinLTO, one profile, BOLT, safety settings off | 17.21 s | 31.51 s | 44.71 s |
 
-- **Full LTO** takes about 2 hours to link and was no better than ThinLTO. We choose by speed and not build time, so it would have stayed if it had won. It did not.
+- **Full LTO** takes about 2 hours to link and was no better than ThinLTO, within about 1% either way. The owner chose it for the real build anyway, as Kiln wants the full fat milk.
 - **Richer training** gained nothing. I had predicted 1% to 3%.
 - **A second PGO profile** gained about 0.5% once BOLT was on.
 - **Safety settings off** gained 0.5% on the made-up test and nothing on the real one. That is not worth the trade.
@@ -80,9 +80,17 @@ Training also filled 48 GB of memory, twice. BOLT and PGO training write one fil
 
 ## Where it landed
 
-Our best is level with `rust-bin` on debug, and about 1% behind on the other two. It has not beaten it. I predicted that it would, and that prediction is wrong so far. BOLT on the Rust half has not been tried, and that may be the rest.
+Our best in the lab is level with `rust-bin` on debug, and about 1% behind on the other two. It has not beaten it. I predicted that it would, and that prediction is wrong so far. BOLT on the Rust half has not been tried, and that may be the rest.
 
-All of this is proved in the lab only, so far. A real `emerge` of the recipe comes next, and that could still surprise us.
+Then we built it for real: a normal `emerge`, Full LTO, two profiles and LLD, no BOLT yet. It took under 7 hours and worked first time, though I had predicted at least one failure.
+
+| Compiler | Made-up | Debug | Release |
+|---|---|---|---|
+| `rust-bin` | 17.17 s | about 31.4 s | about 44.0 s |
+| Ours, first attempt | 21.24 s | 50.30 s | 50.50 s |
+| **Ours, real build, no BOLT** | **17.67 s** | **31.68 s** | **45.61 s** |
+
+That is 2.9%, 1.0% and 3.6% behind, and inside the owner's limit of 5%. Two small surprises came with it. Installing it quietly made it the active compiler, after I had said it would not. And the link printed over a thousand warnings about functions losing their second profile, some of them LLVM's busiest. I still don't know why, but the made-up test came out level with the lab, so they seem to cost little there.
 
 Most of the improvement came from two things we should have had anyway, and none of it from turning any dial higher. A flag got put back: 21.24 s down to about 18.6 s. A better linker got used: 50 s down to 31 s. The rest of the overfiring, ThinLTO and PGO and BOLT included, took us from 18.6 s to 17.3 s, which was worth having. But we only found out by measuring, by writing the guesses down first, and by keeping the plain download running as the control the whole time.
 

@@ -25,3 +25,5 @@ date,name,kind,median_s,runs,rust_bin_before,rust_bin_after,note
 2026-11-05 05:46,rich-full-bolt,release,45.18,44.91 45.61 45.18,43.91,44.10,Full LTO PGO BOLT, with rust-bin's LLD
 2026-11-05 08:01,cs-full-bolt,debug,31.52,31.79 31.52 31.46,31.09,31.15,Full LTO, both profiles, BOLT, with rust-bin's LLD
 2026-11-05 08:04,cs-full-bolt,release,45.17,44.96 45.71 45.17,44.35,43.59,Full LTO, both profiles, BOLT, with rust-bin's LLD
+2026-11-05 15:39,ours,debug,31.68,31.44 31.68 31.82,31.29,31.44,Real emerge, Full LTO, both profiles, LLD default, no BOLT
+2026-11-05 15:43,ours,release,45.61,45.43 45.95 45.61,43.74,44.30,Real emerge, Full LTO, both profiles, LLD default, no BOLT
