@@ -88,6 +88,7 @@ cmd_build() {
         *) echo "unknown lto: $lto"; exit 1 ;;
     esac
     [ "$instr" = 1 ] && extra+=(-DLLVM_BUILD_INSTRUMENTED=IR -DLLVM_BUILD_RUNTIME=No)
+    [ "$instr" = cs ] && extra+=(-DLLVM_BUILD_INSTRUMENTED=CSIR -DLLVM_BUILD_RUNTIME=No)
     [ -n "$profile" ] && extra+=(-DLLVM_PROFDATA_FILE="$profile")
     rm -rf "$out"
     # Settings from src/bootstrap/src/core/build_steps/llvm.rs, and Gentoo's X86 only target.
@@ -125,23 +126,36 @@ run_training() {
         /tmp/claude-1000/-home-indy-Projects-kiln/6a15672e-16e5-40c8-845a-ba4a31143835/scratchpad/lab/current/bin/rustc --edition 2021 --crate-type lib -C opt-level="$level" -C codegen-units=1 \
             "$work/made-up.rs" -o "$work/made-up-$level.rlib"
     done
-    for profile in "" --release; do
-        (cd "$RUSTSRC" && RUSTC="$LAB/current/bin/rustc" CARGO_HOME="$work/cargo-home" CARGO_TARGET_DIR="$work/target$profile" \
-            RUSTC_BOOTSTRAP=1 RUSTFLAGS="" CARGO_ENCODED_RUSTFLAGS="" \
-            /opt/rust-bin-1.98.1/bin/cargo build --offline --locked $profile \
-            --manifest-path src/tools/cargo/Cargo.toml -j"${TRAIN_JOBS:-32}" >/dev/null 2>&1)
+    # TRAIN_SET=rich adds more real programs. rust-analyzer stays out, as it is the real test.
+    local tool tools="cargo"
+    [ "${TRAIN_SET:-}" = rich ] && tools="cargo tools/rustbook bootstrap"
+    for tool in $tools; do
+        local manifest=src/tools/cargo/Cargo.toml
+        [ "$tool" = tools/rustbook ] && manifest=src/tools/rustbook/Cargo.toml
+        [ "$tool" = bootstrap ] && manifest=src/bootstrap/Cargo.toml
+        for profile in "" --release; do
+            (cd "$RUSTSRC" && RUSTC="$LAB/current/bin/rustc" CARGO_HOME="$work/cargo-home" CARGO_TARGET_DIR="$work/target-${tool##*/}$profile" \
+                RUSTC_BOOTSTRAP=1 RUSTFLAGS="" CARGO_ENCODED_RUSTFLAGS="" \
+                /opt/rust-bin-1.98.1/bin/cargo build --offline --locked $profile \
+                --manifest-path "$manifest" -j"${TRAIN_JOBS:-32}" >/dev/null 2>&1)
+            rm -rf "$work/target-${tool##*/}$profile"
+        done
     done
     rm -rf "$work"
 }
 
 cmd_train() {
-    local name=$1 out=$2 raw=$LAB/raw/$1
+    # With BASE, merges into that profile: for a second profile, CSIR-PGO.
+    local name=$1 out=$2 base=${3:-} raw=$LAB/raw/$1
     rm -rf "$raw"
     mkdir -p "$raw"
+    # TRAIN_POOL=1 merges as it goes. A Full LTO CSIR build wrote one file per process and filled
+    # 32 GB of memory.
     export LLVM_PROFILE_FILE="$raw/default_%m_%p.profraw"
+    [ -n "${TRAIN_POOL:-}" ] && export LLVM_PROFILE_FILE="$raw/default_%4m.profraw"
     run_training "$name"
     unset LLVM_PROFILE_FILE
-    /usr/lib/llvm/22/bin/llvm-profdata merge -o "$out" "$raw"/*.profraw
+    /usr/lib/llvm/22/bin/llvm-profdata merge -o "$out" "$raw"/*.profraw $base
     rm -rf "$raw"
     /usr/lib/llvm/22/bin/llvm-profdata show "$out" | grep -E 'Total functions|Maximum function count|Instrumentation'
 }
@@ -169,7 +183,7 @@ cmd_bolt() {
     }
     (while :; do merge_finished +0.2; sleep 20; done) &
     local merger=$!
-    TRAIN_JOBS=12 run_training "$name-instr"
+    TRAIN_JOBS=8 run_training "$name-instr"
     kill "$merger"
     wait "$merger" 2>/dev/null || true
     merge_finished -9999
@@ -215,12 +229,50 @@ cmd_bench() {
     echo "$name: median $median s ($b). rust-bin: $c1 then $c2. $note"
 }
 
-command=${1:?build, train or bench}; shift
+real_once() {
+    # $1: empty for a debug build, or --release. $2: extra rustc flags, if any. Prints the seconds
+    # for a full clean build.
+    local begin end target=$LAB/real-target
+    rm -rf "$target"
+    begin=$(date +%s.%N)
+    # CARGO_ENCODED_RUSTFLAGS must be unset, not empty: cargo prefers it even when empty, and then
+    # ignores RUSTFLAGS without saying so.
+    (cd "$RUSTSRC" && unset CARGO_ENCODED_RUSTFLAGS && RUSTC="$LAB/current/bin/rustc" CARGO_HOME="$LAB/real-cargo-home" \
+        CARGO_TARGET_DIR="$target" RUSTFLAGS="${2:-}" \
+        /opt/rust-bin-1.98.1/bin/cargo build --offline --locked $1 -p rust-analyzer \
+        --manifest-path src/tools/rust-analyzer/Cargo.toml -j32 >/dev/null 2>&1)
+    end=$(date +%s.%N)
+    rm -rf "$target"
+    echo "$begin $end" | awk '{ printf "%.2f\n", $2 - $1 }'
+}
+
+cmd_real() {
+    # A real program kept out of all training, on all cores, with rust-bin before and after.
+    # REAL_FLAGS adds rustc flags to the build under test, never to the control. The name official
+    # tests rust-bin itself, with those flags.
+    local name=$1 note=${2:-} tree=$LAB/mix/$1 kind a c1 c2 runs median table=$REPO/results/rust-gap/real.csv
+    [ "$name" = ours ] && tree=$OURS
+    [ "$name" = official ] && tree=$OFFICIAL
+    [ -e "$table" ] || echo "date,name,kind,median_s,runs,rust_bin_before,rust_bin_after,note" >"$table"
+    for kind in debug release; do
+        local option=""
+        [ "$kind" = release ] && option=--release
+        use_rustc "$OFFICIAL"; c1=$(real_once "$option")
+        use_rustc "$tree"; runs=$(for a in 1 2 3; do real_once "$option" "${REAL_FLAGS:-}"; done)
+        use_rustc "$OFFICIAL"; c2=$(real_once "$option")
+        median=$(echo "$runs" | median_of_3)
+        echo "$(date '+%F %H:%M'),$name,$kind,$median,$(echo "$runs" | paste -sd' '),$c1,$c2,$note" >>"$table"
+        echo "real $name $kind: median $median s ($(echo "$runs" | paste -sd' ')). rust-bin: $c1 then $c2. $note"
+    done
+}
+
+command=${1:?build, train, bolt, adopt, bench or real}; shift
 case $command in
     build) cmd_build "$@" ;;
     train) cmd_train "$@" ;;
     bolt) cmd_bolt "$@" ;;
     adopt) make_mix "$1" "$2" ;;
     bench) cmd_bench "$@" ;;
+    real) cmd_real "$@" ;;
     *) echo "unknown command: $command"; exit 1 ;;
 esac

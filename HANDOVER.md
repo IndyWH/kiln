@@ -17,7 +17,7 @@ The coordination log between the owner, Cowork and Claude Code. Newest entry at 
 
 Part 4 of step 10 is postponed by the owner, who wanted the Omarchy look first. It includes the first boot of a past snapshot, which also proves part 3. `undo` takes back the newest change, so do not run it without checking what it names first.
 
-Now: the cause of Rust's slowness is found, see the log of 4 Nov. The overfire options and a real-program test run in memory first, with `scripts/rust-llvm-lab.sh`. Then the owner approves the winning recipe and a real `emerge` tests it. Then write the first story and report. After that, in order, unless the owner changes it: Part 4's safety tests, then the new login screen, as `tuigreet` is plain text and the owner finds it appalling. Claude Code suggests trying `gtkgreet` first. Then the rest of Part 4, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
+Now: the causes of Rust's slowness are found and the winning recipe is known, see the log of 5 Nov. The owner approved the plan: a real `emerge` of the recipe in `config/portage/env/`, beside `rust-bin`, then BOLT through a small Kiln package, then measure. Owner's rule: switch to our compiler if it is within 5% of `rust-bin` on both tests. The system files are not updated yet, and the build still needs the owner's approval. Look at NVIDIA's new R620 driver once Gentoo offers it, with a prediction and a before and after. After that, in order, unless the owner changes it: Part 4's safety tests, then the new login screen, as `tuigreet` is plain text and the owner finds it appalling. Claude Code suggests trying `gtkgreet` first. Then the rest of Part 4, with repeat wake-up runs and the ThinLTO benchmark. Step 11, compiler first. Step 12. Then the live image, as Stage 2. Later: 7.4-rc1 with Clang, for testing only, never as the default, and the overfired 7.3.1. To test a kernel, the owner chooses it from the 3-second menu, then starts Claude Code with `claude --continue` in ~/Projects/kiln, to check it and run `scripts/bench-kernel.sh`. Still missing from the desktop: notifications, a lock screen and screenshots.
 
 Step 10, in four parts, reporting back after each:
 
@@ -43,6 +43,18 @@ After any restart of the live system, the guard is gone. Clone the repo and run 
 Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boot` whenever he next boots Ubuntu, over time. This does not hold up Kiln.
 
 ## Log
+
+### 5 Nov 2026 — Claude Code, the overnight Rust tests
+
+- The second cause: `rust-bin` links with its own LLD, and ours fell back to GNU `ld`. On a debug build of `rust-analyzer`, with `rust-bin` at about 31.3 s: installed 50.30 s, the same with LLD 32.12 s, and `rust-bin` forced to GNU `ld` 50.06 s. Results: results/rust-gap/real.csv.
+- Best in the lab: ThinLTO, both profiles, BOLT and LLD. Made-up 17.29 s, debug 31.40 s, release 44.66 s. That is 0.8%, 0.4% and 1.1% behind `rust-bin`, so it has not beaten it. Full LTO was no better, at 17.31 s, 31.52 s and 45.17 s. Richer training gained nothing. Safety settings off gained 0.5% on the made-up test and nothing on the real one, so they stay on, for the owner to decide.
+- Not tried: BOLT on the Rust half, the best chance at the last 1%. It needs a full Rust build.
+- Claude Code's mistake: the first linker test was void, as the script's empty `CARGO_ENCODED_RUSTFLAGS` hid the flags, and the owner was told the linker was ruled out. Corrected, and the void rows were removed from real.csv.
+- Recipe changes, in the repo only: `-DNDEBUG`, ThinLTO on LLVM, a CSIR stage, Rust's LLD by default, and a check that stops the build before install if asserts are back or `rust-lld` is missing. None of this has run through a real `emerge`. `/etc/portage` is not updated.
+- Gentoo has no BOLT package and Rust's source has no BOLT, so step 4 needs a small Kiln package from LLVM's source.
+- New folders: kiln-stories/, with the first story, and ai-bug-reports/, with three reports: Rust's `-DNDEBUG`, PyTorch and Kineto, and a BOLT crash. None has been sent to any project, and none reviewed by a person yet. Sending one is the owner's decision. Each story ends with one bold philosophical sentence, by owner's decision.
+- The lab is in memory, so a restart loses it. Everything needed is in the repo except the built libraries.
+- NVIDIA released 620.70.06 on 4 Nov, the first of R620. Not in Gentoo's tree as of 3 Nov. Reports differ on the build number, so check NVIDIA's page first. Not installed.
 
 ### 4 Nov 2026 — Claude Code, why Rust was slower
 

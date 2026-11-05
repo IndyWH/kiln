@@ -1,0 +1,27 @@
+date,name,kind,median_s,runs,rust_bin_before,rust_bin_after,note
+2026-11-04 20:32,ours,debug,50.30,50.30 50.34 49.35,31.41,31.52,installed
+2026-11-04 20:36,ours,release,50.50,50.50 50.05 51.37,44.16,44.37,installed
+2026-11-04 20:39,thin-bolt,debug,50.10,50.16 49.94 50.10,31.19,31.18,ThinLTO PGO BOLT, plain training
+2026-11-04 20:43,thin-bolt,release,46.99,46.99 47.24 46.69,44.37,44.30,ThinLTO PGO BOLT, plain training
+2026-11-04 21:08,rich-thin-bolt,debug,50.22,50.22 50.24 49.70,31.29,31.33,ThinLTO PGO BOLT, richer training
+2026-11-04 21:12,rich-thin-bolt,release,47.13,47.13 46.96 47.25,43.95,44.30,ThinLTO PGO BOLT, richer training
+2026-11-04 21:40,cs-thin-bolt,debug,50.05,49.91 50.05 50.10,31.10,31.12,ThinLTO, both profiles, BOLT
+2026-11-04 21:44,cs-thin-bolt,release,46.86,47.04 46.77 46.86,44.32,44.79,ThinLTO, both profiles, BOLT
+2026-11-04 22:13,nohard-thin-bolt,debug,49.81,49.78 50.12 49.81,31.13,31.25,ThinLTO PGO BOLT, safety settings off
+2026-11-04 22:17,nohard-thin-bolt,release,47.33,47.33 47.37 45.80,43.93,43.56,ThinLTO PGO BOLT, safety settings off
+2026-11-05 00:28,rich-full-bolt,debug,50.00,50.00 50.16 49.76,30.98,31.10,Full LTO PGO BOLT, richer training
+2026-11-05 00:32,rich-full-bolt,release,46.89,47.36 46.89 46.70,44.32,43.97,Full LTO PGO BOLT, richer training
+2026-11-05 05:10,official,debug,50.06,50.18 49.96 50.06,31.34,31.11,rust-bin forced to GNU ld
+2026-11-05 05:14,official,release,46.05,45.79 47.04 46.05,43.87,44.33,rust-bin forced to GNU ld
+2026-11-05 05:16,ours,debug,32.12,32.12 32.35 31.88,31.31,31.78,installed, with rust-bin's LLD
+2026-11-05 05:20,ours,release,48.34,48.25 49.79 48.34,43.50,44.33,installed, with rust-bin's LLD
+2026-11-05 05:23,cs-thin-bolt,debug,31.40,31.40 31.31 31.76,31.12,31.43,ThinLTO, both profiles, BOLT, with rust-bin's LLD
+2026-11-05 05:26,cs-thin-bolt,release,44.66,45.48 44.56 44.66,44.07,44.31,ThinLTO, both profiles, BOLT, with rust-bin's LLD
+2026-11-05 05:29,cs-thin-bolt,debug,31.72,31.73 31.72 31.65,31.23,31.20,ThinLTO, both profiles, BOLT, with the system's LLD
+2026-11-05 05:33,cs-thin-bolt,release,45.28,44.56 45.43 45.28,43.91,43.97,ThinLTO, both profiles, BOLT, with the system's LLD
+2026-11-05 05:35,nohard-thin-bolt,debug,31.51,31.55 31.51 31.43,31.37,31.13,ThinLTO PGO BOLT, safety off, with rust-bin's LLD
+2026-11-05 05:39,nohard-thin-bolt,release,44.71,44.90 44.53 44.71,44.61,44.22,ThinLTO PGO BOLT, safety off, with rust-bin's LLD
+2026-11-05 05:42,rich-full-bolt,debug,31.77,31.77 31.78 31.23,31.23,31.19,Full LTO PGO BOLT, with rust-bin's LLD
+2026-11-05 05:46,rich-full-bolt,release,45.18,44.91 45.61 45.18,43.91,44.10,Full LTO PGO BOLT, with rust-bin's LLD
+2026-11-05 08:01,cs-full-bolt,debug,31.52,31.79 31.52 31.46,31.09,31.15,Full LTO, both profiles, BOLT, with rust-bin's LLD
+2026-11-05 08:04,cs-full-bolt,release,45.17,44.96 45.71 45.17,44.35,43.59,Full LTO, both profiles, BOLT, with rust-bin's LLD

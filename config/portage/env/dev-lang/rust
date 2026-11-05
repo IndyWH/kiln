@@ -1,20 +1,35 @@
-# Kiln Linux: /etc/portage/env/dev-lang/rust. Rust at maximum: Full LTO, jemalloc, this CPU,
-# and PGO for LLVM and then for rustc, trained on this machine on a real program.
+# Kiln Linux: /etc/portage/env/dev-lang/rust. Rust at maximum: Full LTO on the Rust half, ThinLTO
+# on LLVM, jemalloc, this CPU, two PGO profiles for LLVM and one for rustc, trained on this machine
+# on a real program, and Rust's own LLD as the default linker. results/rust-gap/ has the tests.
 # The recipe has no PGO option, so these hooks run the extra stages. Any failure stops the
 # build, and the installed Rust stays as it was.
 
 post_src_configure() {
+	local toml="${S}/bootstrap.toml" triple=x86_64-unknown-linux-gnu
+	grep -q 'thin-lto' "${toml}" && die "the recipe now sets thin-lto, so check these hooks"
+	grep -q "^\[target\.${triple}\]" "${toml}" || die "no target section for ${triple} in bootstrap.toml"
+	# LLD needs lld = true, and an override that rust-bin has by default. The override refuses to
+	# run with default-linker set, so that line goes: rustc then calls plain cc, as rust-bin does.
 	sed -i -e 's/^\([[:space:]]*\)lto = "thin"/\1lto = "fat"/' \
 		-e 's/^\([[:space:]]*\)jemalloc = false/\1jemalloc = true/' \
-		-e 's/^\([[:space:]]*\)link-shared = false/\1link-shared = true/' "${S}/bootstrap.toml" || die
-	grep -q 'lto = "fat"' "${S}/bootstrap.toml" || die "Full LTO did not reach bootstrap.toml"
-	grep -q 'jemalloc = true' "${S}/bootstrap.toml" || die "jemalloc did not reach bootstrap.toml"
-	grep -q 'link-shared = true' "${S}/bootstrap.toml" || die "link-shared did not reach bootstrap.toml"
+		-e 's/^\([[:space:]]*\)link-shared = false/\1link-shared = true/' \
+		-e 's/^\([[:space:]]*\)lld = false/\1lld = true/' \
+		-e '/^[[:space:]]*default-linker = /d' \
+		-e 's/^\[llvm\]$/[llvm]\nthin-lto = true/' \
+		-e "s/^\[target\.${triple}\]$/&\ndefault-linker-linux-override = \"self-contained-lld-cc\"/" \
+		"${toml}" || die
+	grep -q 'lto = "fat"' "${toml}" || die "Full LTO did not reach bootstrap.toml"
+	grep -q 'jemalloc = true' "${toml}" || die "jemalloc did not reach bootstrap.toml"
+	grep -q 'link-shared = true' "${toml}" || die "link-shared did not reach bootstrap.toml"
+	grep -q '^[[:space:]]*lld = true' "${toml}" || die "lld did not reach bootstrap.toml"
+	grep -q '^thin-lto = true' "${toml}" || die "ThinLTO on LLVM did not reach bootstrap.toml"
+	grep -q '^default-linker-linux-override' "${toml}" || die "the LLD default did not reach bootstrap.toml"
 }
 
 kiln_x() {
+	# KILN_TOML picks a different settings file, for the CSIR stage.
 	einfo "Kiln PGO: x.py $*"
-	RUST_BACKTRACE=1 "${EPYTHON}" ./x.py build -v --config="${S}/bootstrap.toml" \
+	RUST_BACKTRACE=1 "${EPYTHON}" ./x.py build -v --config="${KILN_TOML:-${S}/bootstrap.toml}" \
 		-j"$(makeopts_jobs)" --set rust.lto=off "$@" || die "Kiln PGO: x.py $* failed"
 }
 
@@ -54,15 +69,32 @@ pre_src_compile() {
 	local bin=/usr/lib/llvm/22/bin pgo="${WORKDIR}/kiln-pgo"
 	mkdir -p "${pgo}/llvm" "${pgo}/rustc" || die
 
-	einfo "Kiln PGO, stage 1 of 3: LLVM, instrumented"
+	einfo "Kiln PGO, stage 1 of 4: LLVM, instrumented"
 	kiln_x --build-dir "${pgo}/build-llvm" --stage 2 --llvm-profile-generate compiler/rustc library/std
 	LLVM_PROFILE_FILE="${pgo}/llvm/default_%m_%p.profraw" kiln_train "${pgo}/build-llvm"
-	"${bin}/llvm-profdata" merge -o "${pgo}/llvm.profdata" "${pgo}"/llvm/*.profraw \
+	"${bin}/llvm-profdata" merge -o "${pgo}/llvm-ir.profdata" "${pgo}"/llvm/*.profraw \
 		|| die "Kiln PGO: could not merge the LLVM profile"
-	[[ -s ${pgo}/llvm.profdata ]] || die "Kiln PGO: the LLVM profile is empty"
+	[[ -s ${pgo}/llvm-ir.profdata ]] || die "Kiln PGO: the LLVM profile is empty"
 	rm -rf "${pgo}/build-llvm" "${pgo}/llvm"
 
-	einfo "Kiln PGO, stage 2 of 3: rustc, instrumented"
+	# The second profile, CSIR-PGO: x.py has no option for it, so set it directly. These are
+	# LLVM's own settings, and x.py's --llvm-profile-use gives it the first profile.
+	einfo "Kiln PGO, stage 2 of 4: LLVM, instrumented again, using the first profile"
+	mkdir -p "${pgo}/llvm-cs" || die
+	sed 's/^\[llvm\.build-config\]$/&\nLLVM_BUILD_INSTRUMENTED = "CSIR"\nLLVM_BUILD_RUNTIME = "No"/' \
+		"${S}/bootstrap.toml" > "${pgo}/bootstrap-cs.toml" || die
+	grep -q '^LLVM_BUILD_INSTRUMENTED = "CSIR"' "${pgo}/bootstrap-cs.toml" \
+		|| die "Kiln PGO: CSIR did not reach the settings"
+	KILN_TOML="${pgo}/bootstrap-cs.toml" kiln_x --build-dir "${pgo}/build-llvm-cs" --stage 2 \
+		--llvm-profile-use="${pgo}/llvm-ir.profdata" compiler/rustc library/std
+	# One file per process filled 32 GB in the lab, so these merge as they go.
+	LLVM_PROFILE_FILE="${pgo}/llvm-cs/default_%4m.profraw" kiln_train "${pgo}/build-llvm-cs"
+	"${bin}/llvm-profdata" merge -o "${pgo}/llvm.profdata" "${pgo}"/llvm-cs/*.profraw "${pgo}/llvm-ir.profdata" \
+		|| die "Kiln PGO: could not merge the second LLVM profile"
+	[[ -s ${pgo}/llvm.profdata ]] || die "Kiln PGO: the merged LLVM profile is empty"
+	rm -rf "${pgo}/build-llvm-cs" "${pgo}/llvm-cs" "${pgo}/llvm-ir.profdata" "${pgo}/bootstrap-cs.toml"
+
+	einfo "Kiln PGO, stage 3 of 4: rustc, instrumented"
 	kiln_x --build-dir "${pgo}/build-rustc" --stage 2 --llvm-profile-use="${pgo}/llvm.profdata" \
 		--rust-profile-generate="${pgo}/rustc" compiler/rustc library/std
 	LLVM_PROFILE_FILE="${pgo}/rustc/default_%m_%p.profraw" kiln_train "${pgo}/build-rustc"
@@ -71,7 +103,7 @@ pre_src_compile() {
 	[[ -s ${pgo}/rustc.profdata ]] || die "Kiln PGO: the rustc profile is empty"
 	rm -rf "${pgo}/build-rustc" "${pgo}/rustc"
 
-	einfo "Kiln PGO, stage 3 of 3: the final build, with both profiles"
+	einfo "Kiln PGO, stage 4 of 4: the final build, with all the profiles"
 	# The recipe runs plain x.py build and install, so give them the profile settings.
 	mv x.py x.py.real || die
 	cat > x.py <<-EOF || die
@@ -81,4 +113,16 @@ pre_src_compile() {
 		    args += ["--llvm-profile-use=${pgo}/llvm.profdata", "--rust-profile-use=${pgo}/rustc.profdata"]
 		os.execv(sys.executable, [sys.executable, "x.py.real"] + args)
 	EOF
+}
+
+post_src_compile() {
+	# Stop before installing if LLVM's C asserts came back, or if LLD was not built.
+	local lib lld
+	lib=$(find "${S}/build" -name 'libLLVM.so.*' -type f | head -1)
+	[[ -n ${lib} ]] || die "Kiln: no libLLVM in the build"
+	if /usr/lib/llvm/22/bin/llvm-nm -D --undefined-only "${lib}" | grep -q __assert_fail; then
+		die "Kiln: LLVM still has its C asserts on"
+	fi
+	lld=$(find "${S}/build" -name rust-lld -type f | head -1)
+	[[ -n ${lld} ]] || die "Kiln: rust-lld was not built"
 }

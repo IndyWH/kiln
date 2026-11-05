@@ -38,6 +38,10 @@ Build settings for this CPU, and each package that needed safer settings, with t
 - A PGO profile must come from a build with the same code-changing flags. Reusing one across a `_FORTIFY_SOURCE` change cost about 6%, and looked as if the change itself had caused it.
 - Our `libLLVM` can be tested alone: copy `rustc` and its driver beside it, in a folder. `scripts/rust-llvm-lab.sh` does this, so a test takes minutes rather than a full Rust build.
 - BOLT needs `-Wl,-q`. The instrumented `libLLVM` crashed when linked with `pack-relative-relocs` and immediate binding, so the lab links with `-Wl,-z,lazy` and no compact relocations. Which of the two caused it was not separated. It also failed on static libstdc++. One training run writes about 1,400 files of 50 to 120 MB, so merge them as they appear.
+- `rust-bin` links with its own LLD, and a source build with `-system-llvm` falls back to GNU `ld`. On a real program's debug build that cost 19 s of 50 s. It needs `lld = true` and `default-linker-linux-override`, and the recipe's `default-linker` line removed, or Rust's build stops.
+- An empty `CARGO_ENCODED_RUSTFLAGS` beats `RUSTFLAGS`, without saying so. Unset it. After any test with flags, check the output shows they took effect: `readelf -p .comment` names the linker.
+- A one-core made-up test misses linking. `cargo build --timings` shows which step differs, and a single long step points away from the compiler.
+- BOLT crashes on input built with `-fsplit-machine-functions`. It does its own splitting, so leave that option out.
 - PGO for Rust works through hooks in `env/dev-lang/rust`, as the recipe has no option. It needs `link-shared = true`, and Clang to build LLVM. Train LLVM first, then rustc, one at a time.
 - uv ignores system packages when it resolves, even in an environment made with `--system-site-packages`. Use `uv pip install --excludes FILE` or `UV_EXCLUDE`, or it fetches a generic PyTorch and CUDA.
 - `dev-python/uv` changes upstream's Full LTO to thin. `CARGO_PROFILE_RELEASE_LTO=fat` in `env/rust-overfire.conf` asks for it back. `rebuild.conf` does the same for all Rust programs at step 11.

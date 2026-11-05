@@ -18,3 +18,14 @@ date,name,median_s,runs,rust_bin_before,rust_bin_after,note
 2026-11-04 18:15,boot-insrc,18.58,18.58 18.59 18.58,17.14,17.15,real build system, build folder inside the source, profile from outside
 2026-11-04 19:00,r-plain,26.76,26.76 26.82 26.74,17.18,17.15,recipe's flag section, no PGO: predicted 28.0 s
 2026-11-04 19:15,r-use,21.33,21.33 21.35 21.32,17.20,17.16,recipe's flag section, own profile: predicted 21.2 s
+2026-11-04 20:54,rich-thin,17.98,17.98 17.97 17.98,17.16,17.17,ThinLTO PGO, richer training
+2026-11-04 21:05,rich-thin-bolt,17.37,17.37 17.36 17.37,17.14,17.14,ThinLTO PGO BOLT, richer training
+2026-11-04 21:27,cs-thin,17.70,17.70 17.70 17.69,17.17,17.15,ThinLTO, both profiles, richer training
+2026-11-04 21:37,cs-thin-bolt,17.29,17.29 17.28 17.29,17.17,17.14,ThinLTO, both profiles, BOLT
+2026-11-04 21:51,split-thin,17.96,17.96 17.94 17.97,17.18,17.17,ThinLTO PGO, split at compile time
+2026-11-04 22:01,nohard-thin,17.82,17.78 17.85 17.82,17.18,17.18,ThinLTO PGO, safety settings off
+2026-11-04 22:10,nohard-thin-bolt,17.21,17.19 17.21 17.22,17.14,17.16,ThinLTO PGO BOLT, safety settings off
+2026-11-05 00:16,rich-full,18.10,18.10 18.10 18.10,17.18,17.17,Full LTO PGO, richer training
+2026-11-05 00:25,rich-full-bolt,17.42,17.46 17.42 17.42,17.17,17.16,Full LTO PGO BOLT, richer training
+2026-11-05 07:49,cs-full,17.74,17.76 17.74 17.74,17.16,17.15,Full LTO, both profiles
+2026-11-05 07:58,cs-full-bolt,17.31,17.31 17.35 17.31,17.15,17.18,Full LTO, both profiles, BOLT
