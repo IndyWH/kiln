@@ -44,6 +44,18 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 
 ## Log
 
+### 10 Nov 2026 — Cowork, ideas from CachyMod
+
+The owner asked what Kiln can learn from CachyMod (github.com/marioroy/cachymod), custom kernel builds for CachyOS by Mario Roy, a friend from the Clear Linux forum. Two facts went into lessons/kernel.md. Ideas, for the owner to choose when the time comes:
+
+- Step 11, before it starts: background builds have no low priority set. `make.conf` has no `PORTAGE_NICENESS` or `PORTAGE_SCHEDULING_POLICY`. Rule 3 says rebuilds never hold up the desktop, so set builds to idle priority, and check the desktop stays smooth during the rebuild.
+- Kernel experiment: the TEO idle governor, which CachyMod recommends for Intel 12th to 14th gen. The mlrig kernel does not have it (`CPU_IDLE_GOV_TEO` is not set), so it needs a kernel rebuild. Measure before and after.
+- Kernel experiment, later: the Clear Linux patches CachyMod carries, which steer work onto the fast cores of hybrid Intel chips.
+- Kernel experiment, last: CachyMod's newer scheduler patches (BORE, POC, Nap). They come from one or two people, and the published gains were measured on an AMD Threadripper, not a hybrid Intel chip. One at a time, measured, with the rescue kernel in the boot menu.
+- Already done the CachyMod way: preemption full, 1000 Hz timer, built for this CPU, and a slim driver list from what the machine loads.
+
+On Kiln, run `git pull` in ~/Projects/kiln so the sidekick sees the new lessons.
+
 ### 3 Nov 2026 — Claude Code, bar, launcher and screen-off
 
 - Owner's decisions: separate small programs rather than Omarchy's shell, and the screen turns off after 10 minutes idle.
