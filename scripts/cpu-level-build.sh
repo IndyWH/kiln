@@ -7,11 +7,13 @@
 # and needs no root. Downloads are checked against the checksums below before use.
 #
 #   scripts/cpu-level-build.sh setup                  unpack the checked downloads, fetch crates
-#   scripts/cpu-level-build.sh build PROGRAM LEVEL    PROGRAM: sqlite, dav1d or lightcraft
+#   scripts/cpu-level-build.sh build PROGRAM LEVEL    PROGRAM: sqlite, dav1d, lightcraft,
+#                                                     darktable or rawtherapee
 #   scripts/cpu-level-build.sh check PROGRAM LEVEL    count the wide (AVX) instructions in it
 #   scripts/cpu-level-build.sh all                    every program at every level, then check
 #
-# LEVEL: generic, v3 or native. Each build ends in /tmp/kiln-lab/cpu/builds/LEVEL/bin.
+# LEVEL: generic, v3 or native. Each build ends in /tmp/kiln-lab/cpu/builds/LEVEL/bin, or for
+# darktable and RawTherapee in builds/LEVEL/PROGRAM/prefix.
 
 set -eu
 export LC_ALL=C
@@ -21,7 +23,8 @@ SRC=$LAB/src
 CLANG=/usr/lib/llvm/22/bin/clang
 OBJDUMP=/usr/lib/llvm/22/bin/llvm-objdump
 LEVELS="generic v3 native"
-PROGRAMS="sqlite dav1d lightcraft"
+PROGRAMS="sqlite dav1d lightcraft darktable rawtherapee"
+GENTOO=/var/db/repos/gentoo
 
 # File, SHA-256. The raw photo's sum is LightCraft's own (xtask/src/raw_samples.rs), dav1d's is
 # VideoLAN's, SQLite's source matched Gentoo's Manifest. SQLite's single file, sqlite3.c, has the
@@ -33,6 +36,11 @@ PROGRAMS="sqlite dav1d lightcraft"
 #   sqlite.org/2026/sqlite-src-3530400.zip
 #   raw.pixls.us/getfile.php/2414 (CC0)
 #   s3.amazonaws.com/download.opencontent.netflix.com/AV1/Chimera/Old/ (Netflix Open Content)
+#   github.com/darktable-org/darktable/releases/download/release-5.4.1/darktable-5.4.1.tar.xz
+#   github.com/Beep6581/RawTherapee/releases/download/5.12/rawtherapee-5.12.tar.xz
+# darktable's and RawTherapee's matched Gentoo's Manifest, 11 Nov 2026. These are Gentoo's stable
+# versions, and they need 7 libraries installed first (done 11 Nov 2026, change #321):
+#   emerge --oneshot --onlydeps media-gfx/darktable media-gfx/rawtherapee
 SUMS="
 lightcraft/lightcraft-0.18.1.tar.gz da592ba01b21c8a281067e223826b62e3988a0c93032297c9b23e7b8fb844baa
 dav1d/dav1d-1.5.4.tar.xz 686616b7c69eb88d44459391ab25cac13b6647a3b288835c5784e71c1514a5c5
@@ -40,6 +48,8 @@ sqlite/sqlite-src-3530400.zip d18fa15aec74d8c17e1463f861095adc01b5ad190256acb4f9
 sqlite/sqlite-amalgamation-3530400.zip 1e71ddf93849c6a6ecf58b827c0692073d2dd7ee40196158068f7b29f422e87d
 raw/sony-a7m3-compressed.arw 250784580ea527442c09004417bb0eead484f2bf3ee8f9121a776ac65bb50d0f
 av1/Chimera-AV1-8bit-1920x1080-6736kbps.ivf 49117ca3e34c8572b16a66fb1a3e23aed7e71e63cbb6ec8f3b85ef53e9e2f2d1
+darktable/darktable-5.4.1.tar.xz afdc7c88a338a8cd2fac31c8450d076edbf73e956e4307260c83ebc195f845e4
+rawtherapee/rawtherapee-5.12.tar.xz d9a6c10537d64a285bc465675fe59aaa94ce3223823dfbecf0ae2c9599082d57
 "
 
 cflags() {
@@ -73,6 +83,13 @@ cmd_setup() {
     tar -xJf "$DL/dav1d/dav1d-1.5.4.tar.xz" -C "$SRC"
     unzip -q "$DL/sqlite/sqlite-src-3530400.zip" -d "$SRC"
     unzip -q "$DL/sqlite/sqlite-amalgamation-3530400.zip" -d "$SRC"
+    tar -xJf "$DL/darktable/darktable-5.4.1.tar.xz" -C "$SRC"
+    tar -xJf "$DL/rawtherapee/rawtherapee-5.12.tar.xz" -C "$SRC"
+    # Gentoo's own patches for darktable 5.4.1, as its recipe applies them.
+    local patch
+    for patch in 3.4.0_jsonschema-automagic 3.4.1_libxcf-cmake 4.2.1_cmake-musl 5.0.1-no-Werror; do
+        patch -s -d "$SRC/darktable-5.4.1" -p1 <"$GENTOO/media-gfx/darktable/files/darktable-$patch.patch"
+    done
     cp "$DL/raw/sony-a7m3-compressed.arw" "$DL/av1/Chimera-AV1-8bit-1920x1080-6736kbps.ivf" "$LAB/data/"
     # LightCraft's crates, fetched once, so the builds run offline and alike.
     (cd "$SRC/lightcraft-0.18.1" && CARGO_HOME="$LAB/cargo-home" cargo fetch --locked)
@@ -108,6 +125,44 @@ build_lightcraft() {
     cp "$out/lightcraft-target/release/lightcraft-cli" "$out/bin/lightcraft-cli"
 }
 
+# Gentoo's way with CMake: build type RelWithDebInfo with that type's own flags emptied, so only
+# ours apply. Each installs into its own folder in the lab, never the system.
+cmake_gentoo() {
+    local level=$1 build=$2 source=$3; shift 3
+    rm -rf "$build"
+    CC=$CLANG CXX=$CLANG++ CFLAGS="$(cflags "$level")" CXXFLAGS="$(cflags "$level")" \
+        cmake -S "$source" -B "$build" -G Ninja -Wno-dev -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+        -DCMAKE_C_FLAGS_RELWITHDEBINFO= -DCMAKE_CXX_FLAGS_RELWITHDEBINFO= \
+        -DCMAKE_INSTALL_PREFIX="$(dirname "$build")/prefix" "$@" >/dev/null
+    ninja -C "$build" >/dev/null
+    ninja -C "$build" install >/dev/null
+}
+
+build_darktable() {
+    # Gentoo's settings for its USE flags here, OpenCL off: the test is CPU only.
+    local level=$1 out=$2
+    rm -rf "$out/darktable"
+    mkdir -p "$out/darktable"
+    cmake_gentoo "$level" "$out/darktable/build" "$SRC/darktable-5.4.1" \
+        -DCUSTOM_CFLAGS=ON -DRAWSPEED_MARCH= -DRAWSPEED_ENABLE_LTO=OFF -DRAWSPEED_ENABLE_WERROR=OFF \
+        -DBUILD_CURVE_TOOLS=OFF -DBUILD_NOISE_TOOLS=OFF -DBUILD_PRINT=ON -DDONT_USE_INTERNAL_LUA=ON \
+        -DTESTBUILD_OPENCL_PROGRAMS=OFF -DUSE_AVIF=ON -DUSE_CAMERA_SUPPORT=OFF -DUSE_COLORD=OFF \
+        -DUSE_GMIC=OFF -DUSE_GRAPHICSMAGICK=OFF -DUSE_HEIF=OFF -DUSE_JXL=ON -DUSE_KWALLET=OFF \
+        -DUSE_LIBSECRET=OFF -DUSE_LUA=OFF -DUSE_MAP=OFF -DUSE_OPENCL=OFF -DUSE_OPENEXR=OFF \
+        -DUSE_OPENJPEG=OFF -DUSE_OPENMP=ON -DUSE_PORTMIDI=OFF -DUSE_SDL2=OFF -DUSE_WEBP=ON \
+        -DWANT_JSON_VALIDATION=OFF
+}
+
+build_rawtherapee() {
+    # Gentoo's settings. It filters -ffast-math, which ours do not have.
+    local level=$1 out=$2
+    rm -rf "$out/rawtherapee"
+    mkdir -p "$out/rawtherapee"
+    cmake_gentoo "$level" "$out/rawtherapee/build" "$SRC/rawtherapee-5.12" \
+        -DOPTION_OMP=ON -DCACHE_NAME_SUFFIX= -DWITH_SYSTEM_KLT=off -DWITH_SYSTEM_LIBRAW=on \
+        -DENABLE_TCMALLOC=OFF -DWITH_JXL=ON
+}
+
 cmd_build() {
     local program=$1 level=$2 out=$LAB/builds/$2 begin end
     cflags "$level" >/dev/null
@@ -117,6 +172,8 @@ cmd_build() {
         sqlite) build_sqlite "$level" "$out" ;;
         dav1d) build_dav1d "$level" "$out" ;;
         lightcraft) build_lightcraft "$level" "$out" ;;
+        darktable) build_darktable "$level" "$out" ;;
+        rawtherapee) build_rawtherapee "$level" "$out" ;;
         *) echo "unknown program: $program"; exit 1 ;;
     esac
     end=$(date +%s)
@@ -128,10 +185,12 @@ cmd_check() {
     # any found there are the program's hand-written code. Proves the setting reached the build.
     local program=$1 level=$2 file ymm zmm
     case $program in
-        sqlite) file=speedtest1 ;; dav1d) file=dav1d ;; lightcraft) file=lightcraft-cli ;;
+        sqlite) file=bin/speedtest1 ;; dav1d) file=bin/dav1d ;; lightcraft) file=bin/lightcraft-cli ;;
+        darktable) file=darktable/prefix/lib64/darktable/libdarktable.so ;;
+        rawtherapee) file=rawtherapee/prefix/bin/rawtherapee-cli ;;
         *) echo "unknown program: $program"; exit 1 ;;
     esac
-    file=$LAB/builds/$level/bin/$file
+    file=$LAB/builds/$level/$file
     ymm=$($OBJDUMP -d --no-show-raw-insn "$file" | grep -c '%ymm' || true)
     zmm=$($OBJDUMP -d --no-show-raw-insn "$file" | grep -c '%zmm' || true)
     echo "$program $level: $ymm instructions with ymm (AVX2), $zmm with zmm (AVX-512)"

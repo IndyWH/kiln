@@ -8,3 +8,9 @@ date,program,level,median_s,runs,note
 2026-11-11 23:13,lightcraft,generic,0.958,0.953 0.958 0.963 0.955 0.965,first-run
 2026-11-11 23:13,lightcraft,v3,0.900,0.895 0.903 0.906 0.900 0.897,first-run
 2026-11-11 23:13,lightcraft,native,0.906,0.902 0.906 0.908 0.909 0.903,first-run
+2026-11-11 23:29,darktable,generic,1.352,1.354 1.353 1.352 1.351 1.350,first-run
+2026-11-11 23:29,darktable,v3,1.277,1.277 1.272 1.279 1.275 1.279,first-run
+2026-11-11 23:29,darktable,native,1.282,1.282 1.288 1.276 1.283 1.275,first-run
+2026-11-11 23:29,rawtherapee,generic,2.009,2.006 2.009 2.006 2.015 2.015,first-run
+2026-11-11 23:29,rawtherapee,v3,1.977,1.968 1.977 1.986 1.973 1.982,first-run
+2026-11-11 23:29,rawtherapee,native,1.979,1.988 1.984 1.975 1.977 1.979,first-run

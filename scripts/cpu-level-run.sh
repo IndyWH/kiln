@@ -3,7 +3,8 @@
 # by scripts/cpu-level-build.sh, CPU only: LightCraft with its GPU use off, dav1d and SQLite have none.
 # Results: results/cpu-level/runs.csv. Predictions: docs/HYPOTHESES.md, 5 Nov 2026.
 #
-#   scripts/cpu-level-run.sh PROGRAM [ROUNDS] [NOTE]    PROGRAM: sqlite, dav1d or lightcraft
+#   scripts/cpu-level-run.sh PROGRAM [ROUNDS] [NOTE]    PROGRAM: sqlite, dav1d, lightcraft,
+#                                                       darktable or rawtherapee
 #   scripts/cpu-level-run.sh same                       do the three builds give the same output?
 #
 # Each round times every level once, in a turning order, so drift does not favour one level. One
@@ -22,12 +23,17 @@ CLIP=$LAB/data/Chimera-AV1-8bit-1920x1080-6736kbps.ivf
 SQLITE_SIZE=400
 DAV1D_FRAMES=3000
 export LIGHTCRAFT_GPU=0
+# darktable and RawTherapee keep their settings and cache in the lab, never the owner's home.
+HOME=$LAB/home
+export HOME XDG_CONFIG_HOME=$LAB/home/.config XDG_CACHE_HOME=$LAB/home/.cache
+mkdir -p "$HOME"
 
 use_level() { ln -sfn "$LAB/builds/$1" "$LAB/current"; }
 
 once() {
     # $1: program. Prints the seconds for one run of the build that current points to.
     local begin end
+    rm -f "$LAB/out.jpg"
     begin=$(date +%s.%N)
     case $1 in
         sqlite) taskset -c 2 /tmp/kiln-lab/cpu/current/bin/speedtest1 --memdb --size "$SQLITE_SIZE" >/dev/null ;;
@@ -35,10 +41,24 @@ once() {
             --threads 16 --limit "$DAV1D_FRAMES" ;;
         lightcraft) taskset -c 0-15 /tmp/kiln-lab/cpu/current/bin/lightcraft-cli render "$RAW" \
             -o "$LAB/out.jpg" >/dev/null ;;
+        darktable) darktable "$LAB/out.jpg" ;;
+        rawtherapee) rawtherapee "$LAB/out.jpg" ;;
         *) echo "unknown program: $1" >&2; exit 1 ;;
     esac
     end=$(date +%s.%N)
     echo "$begin $end" | awk '{ printf "%.3f\n", $2 - $1 }'
+}
+
+# Each develops the raw photo with its default settings, OpenCL off, to a full-size JPEG.
+darktable() {
+    taskset -c 0-15 /tmp/kiln-lab/cpu/current/darktable/prefix/bin/darktable-cli "$RAW" "$1" \
+        --apply-custom-presets false --core --configdir "$LAB/home/dt-config" \
+        --cachedir "$LAB/home/dt-cache" --library :memory: --disable-opencl >/dev/null 2>&1
+}
+
+rawtherapee() {
+    taskset -c 0-15 /tmp/kiln-lab/cpu/current/rawtherapee/prefix/bin/rawtherapee-cli -o "$1" -d -Y \
+        -c "$RAW" >/dev/null 2>&1
 }
 
 median() { sort -n | awk '{ a[NR] = $1 } END { print (NR % 2) ? a[(NR + 1) / 2] : (a[NR / 2] + a[NR / 2 + 1]) / 2 }'; }
@@ -80,12 +100,17 @@ cmd_same() {
             --limit 300 -o - 2>/dev/null)"
         /tmp/kiln-lab/cpu/current/bin/lightcraft-cli render "$RAW" -o "$LAB/out-$level.jpg" >/dev/null
         echo "lightcraft $level: $(sha256sum "$LAB/out-$level.jpg" | cut -c1-16)"
+        rm -f "$LAB/dt-$level.jpg"
+        darktable "$LAB/dt-$level.jpg"
+        echo "darktable $level: $(sha256sum "$LAB/dt-$level.jpg" | cut -c1-16)"
+        rawtherapee "$LAB/rt-$level.jpg"
+        echo "rawtherapee $level: $(sha256sum "$LAB/rt-$level.jpg" | cut -c1-16)"
     done
 }
 
 command=${1:?sqlite, dav1d, lightcraft or same}; shift
 case $command in
-    sqlite|dav1d|lightcraft) cmd_run "$command" "$@" ;;
+    sqlite|dav1d|lightcraft|darktable|rawtherapee) cmd_run "$command" "$@" ;;
     same) cmd_same ;;
     *) echo "unknown command: $command"; exit 1 ;;
 esac

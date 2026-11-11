@@ -1,0 +1,31 @@
+built darktable v3 in 25 s
+built darktable native in 26 s
+built rawtherapee v3 in 41 s
+built rawtherapee native in 41 s
+darktable generic: 0 instructions with ymm (AVX2), 0 with zmm (AVX-512)
+darktable v3: 29551 instructions with ymm (AVX2), 1 with zmm (AVX-512)
+darktable native: 31153 instructions with ymm (AVX2), 1 with zmm (AVX-512)
+rawtherapee generic: 0 instructions with ymm (AVX2), 0 with zmm (AVX-512)
+rawtherapee v3: 47911 instructions with ymm (AVX2), 0 with zmm (AVX-512)
+rawtherapee native: 51218 instructions with ymm (AVX2), 0 with zmm (AVX-512)
+dav1d generic: 5dc6df32af29d714a1f37f61729a4a6e
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out-generic.jpg (6000×4000)
+lightcraft generic: 980a227c7f528843
+darktable generic: 6639f3cdd28a7ee3
+rawtherapee generic: 5e06f7ca49f0c23e
+dav1d v3: 5dc6df32af29d714a1f37f61729a4a6e
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out-v3.jpg (6000×4000)
+lightcraft v3: 980a227c7f528843
+darktable v3: db58480b1100c9a1
+rawtherapee v3: 529a3dc82b2663e3
+dav1d native: 5dc6df32af29d714a1f37f61729a4a6e
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out-native.jpg (6000×4000)
+lightcraft native: 980a227c7f528843
+darktable native: e47bd12c037ef643
+rawtherapee native: 5dfe09d195d8fb70
+darktable generic: median 1.352 s (1.354 1.353 1.352 1.351 1.350) +0.0% time against generic
+darktable v3: median 1.277 s (1.277 1.272 1.279 1.275 1.279) -5.5% time against generic
+darktable native: median 1.282 s (1.282 1.288 1.276 1.283 1.275) -5.2% time against generic
+rawtherapee generic: median 2.009 s (2.006 2.009 2.006 2.015 2.015) +0.0% time against generic
+rawtherapee v3: median 1.977 s (1.968 1.977 1.986 1.973 1.982) -1.6% time against generic
+rawtherapee native: median 1.979 s (1.988 1.984 1.975 1.977 1.979) -1.5% time against generic

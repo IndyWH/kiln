@@ -50,3 +50,7 @@ Build settings for this CPU, and each package that needed safer settings, with t
 - `dev-python/uv` changes upstream's Full LTO to thin. `CARGO_PROFILE_RELEASE_LTO=fat` in `env/rust-overfire.conf` asks for it back. `rebuild.conf` does the same for all Rust programs at step 11.
 - Rust and Go ignore CFLAGS. `RUSTFLAGS` in make.conf reaches Rust through `cargo.eclass`, but flags a project sets under `[build]` are lost. Go has only `GOAMD64` levels, and v3 is the highest here. Portage's CFLAGS record says nothing about either, so the audit must not trust it for them.
 - PyTorch's recipe removes LTO, citing a known bug. Trying it means changing the recipe in Kiln's overlay.
+- On this CPU, `-march=native` adds nothing over `x86-64-v3`. Measured 11 Nov on five programs: ordinary code (SQLite) and hand-written code (dav1d) gained nothing, image work 1.5% to 6%, all at `v3`. A ready-built `v3` repo gets the gain. `results/cpu-level/`.
+- A generic Rust program can still hold AVX2: crates such as `ring`, `gemm`, `jixel` and `zune_jpeg` check the CPU when they run and pick their own code. Count wide instructions per function with `llvm-objdump -d --demangle` before blaming the build.
+- darktable and RawTherapee write fresh metadata each run, so their JPEGs never match by checksum. Compare pixels, `scripts/cpu-level-pixdiff.py`. Between CPU levels, 0.2% of pixel values differ, most likely from fused multiply-add rounding; too small to see.
+- The disk guard does not expand `$VAR` in a program's name, so give the full path.

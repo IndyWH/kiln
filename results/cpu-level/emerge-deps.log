@@ -1,0 +1,169 @@
+
+ * IMPORTANT: 21 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+Calculating dependencies ... done!
+Dependency resolution took 0.57 s (backtrack: 0/20).
+
+[binary  N g   ] dev-libs/inih-62-6  USE="-test" ABI_X86="(64) -32 (-x32)" 
+[binary  N g   ] sci-libs/fftw-3.3.10-r1-7  USE="openmp -doc -fortran -mpi -test -threads (-zbus)" ABI_X86="(64) -32 (-x32)" CPU_FLAGS_X86="avx avx2 fma3 sse sse2 -fma4" 
+[binary  N g   ] media-gfx/exiv2-0.28.9-1  USE="bmff jpegxl nls png xmp -doc -examples -test -webready" ABI_X86="(64) -32 (-x32)" 
+[ebuild  N     ] media-libs/lensfun-0.3.4-r1  USE="-doc -test" CPU_FLAGS_X86="sse sse2" PYTHON_SINGLE_TARGET="python3_14 -python3_12 -python3_13" 
+[ebuild  N     ] media-libs/libiptcdata-1.0.5-r1  USE="nls -debug -doc -examples -python" PYTHON_TARGETS="-python3_12 -python3_13" 
+[binary  N g   ] media-libs/libraw-0.22.1-r1-1  USE="jpeg lcms openmp zlib -examples -hardened" ABI_X86="(64) -32 (-x32)" 
+[binary  N g   ] media-libs/libcanberra-gtk3-0.30-7  USE="-gnome" ABI_X86="(64) -32 (-x32)" 
+
+!!! The following binary packages have been ignored due to changed dependencies:
+
+     media-libs/libiptcdata-1.0.5-r1::gentoo
+
+NOTE: The --binpkg-changed-deps=n option will prevent emerge
+      from ignoring these binary packages if possible.
+      Using --binpkg-changed-deps=y will silence this warning.
+>>> Verifying ebuild manifests
+>>> Running pre-merge checks for sci-libs/fftw-3.3.10-r1
+--2026-11-11 23:19:46--  https://distfiles.gentoo.org/releases/amd64/binpackages/23.0/x86-64-v3/sci-libs/fftw/fftw-3.3.10-r1-7.gpkg.tar
+Resolving distfiles.gentoo.org... 2a02:6ea0:ca00::13, 2a02:6ea0:ca00::8, 2a02:6ea0:ca00::7, ...
+Connecting to distfiles.gentoo.org|2a02:6ea0:ca00::13|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 2191360 (2.1M) [application/x-tar]
+Saving to: ‘/var/cache/binhost/gentoo/sci-libs/fftw/fftw-3.3.10-r1-7.gpkg.tar.partial’
+
+     0K .......... .......... .......... .......... ..........  2% 16.5M 0s
+    50K .......... .......... .......... .......... ..........  4% 22.1M 0s
+   100K .......... .......... .......... .......... ..........  7% 13.8M 0s
+   150K .......... .......... .......... .......... ..........  9% 46.3M 0s
+   200K .......... .......... .......... .......... .......... 11% 63.3M 0s
+   250K .......... .......... .......... .......... .......... 14% 62.2M 0s
+   300K .......... .......... .......... .......... .......... 16% 60.7M 0s
+   350K .......... .......... .......... .......... .......... 18% 47.7M 0s
+   400K .......... .......... .......... .......... .......... 21% 73.2M 0s
+   450K .......... .......... .......... .......... .......... 23% 2.56M 0s
+   500K .......... .......... .......... .......... .......... 25% 54.5M 0s
+   550K .......... .......... .......... .......... .......... 28% 58.5M 0s
+   600K .......... .......... .......... .......... .......... 30% 64.3M 0s
+   650K .......... .......... .......... .......... .......... 32% 62.5M 0s
+   700K .......... .......... .......... .......... .......... 35% 73.5M 0s
+   750K .......... .......... .......... .......... .......... 37% 8.69M 0s
+   800K .......... .......... .......... .......... .......... 39%  138M 0s
+   850K .......... .......... .......... .......... .......... 42% 75.2M 0s
+   900K .......... .......... .......... .......... .......... 44% 69.3M 0s
+   950K .......... .......... .......... .......... .......... 46% 73.2M 0s
+  1000K .......... .......... .......... .......... .......... 49%  101M 0s
+  1050K .......... .......... .......... .......... .......... 51% 99.0M 0s
+  1100K .......... .......... .......... .......... .......... 53%  130M 0s
+  1150K .......... .......... .......... .......... .......... 56% 8.18M 0s
+  1200K .......... .......... .......... .......... .......... 58% 87.9M 0s
+  1250K .......... .......... .......... .......... .......... 60% 95.6M 0s
+  1300K .......... .......... .......... .......... .......... 63% 99.8M 0s
+  1350K .......... .......... .......... .......... .......... 65% 92.6M 0s
+  1400K .......... .......... .......... .......... .......... 67% 92.9M 0s
+  1450K .......... .......... .......... .......... .......... 70% 94.4M 0s
+  1500K .......... .......... .......... .......... .......... 72% 80.2M 0s
+  1550K .......... .......... .......... .......... .......... 74% 64.0M 0s
+  1600K .......... .......... .......... .......... .......... 77% 88.6M 0s
+  1650K .......... .......... .......... .......... .......... 79% 79.2M 0s
+  1700K .......... .......... .......... .......... .......... 81%  100M 0s
+  1750K .......... .......... .......... .......... .......... 84%  119M 0s
+  1800K .......... .......... .......... .......... .......... 86% 34.2M 0s
+  1850K .......... .......... .......... .......... .......... 88% 86.6M 0s
+  1900K .......... .......... .......... .......... .......... 91%  127M 0s
+  1950K .......... .......... .......... .......... .......... 93% 68.0M 0s
+  2000K .......... .......... .......... .......... .......... 95%  123M 0s
+  2050K .......... .......... .......... .......... .......... 98%  105M 0s
+  2100K .......... .......... .......... ..........           100%  150M=0.06s
+
+2026-11-11 23:19:47 (33.2 MB/s) - ‘/var/cache/binhost/gentoo/sci-libs/fftw/fftw-3.3.10-r1-7.gpkg.tar.partial’ saved [2191360/2191360]
+
+>>> Running pre-merge checks for media-libs/libraw-0.22.1-r1
+--2026-11-11 23:19:47--  https://distfiles.gentoo.org/releases/amd64/binpackages/23.0/x86-64-v3/media-libs/libraw/libraw-0.22.1-r1-1.gpkg.tar
+Resolving distfiles.gentoo.org... 2a02:6ea0:ca00::13, 2a02:6ea0:ca00::52, 2a02:6ea0:ca00::7, ...
+Connecting to distfiles.gentoo.org|2a02:6ea0:ca00::13|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 471040 (460K) [application/x-tar]
+Saving to: ‘/var/cache/binhost/gentoo/media-libs/libraw/libraw-0.22.1-r1-1.gpkg.tar.partial’
+
+     0K .......... .......... .......... .......... .......... 10%  315K 1s
+    50K .......... .......... .......... .......... .......... 21%  457K 1s
+   100K .......... .......... .......... .......... .......... 32%  844K 1s
+   150K .......... .......... .......... .......... .......... 43%  986K 0s
+   200K .......... .......... .......... .......... .......... 54% 1.09M 0s
+   250K .......... .......... .......... .......... .......... 65% 1.31M 0s
+   300K .......... .......... .......... .......... .......... 76% 1.56M 0s
+   350K .......... .......... .......... .......... .......... 86% 1.42M 0s
+   400K .......... .......... .......... .......... .......... 97% 3.33M 0s
+   450K ..........                                            100% 18.6T=0.5s
+
+2026-11-11 23:19:48 (851 KB/s) - ‘/var/cache/binhost/gentoo/media-libs/libraw/libraw-0.22.1-r1-1.gpkg.tar.partial’ saved [471040/471040]
+
+>>> Jobs: 0 of 7 complete, 1 running                                    Load avg: 0.31, 0.83, 0.72
+>>> Emerging binary (1 of 7) dev-libs/inih-62::gentoo
+>>> Jobs: 0 of 7 complete, 1 running                                    Load avg: 0.31, 0.83, 0.72
+>>> Jobs: 0 of 7 complete, 2 running                                    Load avg: 0.31, 0.83, 0.72
+>>> Emerging binary (2 of 7) sci-libs/fftw-3.3.10-r1::gentoo
+>>> Jobs: 0 of 7 complete, 2 running                                    Load avg: 0.31, 0.83, 0.72
+>>> Jobs: 0 of 7 complete, 3 running                                    Load avg: 0.31, 0.83, 0.72
+>>> Emerging (3 of 7) media-libs/lensfun-0.3.4-r1::gentoo
+>>> Jobs: 0 of 7 complete, 3 running                                    Load avg: 0.31, 0.83, 0.72
+>>> Jobs: 0 of 7 complete, 4 running                                    Load avg: 0.31, 0.83, 0.72
+>>> Emerging (4 of 7) media-libs/libiptcdata-1.0.5-r1::gentoo
+>>> Jobs: 0 of 7 complete, 4 running                                    Load avg: 0.31, 0.83, 0.72
+>>> Jobs: 0 of 7 complete, 3 running                                    Load avg: 0.31, 0.83, 0.72
+>>> Jobs: 0 of 7 complete, 4 running, 1 merge wait                      Load avg: 0.31, 0.83, 0.72
+>>> Emerging binary (5 of 7) media-libs/libraw-0.22.1-r1::gentoo
+>>> Jobs: 0 of 7 complete, 4 running, 1 merge wait                      Load avg: 0.31, 0.83, 0.72
+>>> Jobs: 0 of 7 complete, 3 running, 1 merge wait                      Load avg: 0.31, 0.83, 0.72
+>>> Jobs: 0 of 7 complete, 4 running, 2 merge wait                      Load avg: 0.31, 0.83, 0.72
+>>> Emerging binary (6 of 7) media-libs/libcanberra-gtk3-0.30::gentoo
+>>> Jobs: 0 of 7 complete, 4 running, 2 merge wait                      Load avg: 0.31, 0.83, 0.72
+>>> Jobs: 0 of 7 complete, 3 running, 2 merge wait                      Load avg: 0.31, 0.83, 0.72
+>>> Jobs: 0 of 7 complete, 2 running, 3 merge wait                      Load avg: 0.45, 0.85, 0.73
+>>> Jobs: 0 of 7 complete, 1 running, 4 merge wait                      Load avg: 0.45, 0.85, 0.73
+>>> Jobs: 0 of 7 complete, 5 merge wait                                 Load avg: 0.85, 0.92, 0.76
+>>> Installing (1 of 7) dev-libs/inih-62::gentoo
+>>> Jobs: 0 of 7 complete, 6 merge wait                                 Load avg: 0.85, 0.92, 0.76
+>>> Completed (1 of 7) dev-libs/inih-62::gentoo
+>>> Jobs: 0 of 7 complete                                               Load avg: 0.85, 0.92, 0.76
+>>> Installing (2 of 7) sci-libs/fftw-3.3.10-r1::gentoo
+>>> Jobs: 0 of 7 complete                                               Load avg: 0.85, 0.92, 0.76
+>>> Jobs: 1 of 7 complete                                               Load avg: 0.85, 0.92, 0.76
+>>> Completed (2 of 7) sci-libs/fftw-3.3.10-r1::gentoo
+>>> Jobs: 1 of 7 complete                                               Load avg: 0.85, 0.92, 0.76
+>>> Jobs: 2 of 7 complete                                               Load avg: 0.85, 0.92, 0.76
+>>> Installing (5 of 7) media-libs/libraw-0.22.1-r1::gentoo
+>>> Jobs: 2 of 7 complete                                               Load avg: 0.85, 0.92, 0.76
+>>> Completed (5 of 7) media-libs/libraw-0.22.1-r1::gentoo
+>>> Jobs: 2 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Jobs: 3 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Installing (6 of 7) media-libs/libcanberra-gtk3-0.30::gentoo
+>>> Jobs: 3 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Completed (6 of 7) media-libs/libcanberra-gtk3-0.30::gentoo
+>>> Jobs: 3 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Jobs: 4 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Installing (3 of 7) media-libs/lensfun-0.3.4-r1::gentoo
+>>> Jobs: 4 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Completed (3 of 7) media-libs/lensfun-0.3.4-r1::gentoo
+>>> Jobs: 4 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Jobs: 5 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Installing (4 of 7) media-libs/libiptcdata-1.0.5-r1::gentoo
+>>> Jobs: 5 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Completed (4 of 7) media-libs/libiptcdata-1.0.5-r1::gentoo
+>>> Jobs: 5 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Jobs: 6 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Jobs: 6 of 7 complete, 1 running                                    Load avg: 0.95, 0.94, 0.76
+>>> Emerging binary (7 of 7) media-gfx/exiv2-0.28.9::gentoo
+>>> Jobs: 6 of 7 complete, 1 running                                    Load avg: 0.95, 0.94, 0.76
+>>> Jobs: 6 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Installing (7 of 7) media-gfx/exiv2-0.28.9::gentoo
+>>> Jobs: 6 of 7 complete, 1 merge wait                                 Load avg: 0.95, 0.94, 0.76
+>>> Completed (7 of 7) media-gfx/exiv2-0.28.9::gentoo
+>>> Jobs: 6 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+>>> Jobs: 7 of 7 complete                                               Load avg: 0.95, 0.94, 0.76
+
+
+ * Regenerating GNU info directory index...
+ * Processed 114 info files.
+
+ * IMPORTANT: 21 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+

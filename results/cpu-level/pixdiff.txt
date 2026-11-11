@@ -1,0 +1,6 @@
+dt-generic-2.jpg                         differing 0.0000%  largest 1  mean 0.00000
+dt-v3.jpg                                differing 0.1950%  largest 10  mean 0.00260
+dt-native.jpg                            differing 0.1950%  largest 10  mean 0.00260
+rt-generic-2.jpg                         differing 0.0000%  largest 0  mean 0.00000
+rt-v3.jpg                                differing 0.1588%  largest 11  mean 0.00227
+rt-native.jpg                            differing 0.1588%  largest 11  mean 0.00227
