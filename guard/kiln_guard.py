@@ -196,6 +196,10 @@ class Blocked(Exception):
     """The command must not run. The message is shown to Claude."""
 
 
+class NotFound(Blocked):
+    """A program or script that is not there, so it cannot be checked."""
+
+
 class CannotParse(Exception):
     pass
 
@@ -255,27 +259,62 @@ def tokenize(text):
 
     Quotes are removed and pieces joined, as the shell does. Newlines, ; & | (
     and ) end a command, so subshells become separate commands too.
+
+    A here-document (<<EOF) is text, not commands: its lines become one
+    redirect on the command that asked for it, ("<<body", text), or
+    ("<<text", text) when the end word is quoted and the shell expands
+    nothing in it. Both are searched for device names, a <<body for $(...)
+    as well, and a shell reading either checks it as commands.
     """
     commands, words, redirects = [], [], []
-    word, in_word, piped = "", False, False
+    word, in_word, quoted, piped = "", False, False, False
     pending_redirect, i, n = None, 0, len(text)
+    heredocs = []  # (redirects list, end word, strip leading tabs, quoted)
 
     def end_word():
-        nonlocal word, in_word, pending_redirect
+        nonlocal word, in_word, quoted, pending_redirect
         if in_word:
             if pending_redirect:
+                if pending_redirect == "<<":
+                    strip = word.startswith("-")
+                    delimiter = word[1:] if strip else word
+                    if not delimiter:
+                        raise CannotParse("here-document with no end word")
+                    heredocs.append((redirects, delimiter, strip, quoted))
                 redirects.append((pending_redirect, word))
                 pending_redirect = None
             else:
                 words.append(word)
-        word, in_word = "", False
+        word, in_word, quoted = "", False, False
 
     def end_command(next_piped):
         nonlocal words, redirects, piped
         end_word()
+        if pending_redirect:
+            # A redirect with nothing after it is a syntax error to the shell.
+            raise CannotParse("redirect with no target")
         if words or redirects:
             commands.append((words, redirects, piped))
         words, redirects, piped = [], [], next_piped
+
+    def read_heredocs(start):
+        """Takes the here-document lines after a line. Returns where to go on."""
+        pos = start
+        for target, delimiter, strip, literal in heredocs:
+            body = []
+            while True:
+                if pos >= n:
+                    raise CannotParse("here-document with no end")
+                end = text.find("\n", pos)
+                end = n if end < 0 else end
+                line = text[pos:end]
+                pos = end + 1
+                if (line.lstrip("\t") if strip else line) == delimiter:
+                    break
+                body.append(line)
+            target.append(("<<text" if literal else "<<body", "\n".join(body)))
+        heredocs.clear()
+        return pos
 
     while i < n:
         c = text[i]
@@ -287,18 +326,18 @@ def tokenize(text):
                 raise CannotParse("trailing backslash")
             if text[i + 1] != "\n":
                 word += text[i + 1]
-                in_word = True
+                in_word = quoted = True
             i += 2
         elif c == "'":
             end = text.find("'", i + 1)
             if end < 0:
                 raise CannotParse("open quote")
             word += text[i + 1:end]
-            in_word = True
+            in_word = quoted = True
             i = end + 1
         elif c == '"':
             i += 1
-            in_word = True
+            in_word = quoted = True
             while True:
                 if i >= n:
                     raise CannotParse("open quote")
@@ -333,12 +372,14 @@ def tokenize(text):
         elif c in "\n;&|()`":
             # A single | feeds the next command. || and |& are treated alike.
             end_command(c == "|")
-            i += 1
+            i = read_heredocs(i + 1) if c == "\n" and heredocs else i + 1
         else:
             word += c
             in_word = True
             i += 1
     end_command(False)
+    if heredocs:
+        raise CannotParse("here-document with no lines")
     return commands
 
 
@@ -431,6 +472,14 @@ def read_only_form(name, args):
         return True
     if name == "git":
         return not any(a == "-o" or a.startswith("--output") for a in args)
+    if name == "sed":
+        # Only sed -n printing lines by number, such as sed -n 10,20p FILE.
+        options = [a for a in args if a.startswith("-")]
+        rest = [a for a in args if not a.startswith("-")]
+        lines = r"(?:\d+|\$)(?:,(?:\d+|\$))?p"
+        return ("-n" in options and set(options) <= {"-n", "-E", "-r"}
+                and len(rest) >= 2 and re.fullmatch(lines + "(?:;" + lines + ")*",
+                                                    rest[0]) is not None)
     if name == "blockdev":
         return all(a.startswith(("--get", "--report")) or not a.startswith("-")
                    for a in args) and any(a.startswith("-") for a in args)
@@ -480,8 +529,8 @@ def read_text_file(path, cwd):
     return None if b"\0" in data else data.decode("utf-8", "replace")
 
 
-def check_shell(name, args, disks, cwd, depth):
-    """Look inside bash -c, su -c and script files."""
+def check_shell(name, args, disks, cwd, depth, heredoc=None):
+    """Look inside bash -c, su -c, script files and here-documents."""
     for i, a in enumerate(args):
         if a == "-c" or (name != "su" and re.match(r"^-[a-zA-Z]*c[a-zA-Z]*$", a)):
             if i + 1 >= len(args):
@@ -489,13 +538,18 @@ def check_shell(name, args, disks, cwd, depth):
             check_text(args[i + 1], disks, cwd, depth + 1)
             return
     scripts = [a for a in args if not a.startswith("-")]
+    if name != "su" and not scripts and heredoc is not None:
+        check_text(heredoc, disks, cwd, depth + 1)
+        return
     if name == "su" or not scripts:
         raise Blocked("A shell reading its commands from a pipe cannot be "
                       "checked. Write the commands out, or ask the owner to run it.")
     text = read_text_file(scripts[0], cwd)
     if text is None:
-        raise Blocked("The script %s cannot be read, so it cannot be checked."
-                      % scripts[0])
+        full = os.path.join(cwd or ".", scripts[0])
+        why = NotFound if not os.path.lexists(full) else Blocked
+        raise why("The script %s cannot be read, so it cannot be checked."
+                  % scripts[0])
     check_text(text, disks, cwd, depth + 1)
 
 
@@ -530,12 +584,14 @@ def check_simple(words, redirects, disks, cwd, depth):
         return
     program, args = real[0], real[1:]
     name = base(program)
+    heredocs = [d for op, d in redirects if op in ("<<body", "<<text")]
 
     if name in ("eval", "source", ".") or name in SHELLS:
         if name == "eval":
             check_text(" ".join(args), disks, cwd, depth + 1)
         elif name in SHELLS:
-            check_shell(name, args, disks, cwd, depth)
+            check_shell(name, args, disks, cwd, depth,
+                        "\n".join(heredocs) if heredocs else None)
         else:
             check_shell("sh", args, disks, cwd, depth)
         if others:
@@ -580,6 +636,11 @@ def check_simple(words, redirects, disks, cwd, depth):
     if read_only:
         return
 
+    # Text fed to a program that might run it, such as xargs, must not name a disk tool.
+    for text in heredocs:
+        if any(is_dangerous(w) for w in re.split(r"[^\w.+-]+", text)):
+            raise Blocked("The text given to %s names a disk tool." % name)
+
     if name in ("mount", "swapon"):
         if any(a in ("-a", "--all") or a.startswith(
                 ("LABEL=", "UUID=", "PARTLABEL=", "PARTUUID=")) for a in args):
@@ -621,7 +682,7 @@ def check_simple(words, redirects, disks, cwd, depth):
         if text is None:
             if not os.path.exists(program if os.path.isabs(program)
                                   else os.path.join(cwd or ".", program)):
-                raise Blocked("%s cannot be found, so it cannot be checked." % program)
+                raise NotFound("%s cannot be found, so it cannot be checked." % program)
             return  # A binary. The kernel lock is what covers this case.
         if text.startswith("#!") and "sh" not in text.split("\n", 1)[0]:
             check_file_mentions(program, text, disks)
@@ -644,18 +705,54 @@ def check_text(text, disks, cwd, depth=0):
         if any(is_dangerous(w) for w in re.split(r"[^\w.+-]+", text)):
             raise Blocked("This could not be read, and it names a disk tool.")
         return
+    here = cwd  # Where a cd in this text has moved to, if it can be known.
     for words, redirects, piped in commands:
-        for w in words + [d for _, d in redirects]:
+        for w in words + [d for op, d in redirects if op != "<<text"]:
             for inner in substitutions(w):
                 check_text(inner, disks, cwd, depth + 1)
-        check_simple(words, redirects, disks, cwd, depth)
+        # A cd inside a subshell ends with it, so check in both folders. Every
+        # copy found must pass. Missing from both is blocked, as is missing
+        # deeper down, in a script this one runs.
+        places = [cwd] if here == cwd else [here, cwd]
+        missing = []
+        for place in places:
+            try:
+                check_simple(words, redirects, disks, place, depth)
+            except NotFound as why:
+                missing.append(why)
+        if len(missing) == len(places):
+            raise Blocked(str(missing[0]))
+        here = moved_to(words, here, cwd)
 
 
-def check_path(path, cwd):
-    """For the Write, Edit and NotebookEdit tools."""
+def moved_to(words, here, start):
+    """The folder after this command, if it is a cd the guard can follow."""
+    real = strip_wrappers(words)
+    if not real or base(real[0]) not in ("cd", "pushd", "popd"):
+        return here
+    args = real[1:]
+    if base(real[0]) == "popd" or len(args) > 1:
+        return start
+    if not args:
+        return os.path.expanduser("~")
+    path = args[0]
+    if path.startswith("~/") or path == "~":
+        path = os.path.expanduser(path)
+    if re.search(r"[$`*?\[{~]", path) or path == "-":
+        return start  # Not known. Only the folder the command began in is used.
+    if not os.path.isabs(path):
+        if here is None:
+            return None
+        path = os.path.join(here, path)
+    return os.path.normpath(path)
+
+
+def check_path(path, cwd, reading=False):
+    """For the Write, Edit and NotebookEdit tools, and Read, which may read the
+    guard's own files."""
     full = os.path.realpath(path if os.path.isabs(path)
                             else os.path.join(cwd or ".", path))
-    if any(p in full for p in PROTECTED):
+    if not reading and any(p in full for p in PROTECTED):
         raise Blocked("Changing the guard's own files is not allowed.")
     if full.startswith("/sys/") or (full.startswith("/dev/")
                                     and not SAFE_DEV.match(full)):
@@ -666,9 +763,10 @@ def decide(payload, disks):
     """Raises Blocked if the tool call must not run. Never runs the call."""
     tool_input = payload.get("tool_input") or {}
     cwd = payload.get("cwd")
+    reading = payload.get("tool_name") == "Read"
     for key in ("file_path", "notebook_path"):
         if isinstance(tool_input.get(key), str):
-            check_path(tool_input[key], cwd)
+            check_path(tool_input[key], cwd, reading)
     command = tool_input.get("command")
     if isinstance(command, str):
         check_text(command, disks, cwd)
