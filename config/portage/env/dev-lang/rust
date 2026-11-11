@@ -211,6 +211,9 @@ pre_src_install() {
 	# This phase repeats after a failure, so put back any library left instrumented, and do not
 	# apply BOLT twice.
 	local lib driver original
+	# Portage runs this hook before it moves into the source folder, so cargo would not find the
+	# source's .cargo/config.toml, which points it at the bundled crates. Training then fails.
+	cd "${S}" || die
 	while read -r original; do
 		[[ -n ${original} ]] || continue
 		mv "${original}" "${original%.kiln-original}" || die
