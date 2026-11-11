@@ -1,0 +1,27 @@
+sqlite generic: median 9.562 s (9.562 9.557 9.580 9.552 9.564) +0.0% time against generic
+sqlite v3: median 9.596 s (9.615 9.600 9.594 9.588 9.596) +0.4% time against generic
+sqlite native: median 9.524 s (9.553 9.521 9.527 9.516 9.524) -0.4% time against generic
+dav1d generic: median 1.834 s (1.828 1.834 1.833 1.856 1.837) +0.0% time against generic
+dav1d v3: median 1.858 s (1.852 1.859 1.859 1.858 1.858) +1.3% time against generic
+dav1d native: median 1.823 s (1.819 1.823 1.820 1.832 1.824) -0.6% time against generic
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft-cli: wrote /tmp/kiln-lab/cpu/out.jpg (6000×4000)
+lightcraft generic: median 0.958 s (0.953 0.958 0.963 0.955 0.965) +0.0% time against generic
+lightcraft v3: median 0.900 s (0.895 0.903 0.906 0.900 0.897) -6.1% time against generic
+lightcraft native: median 0.906 s (0.902 0.906 0.908 0.909 0.903) -5.4% time against generic
