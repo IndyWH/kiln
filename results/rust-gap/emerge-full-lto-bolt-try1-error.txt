@@ -1,0 +1,45 @@
+BOLT-INFO: enabling lite mode
+BOLT-WARNING: Failed to analyze 1140 relocations
+BOLT-INFO: 0 out of 95669 functions in the binary (0.0%) have non-empty execution profile
+BOLT-INSTRUMENTER: Number of indirect call site descriptors: 54408
+BOLT-INSTRUMENTER: Number of indirect call target descriptors: 95009
+BOLT-INSTRUMENTER: Number of function descriptors: 94999
+BOLT-INSTRUMENTER: Number of branch counters: 1133037
+BOLT-INSTRUMENTER: Number of ST leaf node counters: 602729
+BOLT-INSTRUMENTER: Number of direct call counters: 0
+BOLT-INSTRUMENTER: Total number of counters: 1735766
+BOLT-INSTRUMENTER: Total size of counters: 13886128 bytes (static alloc memory)
+BOLT-INSTRUMENTER: Total size of string table emitted: 10494887 bytes in file
+BOLT-INSTRUMENTER: Total size of descriptors: 116549044 bytes in file
+BOLT-INSTRUMENTER: Profile will be saved to file /var/cache/portage-build/portage/dev-lang/rust-1.98.1/work/kiln-bolt/libLLVM/prof.fdata
+BOLT-INFO: 1462922 instructions were shortened
+BOLT-INFO: removed 298 empty blocks
+BOLT-INFO: UCE removed 3348 blocks and 202045 bytes of code
+BOLT-INFO: padding code to 0xcc00000 to accommodate hot text
+BOLT-INFO: output linked against instrumentation runtime library, lib entry point is 0xe312560
+BOLT-INFO: clear procedure is 0xe30d310
+BOLT-INFO: setting __bolt_runtime_start to 0xe312560
+BOLT-INFO: setting __bolt_runtime_fini to 0xe3125b0
+BOLT-INFO: setting __hot_start to 0x5600000
+BOLT-INFO: setting __hot_end to 0xcab5770
+BOLT-INFO: runtime library initialization was hooked via DT_INIT, set to 0xe312560
+BOLT-INFO: runtime library finalization was hooked via DT_FINI, set to 0xe3125b0
+ * Kiln BOLT: training on libLLVM
+/etc/portage/env/dev-lang/rust: line 43:    80 Segmentation fault         (core dumped) "${rustc}" --version
+ * ERROR: dev-lang/rust-1.98.1::gentoo failed (install phase):
+ *   Kiln PGO: the instrumented rustc does not run
+ * 
+ * Call stack:
+ *   ebuild.sh, line 143:  Called pre_src_install
+ *        rust, line 205:  Called kiln_bolt '/var/cache/portage-build/portage/dev-lang/rust-1.98.1/work/rustc-1.98.1-src/build/x86_64-unknown-linux-gnu/stage2/lib/libLLVM.so.22.1-rust-1.98.1-stable' 'libLLVM'
+ *        rust, line 178:  Called kiln_train '/var/cache/portage-build/portage/dev-lang/rust-1.98.1/work/rustc-1.98.1-src/build'
+ *        rust, line  48:  Called die
+ * The specific snippet of code:
+ *   	"${rustc}" --version || die "Kiln PGO: the instrumented rustc does not run"
+ * 
+ * If you need support, post the output of `emerge --info '=dev-lang/rust-1.98.1::gentoo'`,
+ * the complete build log and the output of `emerge -pqv '=dev-lang/rust-1.98.1::gentoo'`.
+ * The complete build log is located at '/var/cache/portage-build/portage/dev-lang/rust-1.98.1/temp/build.log'.
+ * The ebuild environment file is located at '/var/cache/portage-build/portage/dev-lang/rust-1.98.1/temp/environment'.
+ * Working directory: '/var/cache/portage-build/portage/dev-lang/rust-1.98.1'
+ * S: '/var/cache/portage-build/portage/dev-lang/rust-1.98.1/work/rustc-1.98.1-src'

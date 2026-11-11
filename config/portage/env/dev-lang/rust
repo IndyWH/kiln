@@ -1,8 +1,10 @@
 # Kiln Linux: /etc/portage/env/dev-lang/rust. Rust at maximum: Full LTO on both halves, jemalloc,
-# this CPU, two PGO profiles for LLVM and one for rustc, trained on this machine on a real
-# program, and Rust's own LLD as the default linker. results/rust-gap/ has the tests.
-# The recipe has no PGO option, so these hooks run the extra stages. Any failure stops the
-# build, and the installed Rust stays as it was.
+# this CPU, two PGO profiles for LLVM and one for rustc, BOLT on both halves, all trained on this
+# machine on a real program, and Rust's own LLD as the default linker. results/rust-gap/ has the
+# tests. The recipe has no PGO or BOLT option, so these hooks run the extra stages. Any failure
+# stops the build, and the installed Rust stays as it was. BOLT runs at the start of the install
+# phase, so if it fails, the compile phase is kept and need not be repeated.
+# Needs llvm-core/bolt, from the Kiln overlay.
 
 post_src_configure() {
 	local toml="${S}/bootstrap.toml" triple=x86_64-unknown-linux-gnu
@@ -11,7 +13,10 @@ post_src_configure() {
 	grep -q "^\[target\.${triple}\]" "${toml}" || die "no target section for ${triple} in bootstrap.toml"
 	# LLD needs lld = true, and an override that rust-bin has by default. The override refuses to
 	# run with default-linker set, so that line goes: rustc then calls plain cc, as rust-bin does.
+	# BOLT needs relocations kept, and LLVM linked as the official build does: the instrumented
+	# libLLVM crashed on compact relocations, in the lab and in the real build. See pre_src_compile.
 	sed -i -e 's/^\([[:space:]]*\)lto = "thin"/\1lto = "fat"/' \
+		-e 's/-Wl,-z,pack-relative-relocs/-Wl,-z,lazy -Wl,-q -Wl,-Bsymbolic/' \
 		-e 's/^\([[:space:]]*\)jemalloc = false/\1jemalloc = true/' \
 		-e 's/^\([[:space:]]*\)link-shared = false/\1link-shared = true/' \
 		-e 's/^\([[:space:]]*\)lld = false/\1lld = true/' \
@@ -25,6 +30,7 @@ post_src_configure() {
 	grep -q '^[[:space:]]*lld = true' "${toml}" || die "lld did not reach bootstrap.toml"
 	grep -q '^LLVM_ENABLE_LTO = "Full"' "${toml}" || die "Full LTO on LLVM did not reach bootstrap.toml"
 	grep -q '^default-linker-linux-override' "${toml}" || die "the LLD default did not reach bootstrap.toml"
+	grep -q '^CMAKE_SHARED_LINKER_FLAGS_RELEASE = ".*-Wl,-q' "${toml}" || die "BOLT's link flags did not reach bootstrap.toml"
 }
 
 kiln_x() {
@@ -60,18 +66,33 @@ kiln_train() {
 		RUSTC="${rustc}" CARGO_HOME="${work}/cargo-home" CARGO_TARGET_DIR="${work}/target${profile}" \
 			RUSTC_BOOTSTRAP=1 RUSTFLAGS="" CARGO_ENCODED_RUSTFLAGS="" \
 			"$(${RUSTC:-rustc} --print sysroot)/bin/cargo" build --offline --locked ${profile} \
-			--manifest-path "${S}/src/tools/cargo/Cargo.toml" -j"$(makeopts_jobs)" \
+			--manifest-path "${S}/src/tools/cargo/Cargo.toml" -j"${KILN_TRAIN_JOBS:-$(makeopts_jobs)}" \
 			|| die "Kiln PGO: training on cargo failed"
 	done
 	rm -rf "${work}"
 }
 
+kiln_no_relr() {
+	# $1: build folder. BOLT's instrumented libLLVM crashed on compact relocations, on 5 Nov.
+	local lib
+	lib=$(find "$1" -path '*/stage2/lib/libLLVM.so.*' -type f | head -1)
+	[[ -n ${lib} ]] || die "Kiln: no stage 2 libLLVM in $1"
+	readelf -dW "${lib}" | grep -q '(RELR)' && die "Kiln: libLLVM has compact relocations, which crash BOLT"
+	readelf -dW "${lib}" | grep -q 'BIND_NOW' && die "Kiln: libLLVM has immediate binding, unlike the official build"
+	return 0
+}
+
 pre_src_compile() {
 	local bin=/usr/lib/llvm/22/bin pgo="${WORKDIR}/kiln-pgo"
+	[[ -x /usr/lib/kiln-bolt/bin/llvm-bolt ]] || die "Kiln: llvm-core/bolt is not installed"
 	mkdir -p "${pgo}/llvm" "${pgo}/rustc" || die
+	# x.py also reads LDFLAGS for LLVM's base link flags, beside the release flags changed above,
+	# so take compact relocations out here too.
+	export LDFLAGS=${LDFLAGS//-Wl,-z,pack-relative-relocs/}
 
 	einfo "Kiln PGO, stage 1 of 4: LLVM, instrumented"
 	kiln_x --build-dir "${pgo}/build-llvm" --stage 2 --llvm-profile-generate compiler/rustc library/std
+	kiln_no_relr "${pgo}/build-llvm"
 	LLVM_PROFILE_FILE="${pgo}/llvm/default_%m_%p.profraw" kiln_train "${pgo}/build-llvm"
 	"${bin}/llvm-profdata" merge -o "${pgo}/llvm-ir.profdata" "${pgo}"/llvm/*.profraw \
 		|| die "Kiln PGO: could not merge the LLVM profile"
@@ -105,25 +126,106 @@ pre_src_compile() {
 	rm -rf "${pgo}/build-rustc" "${pgo}/rustc"
 
 	einfo "Kiln PGO, stage 4 of 4: the final build, with all the profiles"
-	# The recipe runs plain x.py build and install, so give them the profile settings.
+	# The recipe runs plain x.py build and install, so give them the profile settings, and the
+	# Rust half's relocations for BOLT. Install keeps stages 0 and 1, as the official build does,
+	# so it reuses the libraries that BOLT will change.
 	mv x.py x.py.real || die
 	cat > x.py <<-EOF || die
 		import os, sys
 		args = sys.argv[1:]
 		if args[:1] in (["build"], ["install"]):
-		    args += ["--llvm-profile-use=${pgo}/llvm.profdata", "--rust-profile-use=${pgo}/rustc.profdata"]
+		    args += ["--llvm-profile-use=${pgo}/llvm.profdata", "--rust-profile-use=${pgo}/rustc.profdata", "--enable-bolt-settings"]
+		if args[:1] == ["install"]:
+		    args += ["--keep-stage", "0", "--keep-stage", "1"]
 		os.execv(sys.executable, [sys.executable, "x.py.real"] + args)
 	EOF
 }
 
+kiln_stage2_lib() {
+	# $1: name pattern. Prints the one matching library in the stage 2 sysroot.
+	local found
+	found=$(find "${S}/build" -path "*/stage2/lib/$1" -type f)
+	[[ -n ${found} && $(wc -l <<< "${found}") == 1 ]] || die "Kiln: expected one $1 in stage 2, found: ${found:-none}"
+	echo "${found}"
+}
+
 post_src_compile() {
-	# Stop before installing if LLVM's C asserts came back, or if LLD was not built.
-	local lib lld
-	lib=$(find "${S}/build" -name 'libLLVM.so.*' -type f | head -1)
-	[[ -n ${lib} ]] || die "Kiln: no libLLVM in the build"
+	# Stop before BOLT if LLVM's C asserts came back, LLD was not built, or relocations are missing.
+	local lib lld driver
+	lib=$(kiln_stage2_lib 'libLLVM.so.*')
+	driver=$(kiln_stage2_lib 'librustc_driver-*.so')
 	if /usr/lib/llvm/22/bin/llvm-nm -D --undefined-only "${lib}" | grep -q __assert_fail; then
 		die "Kiln: LLVM still has its C asserts on"
 	fi
 	lld=$(find "${S}/build" -name rust-lld -type f | head -1)
 	[[ -n ${lld} ]] || die "Kiln: rust-lld was not built"
+	readelf -SW "${lib}" | grep -q '\.rela\.text' || die "Kiln: libLLVM has no relocations for BOLT"
+	kiln_no_relr "${S}/build"
+	readelf -SW "${driver}" | grep -q '\.rela\.text' || die "Kiln: the Rust half has no relocations for BOLT"
+}
+
+kiln_bolt() {
+	# $1: library in the stage 2 sysroot. $2: a short name. The official build's steps and
+	# settings, from src/tools/opt-dist/src/bolt.rs: instrument, train, then optimise.
+	local lib=$1 work="${WORKDIR}/kiln-bolt/$2" bolt=/usr/lib/kiln-bolt/bin merger
+	rm -rf "${work}"
+	mkdir -p "${work}" || die
+	einfo "Kiln BOLT: instrumenting $2"
+	"${bolt}/llvm-bolt" -instrument "${lib}" --instrumentation-file="${work}/prof.fdata" \
+		--instrumentation-file-append-pid -o "${work}/instrumented.so" || die "Kiln BOLT: could not instrument $2"
+	# A new file for the instrumented copy, so hard links to the original are not touched.
+	mv "${lib}" "${lib}.kiln-original" || die
+	cp "${work}/instrumented.so" "${lib}" || die
+
+	# Each process writes a large file, so merge the finished ones as we go. Stops if we die.
+	kiln_bolt_merge() {
+		local files
+		files=$(find "${work}" -name 'prof.fdata.*' -mmin "$1")
+		[[ -n ${files} ]] || return 0
+		[[ -e ${work}/merged ]] && files+=" ${work}/merged"
+		"${bolt}/merge-fdata" ${files} > "${work}/merged.new" || return 1
+		rm -f ${files}
+		mv "${work}/merged.new" "${work}/merged"
+	}
+	( while kill -0 $$ 2>/dev/null; do kiln_bolt_merge +0.2; sleep 20; done ) &
+	merger=$!
+	einfo "Kiln BOLT: training on $2"
+	KILN_TRAIN_JOBS=8 kiln_train "${S}/build"
+	kill "${merger}"
+	wait "${merger}" 2>/dev/null
+	kiln_bolt_merge -9999 || die "Kiln BOLT: could not merge the profile for $2"
+	[[ -s ${work}/merged ]] || die "Kiln BOLT: the profile for $2 is empty"
+
+	rm -f "${lib}" || die
+	mv "${lib}.kiln-original" "${lib}" || die
+	einfo "Kiln BOLT: optimising $2"
+	"${bolt}/llvm-bolt" "${lib}" -data "${work}/merged" -o "${work}/optimised.so" \
+		-reorder-blocks=ext-tsp -reorder-functions=cdsort -split-functions -split-strategy=cdsplit \
+		-split-all-cold -jump-tables=move -icf=all -dyno-stats || die "Kiln BOLT: could not optimise $2"
+	# Write into the existing file, so every hard link to it gets the result. Install uses them.
+	cat "${work}/optimised.so" > "${lib}" || die
+	rm -rf "${work}"
+}
+
+pre_src_install() {
+	# This phase repeats after a failure, so put back any library left instrumented, and do not
+	# apply BOLT twice.
+	local lib driver original
+	while read -r original; do
+		[[ -n ${original} ]] || continue
+		mv "${original}" "${original%.kiln-original}" || die
+	done < <(find "${S}/build" -path '*/stage2/lib/*.kiln-original' -type f)
+	lib=$(kiln_stage2_lib 'libLLVM.so.*')
+	driver=$(kiln_stage2_lib 'librustc_driver-*.so')
+	readelf -SW "${lib}" | grep -q '\.bolt\.org\.text' || kiln_bolt "${lib}" libLLVM
+	readelf -SW "${driver}" | grep -q '\.bolt\.org\.text' || kiln_bolt "${driver}" rustc_driver
+}
+
+post_src_install() {
+	# Stop before the real install if the step above did not reach the files to be installed.
+	local file
+	for file in "${ED}"/usr/lib/rust/*/lib/libLLVM.so.* "${ED}"/usr/lib/rust/*/lib/librustc_driver-*.so; do
+		[[ -f ${file} ]] || die "Kiln: ${file} is missing"
+		readelf -SW "${file}" | grep -q '\.bolt\.org\.text' || die "Kiln: BOLT did not reach ${file}"
+	done
 }
