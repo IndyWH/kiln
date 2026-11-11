@@ -3,22 +3,23 @@
 # rebuilds only libLLVM and drops it in beside our own rustc, in a throwaway folder in memory.
 # It installs nothing, and needs no root.
 #
-#   KILN_LAB=/path scripts/rust-llvm-lab.sh build NAME [lto=none|thin|full] [instr=1] [profile=FILE]
-#                                                       [flags="-extra"] [cpu="-march=native"]
-#                                                       [static=1] [relocs=1]
-#   KILN_LAB=/path scripts/rust-llvm-lab.sh train NAME PROFILE_OUT
-#   KILN_LAB=/path scripts/rust-llvm-lab.sh bolt NAME SOURCE
-#   KILN_LAB=/path scripts/rust-llvm-lab.sh bench NAME [NOTE]
+#   scripts/rust-llvm-lab.sh build NAME [lto=none|thin|full] [instr=1] [profile=FILE]
+#                                       [flags="-extra"] [cpu="-march=native"] [static=1] [relocs=1]
+#   scripts/rust-llvm-lab.sh train NAME PROFILE_OUT
+#   scripts/rust-llvm-lab.sh bolt NAME SOURCE
+#   scripts/rust-llvm-lab.sh bench NAME [NOTE]
+#   scripts/rust-llvm-lab.sh real NAME [NOTE]
 #
 # Results: results/rust-gap/runs.csv. Each bench times rust-bin before and after, as the control.
 # The disk guard checks each program this script runs, so they are written as full paths, and a
-# link, lab/current, chooses which rustc runs. The lab path below is one session's scratch folder.
+# link, lab/current, chooses which rustc runs. The lab is /tmp/kiln-lab, in memory, so a restart
+# empties it. bench and real need the Rust source unpacked in lab/src first, and lab/current made.
 
 set -eu
 export LC_ALL=C
 SELF=$(readlink -f "$0")
 REPO=$(dirname "$SELF")/..
-LAB=${KILN_LAB:?set KILN_LAB}
+LAB=/tmp/kiln-lab
 
 BIN=/usr/lib/llvm/22/bin
 RUSTSRC=$LAB/src/rustc-1.98.1-src
@@ -41,7 +42,7 @@ make_mix() {
     cp "$lib" "$mix/lib/$LIBNAME"
     ln -s "$OURS/lib/rustlib" "$mix/lib/rustlib"
     use_rustc "$mix"
-    /tmp/claude-1000/-home-indy-Projects-kiln/6a15672e-16e5-40c8-845a-ba4a31143835/scratchpad/lab/current/bin/rustc -vV | sed -n '1p;$p'
+    /tmp/kiln-lab/current/bin/rustc -vV | sed -n '1p;$p'
 }
 
 cmd_tools() {
@@ -123,7 +124,7 @@ run_training() {
             printf " for (n, x) in v.iter().enumerate() { m.entry(x %% %d).or_insert_with(Vec::new)", i + 3
             printf ".push(x.wrapping_mul(n as u64 + %d)); } m }\n", i } }' >"$work/made-up.rs"
     for level in 0 2 3; do
-        /tmp/claude-1000/-home-indy-Projects-kiln/6a15672e-16e5-40c8-845a-ba4a31143835/scratchpad/lab/current/bin/rustc --edition 2021 --crate-type lib -C opt-level="$level" -C codegen-units=1 \
+        /tmp/kiln-lab/current/bin/rustc --edition 2021 --crate-type lib -C opt-level="$level" -C codegen-units=1 \
             "$work/made-up.rs" -o "$work/made-up-$level.rlib"
     done
     # TRAIN_SET=rich adds more real programs. rust-analyzer stays out, as it is the real test.
@@ -168,7 +169,7 @@ cmd_bolt() {
     output=$LAB/builds/$name.so
     rm -rf "$prof"
     mkdir -p "$prof"
-    /tmp/claude-1000/-home-indy-Projects-kiln/6a15672e-16e5-40c8-845a-ba4a31143835/scratchpad/lab/builds/bolt/bin/llvm-bolt -instrument "$input" \
+    /usr/lib/kiln-bolt/bin/llvm-bolt -instrument "$input" \
         --instrumentation-file="$prof/prof.fdata" --instrumentation-file-append-pid -o "$output.instr"
     make_mix "$name-instr" "$output.instr"
     # Each process writes its own large file, and they filled 30 GB of memory, so merge as we go.
@@ -177,7 +178,7 @@ cmd_bolt() {
         files=$(find "$prof" -name 'prof.fdata.*' -mmin "$1")
         [ -n "$files" ] || return 0
         [ -e "$prof/merged" ] && files="$files $prof/merged"
-        /tmp/claude-1000/-home-indy-Projects-kiln/6a15672e-16e5-40c8-845a-ba4a31143835/scratchpad/lab/builds/bolt/bin/merge-fdata $files >"$prof/merged.new"
+        /usr/lib/kiln-bolt/bin/merge-fdata $files >"$prof/merged.new"
         rm -f $files
         mv "$prof/merged.new" "$prof/merged"
     }
@@ -190,7 +191,7 @@ cmd_bolt() {
     mv "$prof/merged" "$LAB/$name.fdata"
     ls -la "$LAB/$name.fdata"
     rm -rf "$prof" "$LAB/mix/$name-instr" "$output.instr"
-    /tmp/claude-1000/-home-indy-Projects-kiln/6a15672e-16e5-40c8-845a-ba4a31143835/scratchpad/lab/builds/bolt/bin/llvm-bolt "$input" -data "$LAB/$name.fdata" -o "$output" \
+    /usr/lib/kiln-bolt/bin/llvm-bolt "$input" -data "$LAB/$name.fdata" -o "$output" \
         -reorder-blocks=ext-tsp -reorder-functions=cdsort -split-functions -split-strategy=cdsplit \
         -split-all-cold -jump-tables=move -icf=all -dyno-stats 2>&1 | tail -25
     make_mix "$name" "$output"
@@ -200,7 +201,7 @@ time_it() {
     # Prints the seconds for one run on one core, of the rustc that lab/current points to.
     local begin end
     begin=$(date +%s.%N)
-    taskset -c 0 /tmp/claude-1000/-home-indy-Projects-kiln/6a15672e-16e5-40c8-845a-ba4a31143835/scratchpad/lab/current/bin/rustc --edition 2021 --crate-type lib -C opt-level=2 -C codegen-units=1 \
+    taskset -c 0 /tmp/kiln-lab/current/bin/rustc --edition 2021 --crate-type lib -C opt-level=2 -C codegen-units=1 \
         "$LAB/bench.rs" -o "$LAB/bench.rlib"
     end=$(date +%s.%N)
     echo "$begin $end" | awk '{ printf "%.2f\n", $2 - $1 }'
