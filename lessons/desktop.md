@@ -17,3 +17,4 @@ Hyprland, graphics and the screen.
 - Turning the screen off in Hyprland 0.57: `hyprctl dispatch 'hl.dsp.dpms({ action = "disable" })'`, and `"enable"` to turn it on. `kiln-idle` uses this with `swayidle`.
 - On `7.3.1-gentoo-kiln-gcc` the pointer did not show, though the mouse worked and Hyprland's log showed no error. `cursor.no_hardware_cursors = 1` fixed it. Whether the kernel or the first full restart with the Omarchy settings caused it is not yet known.
 - `AQ_DRM_DEVICES` is split by colons, so it cannot take a by-path card name, which has colons in it. `kiln-session` resolves the name to `/dev/dri/cardN` first.
+- GPU monitoring in btop: the RTX 4090 works through `libnvidia-ml`, which comes with the NVIDIA driver. For the WX 3200, btop suggests `dev-util/rocm-smi`, but that package is testing-only (`~amd64`) with no ready-built version, and ROCm 6 and 7 no longer support Polaris chips like the WX 3200. The owner chose to skip it.
