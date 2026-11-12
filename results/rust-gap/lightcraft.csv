@@ -1,0 +1,3 @@
+date,kind,ours_median_s,ours_runs,rust_bin_median_s,rust_bin_runs,note
+2026-11-11 23:40,debug,69.01,69.09 69.01 68.20,67.44,67.20 67.44 68.57,Real emerge, Full LTO, both profiles, LLD default, BOLT on both halves
+2026-11-11 23:47,release,66.80,67.44 66.64 66.80,64.79,64.63 64.79 65.25,Real emerge, Full LTO, both profiles, LLD default, BOLT on both halves

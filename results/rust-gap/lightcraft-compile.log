@@ -1,0 +1,2 @@
+lightcraft debug: ours 69.01 s (69.09 69.01 68.20), rust-bin 67.44 s (67.20 67.44 68.57) +2.3% time against rust-bin
+lightcraft release: ours 66.80 s (67.44 66.64 66.80), rust-bin 64.79 s (64.63 64.79 65.25) +3.1% time against rust-bin
