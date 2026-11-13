@@ -15,3 +15,5 @@ Measuring speed on CachyOS, and what made a difference.
 
 - CachyMod's TEO idle governor and lazy preemption, tested live on 7.3.3-1-cachyos, 13 Nov 2026: no gain from either. TEO used 4% more power at idle; lazy's one good worst-case figure did not repeat. Keep menu and full. Repeat any surprising single run before acting on it. `results/tuning-2026-11-13/`.
 - measure.sh's audio test plays through the monitor's DisplayPort audio. If the screen sleeps or is switched off mid-run, the audio line reads no-data and `Setup` shows no screen. Keep the screen awake for a full run.
+- Kernel profiling with perf needs `kernel.kptr_restrict=0` while recording: CachyOS sets 2, which hides kernel addresses even from root, and `llvm-profgen` then says "no kernel is found in mmap events". `kernel/profile.sh` lowers it only while recording. On this hybrid CPU, `-e BR_INST_RETIRED.NEAR_TAKEN:k -b` records on both P and E cores, and llvm-profgen reads both.
+- The disk guard reads `x=${1:?some message}` unquoted as separate words; a message containing the word "source" looked like a command running a file called by the next word. Quote such lines.

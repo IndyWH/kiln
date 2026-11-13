@@ -21,3 +21,15 @@ Each stage gets `scripts/measure.sh run`; the final one also 5 boot timings, aga
 | Final, boot time | Within 0.5 s |
 
 Most likely result: no measurable gain on these tests. The test that might show one is the worst wake-up under load.
+
+## Stage 1, first boot and one run (`results/cachyos-2026-11-13-7`)
+
+- Booted cleanly at 23:04: no failed services, network, screen at 5120x1440 120 Hz with VRR, the 4090 at x16 with its module 620.70.06, guard OK, snapshots taken. Kernel stage of boot 0.98 s. Two ACPI firmware messages about the 4090's slot appear on the stock kernel too.
+- Made the default after that: `BOOT_ORDER="*kiln, *, *lts, *fallback, Snapshots"`; the stock kernel updated to 7.3.4 the same minute.
+
+| | sysbench 1 / 32 | 7-Zip 1 / 32 | Audio, worst timing | Worst wake-up, loaded |
+|---|---|---|---|---|
+| Stock 7.3.3, six runs today | 1723-1730 / 39209-39325 | 10754-10814 / 215687-216652 | 128, 0.26-0.62 | 2.43-3.28 ms |
+| Kiln stage 1 | 1727 / 39264 | 10804 / 216937 | 128, 0.03 | 2.08 ms |
+
+CPU: the same, as predicted. Worst wake-up and audio timing: better than every stock run today, but one run; repeats against stock 7.3.4 come with the boot tests.
