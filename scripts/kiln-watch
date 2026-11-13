@@ -9,7 +9,7 @@ Claude session, and sends a desktop notice when something needs attention.
   kiln-watch --print   check now and print, without writing or notifying
 
 Checks: failed services, the Crucial P2's health (only that disk, by serial), btrfs errors,
-free space, snapshots, the rescue entry and disk guard, pending updates, new Arch and
+free space, the boot partition's free space, snapshots, the rescue entry and disk guard, pending updates, new Arch and
 CachyOS news, packages still generic. News is fetched as data and only its titles kept.
 """
 import json
@@ -114,6 +114,21 @@ def check_space(r):
     r.fact("Free space: %.0f GB of %.0f GB." % (usage.free / 1e9, usage.total / 1e9))
 
 
+def check_boot(r):
+    """The boot partition holds the kernels and the boot menu for every entry, the rescue
+    one included. Full, a kernel update can leave the system unable to start."""
+    try:
+        usage = shutil.disk_usage("/boot")
+    except OSError:
+        r.bad("Could not read the boot partition's free space.")
+        return
+    free = usage.free / usage.total * 100
+    if free < 25:
+        r.bad("The boot partition is only %.0f%% free (%.0f MB). Kernel updates need room."
+              % (free, usage.free / 1e6))
+    r.fact("Boot partition: %.0f MB free of %.0f MB." % (usage.free / 1e6, usage.total / 1e6))
+
+
 def check_snapshots(r):
     counts = []
     for config in ("root", "home"):
@@ -209,7 +224,7 @@ def main(argv):
     except (OSError, ValueError):
         state = {}
     r = Report()
-    for check in (check_services, lambda r: check_disk(r, state), check_btrfs, check_space,
+    for check in (check_services, lambda r: check_disk(r, state), check_btrfs, check_space, check_boot,
                   check_snapshots, check_rescue_and_guard, check_updates,
                   lambda r: check_news(r, state), check_v3):
         try:

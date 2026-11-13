@@ -12,4 +12,5 @@ The helper agents, the watcher, and the rules hook's locks.
 - Hook facts: `SubagentStart` and `SubagentStop` carry `agent_type`; `SubagentStop` has `last_assistant_message`, used for the reviewer's verdict. An interrupt sends no `Stop`, so the `idle_prompt` notification turns a stuck green back to blue. `permission_prompt` waits about 6 s; `PermissionRequest` is at once.
 - Noctalia 5.4 plugins: a folder with `plugin.toml` and Luau in `~/.local/share/noctalia/plugins/` (not `~/.local/state`). Enable with `[plugins] enabled = [ "kiln/agents" ]`, add `[widget.kiln_agents] type = "kiln/agents:status"` and put `kiln_agents` in the bar's list. `noctalia plugins lint <folder>` checks it; `noctalia msg plugins list` shows it loaded. No file watching: `update()` with `noctalia.setUpdateInterval(1000)` polls. Glyphs are Tabler names, listed in `/usr/share/noctalia/assets/fonts/tabler.json`. Docs: docs.noctalia.dev/noctalia/v5.4.0/plugins/.
 - `grim -g "X,Y WxH" file.png` screenshots part of the screen, to check what the bar shows.
+- The watcher also checks the boot partition (/boot, 4 GB vfat), as every boot entry depends on it: attention below 25% free.
 
