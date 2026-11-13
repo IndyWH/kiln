@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Kiln watch daily and 5 minutes after each start
+
+[Timer]
+OnBootSec=5min
+OnCalendar=daily
+RandomizedDelaySec=15min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

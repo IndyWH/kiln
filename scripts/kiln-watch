@@ -1,0 +1,247 @@
+#!/usr/bin/python3
+"""kiln-watch: Kiln's daily health check. Read-only: it changes nothing on the system.
+
+Run as root by kiln-watch.timer, daily and a few minutes after each start. Writes a plain
+report to /var/log/kiln/watch/latest.txt, which the operator reads at the start of every
+Claude session, and sends a desktop notice when something needs attention.
+
+  kiln-watch           check now and write the report
+  kiln-watch --print   check now and print, without writing or notifying
+
+Checks: failed services, the Crucial P2's health (only that disk, by serial), btrfs errors,
+free space, snapshots, the rescue entry and disk guard, pending updates, new Arch and
+CachyOS news, packages still generic. News is fetched as data and only its titles kept.
+"""
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import time
+import urllib.request
+import xml.etree.ElementTree as ET
+
+P2 = "/dev/disk/by-id/nvme-CT1000P2SSD8_2128E5B7DBBC"
+OUT_DIR = "/var/log/kiln/watch"
+STATE = "/var/lib/kiln-watch/state.json"
+OWNER, OWNER_UID = "indy", 1000
+FEEDS = (("Arch news", "https://archlinux.org/feeds/news/"),
+         ("CachyOS blog", "https://cachyos.org/rss.xml"))
+RESCUE_KERNEL = "/boot/vmlinuz-linux-cachyos-lts"
+BOOT_MENU = "/boot/limine.conf"
+GUARD = "/usr/local/lib/kiln-guard/kiln_guard.py"
+BIG_PACKAGES = re.compile(r"^(linux-cachyos\S*|nvidia\S*|limine\S*|systemd|glibc|mesa|hyprland)\s")
+
+
+def run(*cmd, timeout=120):
+    try:
+        done = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+        return done.returncode, done.stdout
+    except (OSError, subprocess.SubprocessError) as why:
+        return -1, str(why)
+
+
+class Report:
+    def __init__(self):
+        self.attention, self.facts = [], []
+
+    def bad(self, text):
+        self.attention.append(text)
+
+    def fact(self, text):
+        self.facts.append(text)
+
+
+def check_services(r):
+    _, out = run("systemctl", "--failed", "--plain", "--no-legend")
+    failed = [line.split()[0] for line in out.splitlines() if line.strip()]
+    if failed:
+        r.bad("Failed services: %s." % ", ".join(failed))
+    else:
+        r.fact("No failed services.")
+
+
+def check_disk(r, state):
+    code, out = run("smartctl", "-j", "-H", "-A", P2)
+    try:
+        d = json.loads(out)
+    except ValueError:
+        r.bad("Could not read the P2's health (smartctl exit %d)." % code)
+        return
+    log = d.get("nvme_smart_health_information_log") or {}
+    if not (d.get("smart_status") or {}).get("passed", False):
+        r.bad("The P2 reports its health check FAILED. Back up now.")
+    if log.get("critical_warning", 0):
+        r.bad("The P2 reports a critical warning (%s)." % log["critical_warning"])
+    if log.get("available_spare", 100) <= log.get("available_spare_threshold", 0):
+        r.bad("The P2's spare blocks are at or below its limit.")
+    errors = log.get("media_errors", 0)
+    if errors > state.get("media_errors", 0):
+        r.bad("The P2 has new media errors: %d, was %d." % (errors, state.get("media_errors", 0)))
+    state["media_errors"] = errors
+    used, temp = log.get("percentage_used", 0), log.get("temperature", 0)
+    if used >= 80:
+        r.bad("The P2 is %d%% worn." % used)
+    if temp >= 70:
+        r.bad("The P2 is hot: %d C." % temp)
+    r.fact("P2: health passed, %d%% worn, %d C, %d media errors, %d power-on hours."
+           % (used, temp, errors, log.get("power_on_hours", 0)))
+
+
+def check_btrfs(r):
+    _, uuid = run("findmnt", "-n", "-o", "UUID", "/")
+    base = "/sys/fs/btrfs/%s/devinfo" % uuid.strip()
+    total = 0
+    try:
+        for dev in os.listdir(base):
+            with open(os.path.join(base, dev, "error_stats")) as f:
+                total += sum(int(line.split()[1]) for line in f if line.strip())
+    except (OSError, ValueError, IndexError):
+        r.bad("Could not read btrfs's error counts.")
+        return
+    if total:
+        r.bad("btrfs has counted %d read, write or corruption errors." % total)
+    else:
+        r.fact("btrfs: no errors.")
+
+
+def check_space(r):
+    usage = shutil.disk_usage("/")
+    free = usage.free / usage.total * 100
+    if free < 10:
+        r.bad("Only %.0f%% of the P2 is free (%.0f GB)." % (free, usage.free / 1e9))
+    r.fact("Free space: %.0f GB of %.0f GB." % (usage.free / 1e9, usage.total / 1e9))
+
+
+def check_snapshots(r):
+    counts = []
+    for config in ("root", "home"):
+        code, out = run("snapper", "--jsonout", "-c", config, "list")
+        try:
+            snaps = json.loads(out).get(config, [])
+        except ValueError:
+            r.bad("Could not list the %s snapshots (snapper exit %d)." % (config, code))
+            continue
+        counts.append("%s %d" % (config, len(snaps)))
+    for unit in ("snapper-cleanup.timer", "limine-snapper-sync.service"):
+        code, _ = run("systemctl", "is-enabled", "--quiet", unit)
+        if code != 0:
+            r.bad("%s is not enabled, so snapshots are not looked after." % unit)
+    if counts:
+        r.fact("Snapshots: %s." % ", ".join(counts))
+
+
+def check_rescue_and_guard(r):
+    try:
+        with open(BOOT_MENU) as f:
+            in_menu = any(line.strip() == "//linux-cachyos-lts" for line in f)
+    except OSError:
+        in_menu = False
+    if not (in_menu and os.path.exists(RESCUE_KERNEL)):
+        r.bad("The rescue LTS kernel is missing from the boot menu.")
+    else:
+        r.fact("Rescue LTS kernel: in the boot menu.")
+    code, out = run(sys.executable or "/usr/bin/python3", GUARD, "status")
+    last = out.strip().splitlines()[-1] if out.strip() else ""
+    if last != "Result: OK":
+        r.bad("The disk guard's status is not OK: %s" % (last or "no answer"))
+    else:
+        r.fact("Disk guard: OK.")
+
+
+def check_updates(r):
+    code, out = run("checkupdates", timeout=300)
+    if code == 2 or (code == 0 and not out.strip()):
+        r.fact("Updates: none waiting.")
+        return
+    if code != 0:
+        r.fact("Updates: could not check (checkupdates exit %d)." % code)
+        return
+    lines = [line for line in out.splitlines() if line.strip()]
+    big = sorted({line.split()[0] for line in lines if BIG_PACKAGES.match(line)})
+    r.fact("Updates: %d waiting%s." % (len(lines), ", including " + ", ".join(big) if big else ""))
+
+
+def check_news(r, state):
+    seen = set(state.get("news_seen", []))
+    first_run = "news_seen" not in state
+    for name, url in FEEDS:
+        try:
+            request = urllib.request.Request(url, headers={"User-Agent": "kiln-watch"})
+            with urllib.request.urlopen(request, timeout=30) as reply:
+                root = ET.fromstring(reply.read(2_000_000))
+        except Exception:  # noqa: BLE001 - any failure is only reported
+            r.fact("%s: could not be fetched." % name)
+            continue
+        new = []
+        for item in root.iter("item"):
+            link = (item.findtext("link") or "").strip()
+            title = re.sub(r"\s+", " ", item.findtext("title") or "").strip()[:150]
+            if link and link not in seen:
+                seen.add(link)
+                new.append("%s (%s)" % (title, link))
+        if new and not first_run:
+            r.bad("New %s, to read before the next update: %s" % (name, "; ".join(new)))
+        else:
+            r.fact("%s: nothing new." % name)
+    state["news_seen"] = sorted(seen)
+
+
+def check_v3(r):
+    code, out = run("/usr/local/bin/kiln-v3")
+    lines = [line for line in out.splitlines() if line and not line.startswith(" ")]
+    if code == 0 and lines:
+        r.fact("Packages: " + "; ".join(lines) + ".")
+
+
+def notify(text):
+    env = "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%d/bus" % OWNER_UID
+    run("runuser", "-u", OWNER, "--", "env", env, "notify-send", "--app-name=Kiln",
+        "--urgency=normal", "Kiln watch", text, timeout=20)
+
+
+def main(argv):
+    printing = "--print" in argv
+    try:
+        with open(STATE) as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        state = {}
+    r = Report()
+    for check in (check_services, lambda r: check_disk(r, state), check_btrfs, check_space,
+                  check_snapshots, check_rescue_and_guard, check_updates,
+                  lambda r: check_news(r, state), check_v3):
+        try:
+            check(r)
+        except Exception as why:  # noqa: BLE001 - one broken check must not stop the rest
+            r.bad("A check failed to run: %r" % why)
+    now = time.strftime("%Y-%m-%d %H:%M")
+    head = ("Kiln watch, %s: all well." % now if not r.attention else
+            "Kiln watch, %s: %d thing%s need%s attention." % (
+                now, len(r.attention), "" if len(r.attention) == 1 else "s",
+                "s" if len(r.attention) == 1 else ""))
+    text = "\n".join([head, ""] + ["NEEDS ATTENTION: " + a for a in r.attention]
+                     + ([""] if r.attention else []) + r.facts) + "\n"
+    if printing:
+        print(text, end="")
+        return 0
+    os.makedirs(OUT_DIR, exist_ok=True)
+    os.makedirs(os.path.dirname(STATE), exist_ok=True)
+    for path in (os.path.join(OUT_DIR, "latest.txt"),
+                 os.path.join(OUT_DIR, time.strftime("%Y-%m-%d") + ".txt")):
+        with open(path, "w") as f:
+            f.write(text)
+        os.chmod(path, 0o644)
+    old = sorted(n for n in os.listdir(OUT_DIR) if re.match(r"^\d{4}-\d\d-\d\d\.txt$", n))
+    for name in old[:-30]:
+        os.unlink(os.path.join(OUT_DIR, name))
+    with open(STATE, "w") as f:
+        json.dump(state, f)
+    if r.attention:
+        notify(head + " " + r.attention[0] + (" Open Claude for the rest." if len(r.attention) > 1 else ""))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

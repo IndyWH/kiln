@@ -1,0 +1,11 @@
+[Unit]
+Description=Kiln watch: daily read-only health check
+Documentation=file:///home/indy/Projects/kiln/scripts/kiln-watch
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/kiln-watch
+Nice=10
+IOSchedulingClass=idle
