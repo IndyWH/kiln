@@ -1,0 +1,7 @@
+# Kiln disk guard: lock any disk that appears, unless it is the Crucial.
+# The script decides by serial, and locks anything it cannot identify.
+ACTION!="add|change", GOTO="kiln_guard_end"
+SUBSYSTEM!="block", GOTO="kiln_guard_end"
+KERNEL=="loop*|ram*|zram*", GOTO="kiln_guard_end"
+RUN+="/usr/bin/python3 /usr/local/lib/kiln-guard/kiln_guard.py udev %k"
+LABEL="kiln_guard_end"
