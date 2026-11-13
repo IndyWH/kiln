@@ -1,0 +1,7 @@
+Kiln measurement: cachyos, 2026-11-13
+Audio: no buffer played clean.
+Audio, not clean: 1024=no-data
+Responsiveness: wake-up delay median 0.06 ms, 99% 0.06 ms, worst 3.17 ms, every core 99.9% busy.
+CPU: sysbench 1730 (1 thread), 39325 (32 threads) events per second. 7-Zip 10754 (1 thread), 216125 (32 threads) MIPS.
+Setup: power mode balanced, screen on 
+Details: results/cachyos-2026-11-13-6

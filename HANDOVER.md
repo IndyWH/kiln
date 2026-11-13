@@ -4,7 +4,7 @@
 
 Part 5 of docs/INSTALL.md, first start, is done: guard, snapshots, rules hook, machine rules, agents, NVIDIA checks, the Omarchy look, and a measured baseline. Open:
 
-1. Boot times: `scripts/measure.sh boot` after each of 5 restarts, when the owner can restart.
+1. Boot times: `scripts/measure.sh boot` after each of 5 restarts, when the owner can restart. Same day, try the BORE kernel as an extra entry (see the log).
 
 Known gap: snapshots 1 to 6 are older than the guard. Booting one from the menu starts without the guard.
 
@@ -20,6 +20,12 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 - `kiln-stories/`, `ai-bug-reports/`, and Claude's memory notes in `claude-memory/`.
 
 ## Log
+
+### 13 Nov 2026 — Claude Code, CachyMod ideas tested
+
+- Owner asked what to take from CachyMod (archived 13 Nov 2026; not adopted). Two live kernel settings tested on the stock kernel, predictions written first: TEO idle governor and lazy preemption. Neither gained anything; lazy's one good figure did not repeat. Both stay at the defaults, nothing made permanent. results/tuning-2026-11-13/.
+- Still to try, with the boot tests: linux-cachyos-bore-lto with its ready-built nvidia-open, as an extra boot entry, reviewer first. The rescue kernel stays untouched.
+- Watcher now also checks the boot partition's free space.
 
 ### 13 Nov 2026 — Claude Code, log gap, login screen
 

@@ -1,0 +1,13 @@
+tool,threads,repeat,score
+sysbench,1,1,1726.96
+7zip,1,1,10774
+sysbench,32,1,39254.23
+7zip,32,1,215824
+sysbench,1,2,1728.85
+7zip,1,2,10755
+sysbench,32,2,39244.31
+7zip,32,2,216420
+sysbench,1,3,1727.28
+7zip,1,3,10745
+sysbench,32,3,39266.67
+7zip,32,3,216335

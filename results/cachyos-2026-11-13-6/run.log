@@ -1,0 +1,838 @@
+=== System, 2026-11-13 21:29:15
+OS: cachyos  Kernel: 7.3.3-1-cachyos
+model name	: 13th Gen Intel(R) Core(TM) i9-13900K
+Threads: 32  Load average: 31.25 32.11 27.60
+microcode	: 0x137
+Power mode: balanced
+Governor: powersave
+Boot options: quiet nowatchdog splash rw rootflags=subvol=/@ root=UUID=cfa7c9cb-c87b-4f18-8d19-fbfb942c456a
+Screen: card1-DP-4 1002:6981 
+gcc (GCC) 16.2.1 20260810
+sysbench 1.0.20-1472a05
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+cyclictest V 2.11
+Compiled with libpipewire 1.6.11
+
+Audio output: alsa_output.pci-0000_0a_00.1.hdmi-stereo-extra1
+Warning: the machine is already busy. Close other apps for a fair result.
+CPU speed: sysbench, 1 threads, run 1 of 3
+sysbench 1.0.20-1472a05 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 1
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second:  1730.21
+
+General statistics:
+    total time:                          30.0002s
+    total number of events:              51908
+
+Latency (ms):
+         min:                                    0.58
+         avg:                                    0.58
+         max:                                    3.55
+         95th percentile:                        0.58
+         sum:                                29997.12
+
+Threads fairness:
+    events (avg/stddev):           51908.0000/0.00
+    execution time (avg/stddev):   29.9971/0.00
+CPU speed: 7-Zip, 1 threads, run 1 of 3
+
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:4096, ASM
+
+ mt=1 d25
+Compiler:  ver:16.2.1 20260810 GCC 16.2.1 : AVX2
+Linux : 7.3.3-1-cachyos : #1 SMP PREEMPT_DYNAMIC Sat, 07 Nov 2026 13:54:44 +0000 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:always hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  4688  5335  5481  5477  5489  5492  5489
+
+RAM size:   96328 MB (LP),  # CPU hardware threads:  32
+RAM usage:    437 MB (LP),  # Benchmark threads:      1
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:      13972   100  13641  13593  |     121437   100  10333  10368
+23:      11314    99  11683  11528  |     121180   100  10522  10489
+24:       9078   100   9771   9761  |     120514   100  10589  10580
+25:       8064   100   9210   9208  |     119843    99  10744  10667
+22:      13210    99  12915  12851  |     121534   100  10396  10377
+23:      10753   102  10784  10957  |     121242   100  10522  10495
+24:       9170   100   9880   9860  |     120655   100  10589  10592
+25:       8078   100   9256   9223  |     119782   100  10665  10661
+22:      13898    99  13641  13520  |     121503   100  10396  10374
+23:      11341    99  11683  11556  |     121314   100  10458  10501
+24:       9111   100   9825   9797  |     120784    99  10660  10604
+25:       8058   100   9188   9201  |     119902    99  10744  10672
+22:      13729   100  13341  13356  |     121538   100  10396  10377
+23:      10841   100  11068  11046  |     121255   100  10522  10496
+24:       9141    99   9880   9829  |     120789    99  10660  10604
+25:       8077   100   9210   9223  |     119951   100  10665  10676
+22:      13894    99  13641  13516  |     121567   100  10396  10379
+23:      11309   100  11523  11523  |     121337   100  10522  10503
+24:       9172   100   9880   9863  |     120891   100  10589  10613
+25:       8075   100   9233   9221  |     119927    99  10744  10674
+22:      14065    99  13796  13683  |     121537   100  10333  10377
+23:      11201   100  11367  11413  |     121235   100  10522  10494
+24:       9178   100   9880   9869  |     120782   100  10589  10603
+25:       8058   100   9233   9200  |     119854   100  10665  10668
+22:      13904    99  13641  13526  |     121500   100  10333  10374
+23:      11109   100  11367  11320  |     121273   100  10458  10497
+24:       9167   100   9880   9856  |     120706   100  10589  10597
+25:       8069   100   9233   9213  |     119664    99  10744  10651
+22:      13643   101  13196  13272  |     121511   100  10396  10375
+23:      10884   100  11068  11090  |     121296   100  10522  10499
+24:       9208   100   9880   9901  |     120819    99  10660  10607
+25:       8054   100   9233   9196  |     119976   100  10665  10679
+22:      13354   100  13054  12991  |     121533   100  10396  10377
+23:      11474   100  11683  11691  |     121281   100  10522  10498
+24:       9175   100   9880   9866  |     120754   100  10589  10601
+25:       8065   100   9233   9208  |     119874   100  10665  10670
+22:      13818   100  13489  13443  |     121510   100  10396  10375
+23:      10863   101  10925  11069  |     121296   100  10522  10499
+24:       9183   100   9880   9874  |     120812    99  10660  10606
+25:       8048   100   9210   9190  |     119877   100  10665  10670
+----------------------------------  | ------------------------------
+Avr:     10520   100  10960  10938  |     120851   100  10550  10535
+Tot:             100  10755  10737
+CPU speed: sysbench, 32 threads, run 1 of 3
+sysbench 1.0.20-1472a05 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 32
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second: 39332.51
+
+General statistics:
+    total time:                          30.0007s
+    total number of events:              1180035
+
+Latency (ms):
+         min:                                    0.59
+         avg:                                    0.81
+         max:                                    3.37
+         95th percentile:                        1.14
+         sum:                               959891.59
+
+Threads fairness:
+    events (avg/stddev):           36876.0938/10627.51
+    execution time (avg/stddev):   29.9966/0.00
+CPU speed: 7-Zip, 32 threads, run 1 of 3
+
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:4096, ASM
+
+ mt=32 d25
+Compiler:  ver:16.2.1 20260810 GCC 16.2.1 : AVX2
+Linux : 7.3.3-1-cachyos : #1 SMP PREEMPT_DYNAMIC Sat, 07 Nov 2026 13:54:44 +0000 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:always hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  5189  5479  5470  5486  5491  5493  5492
+16T CPU Freq (MHz): 1416% 4327   1440% 4448  
+32T CPU Freq (MHz): 2632% 3855   2708% 3967  
+
+RAM size:   96328 MB (LP),  # CPU hardware threads:  32
+RAM usage:   7119 MB (LP),  # Benchmark threads:     32
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:     218964  2769   7693 213009  |    2629431  3079   7281 224183
+23:     202233  2860   7205 206052  |    2600484  3121   7209 224978
+24:     194178  2932   7120 208781  |    2549037  3137   7130 223670
+25:     186464  2905   7329 212898  |    2494276  3151   7042 221917
+22:     215536  2709   7739 209674  |    2678584  3147   7256 228374
+23:     197712  2785   7232 201446  |    2567008  3077   7218 222082
+24:     190329  2863   7147 204642  |    2522034  3099   7140 221300
+25:     185265  2911   7266 211529  |    2486086  3140   7045 221188
+22:     220117  2755   7773 214130  |    2669566  3146   7236 227605
+23:     203711  2865   7244 207557  |    2601211  3126   7199 225041
+24:     189045  2839   7160 203262  |    2541797  3135   7114 223034
+25:     185780  2912   7284 212117  |    2476838  3133   7034 220365
+22:     215917  2721   7721 210044  |    2646871  3127   7218 225670
+23:     201347  2827   7256 205149  |    2605665  3141   7176 225426
+24:     191083  2885   7122 205453  |    2526120  3113   7120 221659
+25:     182812  2868   7277 208728  |    2460913  3112   7037 218948
+22:     220726  2796   7681 214723  |    2661321  3147   7211 226902
+23:     200471  2800   7295 204256  |    2596119  3127   7182 224600
+24:     192685  2903   7136 207176  |    2533985  3126   7113 222349
+25:     184342  2885   7296 210475  |    2481037  3141   7027 220739
+22:     218492  2757   7708 212550  |    2631476  3114   7205 224358
+23:     201728  2844   7228 205537  |    2599270  3139   7164 224873
+24:     190448  2869   7136 204771  |    2516702  3111   7099 220832
+25:     184148  2875   7313 210254  |    2474956  3127   7042 220198
+22:     218308  2756   7705 212371  |    2669278  3162   7197 227581
+23:     199728  2776   7331 203500  |    2604912  3151   7152 225361
+24:     190079  2859   7149 204374  |    2542648  3146   7092 223109
+25:     183647  2877   7288 209682  |    2486381  3150   7022 221214
+22:     215750  2722   7711 209882  |    2648102  3138   7195 225775
+23:     201451  2821   7275 205255  |    2569035  3097   7177 222257
+24:     190656  2852   7187 204994  |    2545088  3151   7086 223323
+25:     185760  2890   7339 212094  |    2417890  3038   7080 215121
+22:     218463  2738   7761 212521  |    2661704  3151   7201 226935
+23:     202190  2833   7271 206008  |    2606125  3152   7153 225466
+24:     191721  2875   7171 206139  |    2536015  3137   7093 222527
+25:     185107  2889   7316 211348  |    2475227  3139   7017 220222
+22:     210817  2660   7711 205083  |    2656452  3150   7189 226487
+23:     201197  2796   7331 204996  |    2599290  3143   7156 224874
+24:     192039  2890   7144 206481  |    2545371  3148   7095 223348
+25:     176441  2745   7339 201454  |    2481543  3130   7054 220784
+----------------------------------  | ------------------------------
+Avr:    198422  2828   7360 208010  |    2564896  3130   7136 223367
+Tot:            2979   7248 215688
+CPU speed: sysbench, 1 threads, run 2 of 3
+sysbench 1.0.20-1472a05 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 1
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second:  1730.55
+
+General statistics:
+    total time:                          30.0001s
+    total number of events:              51918
+
+Latency (ms):
+         min:                                    0.58
+         avg:                                    0.58
+         max:                                    1.02
+         95th percentile:                        0.58
+         sum:                                29997.02
+
+Threads fairness:
+    events (avg/stddev):           51918.0000/0.00
+    execution time (avg/stddev):   29.9970/0.00
+CPU speed: 7-Zip, 1 threads, run 2 of 3
+
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:4096, ASM
+
+ mt=1 d25
+Compiler:  ver:16.2.1 20260810 GCC 16.2.1 : AVX2
+Linux : 7.3.3-1-cachyos : #1 SMP PREEMPT_DYNAMIC Sat, 07 Nov 2026 13:54:44 +0000 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:always hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  5482  5463  5480  5488  5486  5491  5491
+
+RAM size:   96328 MB (LP),  # CPU hardware threads:  32
+RAM usage:    437 MB (LP),  # Benchmark threads:      1
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:      14051   100  13641  13669  |     121378   100  10396  10363
+23:      11136    98  11523  11347  |     121156   101  10395  10487
+24:       9174   100   9880   9865  |     120590    99  10660  10587
+25:       8080   100   9256   9226  |     119948   100  10665  10676
+22:      13703   100  13341  13331  |     121512   100  10396  10375
+23:      11294    98  11683  11507  |     121328   100  10522  10502
+24:       9192    99   9935   9883  |     120663   101  10519  10593
+25:       8066   100   9233   9211  |     119890   100  10665  10671
+22:      13902    99  13641  13525  |     121498   100  10396  10373
+23:      11370   101  11523  11585  |     121196   100  10522  10491
+24:       9195    99   9991   9887  |     120812   100  10589  10606
+25:       8067   100   9233   9211  |     119990   101  10588  10680
+22:      13657   100  13341  13286  |     121486   100  10396  10372
+23:      11440   100  11683  11656  |     121231   100  10522  10494
+24:       9141   100   9825   9829  |     120744    99  10660  10600
+25:       8077   100   9256   9222  |     119900   100  10665  10672
+22:      13408   100  13054  13044  |     121577   100  10396  10380
+23:      11176    99  11523  11387  |     121256   100  10458  10496
+24:       9204   100   9935   9897  |     120783   100  10589  10604
+25:       8074   100   9233   9219  |     119967   100  10665  10678
+22:      14020    99  13796  13639  |     121560   100  10396  10379
+23:      11378   101  11523  11594  |     121340   100  10458  10503
+24:       9200   100   9935   9892  |     120791   100  10589  10604
+25:       8058   100   9233   9200  |     119920   100  10665  10674
+22:      14060    99  13796  13678  |     121577   100  10396  10380
+23:      11269   101  11367  11482  |     121293   100  10458  10499
+24:       9170    99   9935   9860  |     120717   100  10589  10598
+25:       8003   100   9143   9138  |     119926    99  10744  10674
+22:      13861   100  13489  13484  |     121492   100  10396  10373
+23:      11115   100  11367  11325  |     121256   100  10522  10496
+24:       9093   100   9771   9777  |     120675   100  10589  10594
+25:       8000   100   9143   9134  |     119960   100  10665  10677
+22:      13436    99  13196  13071  |     121513   100  10396  10375
+23:      11169   100  11367  11380  |     121286   100  10522  10499
+24:       9097   100   9825   9782  |     120738   100  10589  10600
+25:       8013   100   9165   9150  |     119374   100  10665  10625
+22:      13776    99  13489  13402  |     121493   100  10396  10373
+23:      10909   100  11068  11116  |     121267   100  10522  10497
+24:       9164   100   9880   9854  |     120807   100  10589  10606
+25:       8067   100   9210   9211  |     119871    99  10744  10669
+----------------------------------  | ------------------------------
+Avr:     10557   100  11011  10974  |     120844   100  10539  10535
+Tot:             100  10775  10754
+CPU speed: sysbench, 32 threads, run 2 of 3
+sysbench 1.0.20-1472a05 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 32
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second: 39238.49
+
+General statistics:
+    total time:                          30.0007s
+    total number of events:              1177212
+
+Latency (ms):
+         min:                                    0.58
+         avg:                                    0.82
+         max:                                  204.71
+         95th percentile:                        1.14
+         sum:                               959884.92
+
+Threads fairness:
+    events (avg/stddev):           36787.8750/10486.55
+    execution time (avg/stddev):   29.9964/0.00
+CPU speed: 7-Zip, 32 threads, run 2 of 3
+
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:4096, ASM
+
+ mt=32 d25
+Compiler:  ver:16.2.1 20260810 GCC 16.2.1 : AVX2
+Linux : 7.3.3-1-cachyos : #1 SMP PREEMPT_DYNAMIC Sat, 07 Nov 2026 13:54:44 +0000 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:always hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  4287  4548  5480  5485  5490  5491  5493
+16T CPU Freq (MHz): 1411% 4311   1438% 4357  
+32T CPU Freq (MHz): 2482% 3625   2856% 4169  
+
+RAM size:   96328 MB (LP),  # CPU hardware threads:  32
+RAM usage:   7119 MB (LP),  # Benchmark threads:     32
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:     218852  2769   7690 212900  |    2624823  3071   7288 223790
+23:     190536  2741   7084 194134  |    2595288  3103   7236 224528
+24:     190270  2869   7131 204579  |    2443067  3010   7121 214371
+25:     178414  2818   7230 203707  |    2473303  3122   7049 220051
+22:     220036  2798   7651 214052  |    2622289  3075   7271 223574
+23:     201360  2806   7311 205162  |    2613791  3136   7210 226129
+24:     191506  2867   7182 205908  |    2498804  3081   7117 219262
+25:     185110  2893   7305 211351  |    2423493  3057   7054 215619
+22:     217433  2746   7702 211519  |    2628380  3100   7228 224094
+23:     202636  2858   7224 206462  |    2604212  3126   7207 225300
+24:     193345  2901   7165 207885  |    2561387  3158   7117 224753
+25:     184427  2888   7290 210572  |    2496350  3149   7053 222101
+22:     217372  2745   7702 211460  |    2635588  3108   7231 224708
+23:     198539  2767   7311 202288  |    2612445  3138   7203 226013
+24:     189991  2842   7187 204279  |    2494299  3056   7161 218867
+25:     186238  2916   7292 212640  |    2488821  3148   7034 221431
+22:     219887  2786   7678 213907  |    2671101  3162   7203 227736
+23:     200443  2833   7209 204228  |    2619552  3159   7174 226627
+24:     191477  2867   7180 205877  |    2557853  3161   7101 224443
+25:     183269  2864   7305 209250  |    2489925  3153   7025 221530
+22:     219194  2771   7696 213233  |    2672017  3166   7196 227814
+23:     204055  2858   7275 207908  |    2586079  3121   7169 223731
+24:     193148  2925   7101 207673  |    2523982  3111   7118 221471
+25:     185780  2895   7327 212117  |    2448192  3091   7046 217817
+22:     214465  2695   7742 208632  |    2668795  3165   7189 227539
+23:     204161  2865   7259 208016  |    2623475  3172   7156 226967
+24:     189347  2849   7145 203587  |    2545957  3151   7089 223400
+25:     184529  2881   7314 210688  |    2491163  3153   7029 221640
+22:     224827  2828   7733 218712  |    2635874  3122   7199 224733
+23:     202160  2825   7291 205977  |    2614167  3164   7148 226162
+24:     192246  2880   7178 206703  |    2556610  3161   7096 224334
+25:     183964  2865   7330 210044  |    2492208  3154   7029 221733
+22:     222111  2767   7807 216070  |    2629723  3111   7207 224208
+23:     206044  2903   7232 209934  |    2586134  3125   7158 223736
+24:     193035  2908   7138 207552  |    2560754  3168   7093 224698
+25:     185680  2901   7308 212003  |    2491608  3155   7026 221679
+22:     223546  2823   7702 217466  |    2672476  3171   7186 227853
+23:     203849  2866   7248 207698  |    2588473  3130   7154 223939
+24:     194902  2936   7138 209559  |    2555056  3162   7089 224198
+25:     184392  2876   7322 210531  |    2485628  3148   7025 221147
+----------------------------------  | ------------------------------
+Avr:    199314  2842   7353 208907  |    2564578  3129   7137 223343
+Tot:            2986   7245 216125
+CPU speed: sysbench, 1 threads, run 3 of 3
+sysbench 1.0.20-1472a05 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 1
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second:  1727.33
+
+General statistics:
+    total time:                          30.0003s
+    total number of events:              51822
+
+Latency (ms):
+         min:                                    0.57
+         avg:                                    0.58
+         max:                                    0.71
+         95th percentile:                        0.59
+         sum:                                29997.39
+
+Threads fairness:
+    events (avg/stddev):           51822.0000/0.00
+    execution time (avg/stddev):   29.9974/0.00
+CPU speed: 7-Zip, 1 threads, run 3 of 3
+
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:4096, ASM
+
+ mt=1 d25
+Compiler:  ver:16.2.1 20260810 GCC 16.2.1 : AVX2
+Linux : 7.3.3-1-cachyos : #1 SMP PREEMPT_DYNAMIC Sat, 07 Nov 2026 13:54:44 +0000 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:always hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  5493  5476  5463  5482  5489  5490  5494
+
+RAM size:   96328 MB (LP),  # CPU hardware threads:  32
+RAM usage:    437 MB (LP),  # Benchmark threads:      1
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:      14199   100  13796  13814  |     121391   100  10396  10364
+23:      11536    99  11848  11755  |     121217   100  10458  10493
+24:       9285    99  10048   9984  |     120680   100  10589  10594
+25:       8114   100   9279   9265  |     119988    99  10744  10680
+22:      13496    99  13196  13130  |     121551   100  10396  10378
+23:      11544   101  11683  11762  |     121318   100  10522  10501
+24:       9259   100   9935   9955  |     120699   100  10589  10596
+25:       8121   100   9302   9273  |     120005   100  10665  10681
+22:      14143   100  13796  13759  |     121554   100  10396  10378
+23:      11588   100  11848  11807  |     121235   100  10522  10494
+24:       9298   100   9991   9998  |     120753    99  10660  10601
+25:       8128   100   9302   9280  |     119918   100  10665  10673
+22:      13490    99  13196  13124  |     121531   100  10396  10376
+23:      11508   100  11683  11726  |     121242   100  10522  10495
+24:       9284   100   9991   9983  |     120775   100  10589  10603
+25:       8121   100   9279   9273  |     120049    99  10744  10685
+22:      14123   100  13796  13740  |     121556   100  10396  10378
+23:      11496   100  11683  11714  |     121341   100  10458  10503
+24:       9301   100  10048  10001  |     120826   100  10589  10607
+25:       8142   100   9325   9297  |     119999   100  10665  10681
+22:      14195   100  13796  13809  |     121564   100  10396  10379
+23:      11392    99  11683  11607  |     121335   100  10522  10503
+24:       9271   100   9991   9969  |     120795   100  10589  10605
+25:       8136   100   9302   9290  |     119984    99  10744  10679
+22:      14140   100  13796  13756  |     121556   100  10396  10378
+23:      11580   101  11683  11800  |     121285   100  10522  10498
+24:       9284   100   9991   9983  |     120788   100  10589  10604
+25:       8125   100   9302   9277  |     119998   100  10665  10681
+22:      13981   100  13641  13602  |     121529   100  10396  10376
+23:      11530   101  11683  11748  |     121284   100  10522  10498
+24:       9253   100   9991   9950  |     120726   100  10589  10599
+25:       8123   100   9302   9275  |     119940   100  10665  10675
+22:      14138   100  13796  13754  |     121540   100  10396  10377
+23:      11449   101  11523  11666  |     121319   100  10522  10501
+24:       9176    99   9935   9867  |     120770   100  10589  10602
+25:       8116   100   9279   9267  |     120012   100  10665  10682
+22:      14163    99  13955  13778  |     121569   100  10333  10380
+23:      11552    99  11848  11771  |     121306   100  10522  10500
+24:       9272    99  10048   9970  |     120705   100  10589  10597
+25:       8107   100   9256   9256  |     119980    99  10744  10679
+----------------------------------  | ------------------------------
+Avr:     10729   100  11171  11151  |     120890   100  10548  10539
+Tot:             100  10859  10845
+CPU speed: sysbench, 32 threads, run 3 of 3
+sysbench 1.0.20-1472a05 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 32
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second: 39324.89
+
+General statistics:
+    total time:                          30.0008s
+    total number of events:              1179813
+
+Latency (ms):
+         min:                                    0.58
+         avg:                                    0.81
+         max:                                    5.24
+         95th percentile:                        1.14
+         sum:                               959890.08
+
+Threads fairness:
+    events (avg/stddev):           36869.1562/10455.22
+    execution time (avg/stddev):   29.9966/0.00
+CPU speed: 7-Zip, 32 threads, run 3 of 3
+
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:4096, ASM
+
+ mt=32 d25
+Compiler:  ver:16.2.1 20260810 GCC 16.2.1 : AVX2
+Linux : 7.3.3-1-cachyos : #1 SMP PREEMPT_DYNAMIC Sat, 07 Nov 2026 13:54:44 +0000 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:always hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  4923  5471  5478  5487  5491  5492  5494
+16T CPU Freq (MHz): 1418% 4320   1409% 4333  
+32T CPU Freq (MHz): 2932% 4282   2935% 4287  
+
+RAM size:   96328 MB (LP),  # CPU hardware threads:  32
+RAM usage:   7119 MB (LP),  # Benchmark threads:     32
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:     218070  2718   7804 212139  |    2668647  3129   7272 227527
+23:     202910  2845   7267 206742  |    2626018  3149   7214 227187
+24:     192863  2906   7135 207367  |    2513026  3076   7168 220510
+25:     186564  2910   7320 213012  |    2499773  3153   7054 222406
+22:     216073  2698   7792 210197  |    2671393  3141   7251 227761
+23:     203467  2825   7339 207309  |    2604064  3125   7208 225287
+24:     192646  2874   7207 207134  |    2545784  3129   7139 223384
+25:     186084  2922   7272 212464  |    2459396  3102   7055 218813
+22:     223657  2839   7663 217574  |    2678785  3148   7256 228391
+23:     205334  2887   7248 209211  |    2614617  3148   7185 226200
+24:     190653  2853   7185 204990  |    2562837  3157   7122 224881
+25:     185973  2907   7304 212337  |    2500649  3162   7036 222484
+22:     220758  2772   7748 214754  |    2638474  3114   7224 224954
+23:     196434  2726   7343 200144  |    2599715  3126   7194 224911
+24:     192337  2850   7255 206801  |    2563144  3160   7118 224908
+25:     182282  2834   7345 208123  |    2492821  3148   7045 221787
+22:     216727  2734   7711 210833  |    2668442  3156   7208 227509
+23:     203538  2855   7263 207382  |    2622203  3167   7162 226857
+24:     194765  2926   7158 209411  |    2561138  3163   7105 224732
+25:     185692  2919   7264 212017  |    2494773  3157   7030 221961
+22:     220243  2764   7751 214253  |    2631768  3108   7220 224383
+23:     200930  2835   7220 204724  |    2595586  3126   7184 224554
+24:     189545  2862   7122 203799  |    2566105  3167   7110 225167
+25:     184632  2888   7298 210806  |    2457719  3108   7037 218664
+22:     219410  2748   7767 213443  |    2641325  3136   7181 225197
+23:     200868  2825   7244 204661  |    2615662  3160   7161 226291
+24:     190962  2887   7113 205323  |    2524188  3114   7113 221489
+25:     183887  2880   7290 209955  |    2495274  3159   7028 222006
+22:     218495  2726   7798 212552  |    2641985  3122   7216 225254
+23:     202424  2830   7287 206247  |    2602417  3143   7163 225145
+24:     192193  2888   7156 206646  |    2517318  3107   7109 220887
+25:     184669  2879   7323 210849  |    2485648  3144   7033 221149
+22:     218472  2743   7748 212530  |    2625267  3098   7225 223828
+23:     204325  2866   7263 208183  |    2597755  3135   7170 224742
+24:     191423  2892   7117 205819  |    2557837  3158   7106 224442
+25:     185580  2899   7308 211889  |    2466615  3117   7041 219456
+22:     218347  2747   7733 212409  |    2669723  3165   7191 227619
+23:     205264  2882   7256 209140  |    2554161  3078   7179 220970
+24:     193874  2921   7136 208454  |    2564827  3174   7091 225055
+25:     184660  2897   7277 210838  |    2489919  3152   7028 221529
+----------------------------------  | ------------------------------
+Avr:    199676  2841   7371 209311  |    2572170  3137   7141 224007
+Tot:            2989   7256 216659
+Starting the compile load on all 32 threads
+R   58   1024  48000   8.5us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  37.3us  10.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.1us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  58.6us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.1us  12.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.5us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.0us  10.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  59.8us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  11.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.1us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  10.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  67.1us  10.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  12.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.8us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.9us  11.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.5us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   8.7us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  60.3us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.2us  11.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  58.5us   8.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.1us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.1us  10.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.1us  11.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.5us   8.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.9us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.9us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.7us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.1us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.1us  11.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.5us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.7us  11.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.1us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  10.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.5us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.4us  11.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.2us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  12.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  79.8us   9.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.2us  11.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  59.8us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.7us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  59.9us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.0us  11.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  59.2us   9.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.0us  11.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.8us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.2us   8.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.5us  11.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  59.3us   8.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  11.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  59.6us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.5us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.4us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   8.9us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  65.0us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  11.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.3us  13.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.4us  11.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.4us   9.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.1us  11.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  65.1us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.3us  11.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.8us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  12.0us  11.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  71.6us  10.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  11.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.8us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.5us  11.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  60.4us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.3us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.7us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.0us  10.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.9us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.8us   9.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.8us  11.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.0us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.9us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.1us   8.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  12.2us  12.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  67.8us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.7us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.7us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  11.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.2us   9.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.6us  12.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  65.1us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.5us  12.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  60.4us   8.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.7us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.7us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.2us  11.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.0us   9.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.5us  11.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  83.4us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.5us  11.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  65.2us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.4us  10.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.2us   9.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.0us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.9us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.3us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.6us   9.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.0us  11.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.3us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.1us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  67.1us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  81.4us   9.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.0us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  65.1us  10.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.9us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.0us  10.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.5us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.2us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.9us  11.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  16.0us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.2us  11.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  60.7us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.0us  10.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.0us   9.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  11.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.3us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  11.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  68.3us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.4us  11.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.7us   8.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.5us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.0us   8.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.1us  11.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  67.7us   9.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.8us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  69.0us  10.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  67.1us   8.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.8us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.2us  11.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.7us   9.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.0us   9.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  12.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.0us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.9us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.9us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.8us  12.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.7us   9.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.7us  10.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.5us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.1us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  60.6us   8.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.9us  11.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  67.2us   9.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.6us  12.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  65.0us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.8us  11.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.0us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.5us  10.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  60.0us   9.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.6us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.4us   8.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.8us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  67.3us   9.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  12.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.8us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.9us  10.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.0us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.7us  10.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.9us   9.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.2us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.3us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.0us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.8us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.7us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.6us  12.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.6us   8.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.4us  11.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.8us  10.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.5us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  59.7us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.2us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  68.8us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.3us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.3us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  60.3us  10.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.2us  10.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.0us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.2us  11.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  60.8us   9.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.0us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  70.9us   8.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.5us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.0us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.9us  14.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.4us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  43.1us  10.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.6us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.1us   9.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.9us  11.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  65.8us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  11.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.1us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  11.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.8us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.5us  11.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.7us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.3us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.0us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.0us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  60.6us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.0us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  81.2us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.2us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.1us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.7us  11.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.7us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.6us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.2us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.9us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  39.2us  10.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  11.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  40.7us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.7us  11.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  41.3us   8.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  41.2us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  11.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  39.3us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  11.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.6us   9.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  11.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  65.7us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.6us  11.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.2us   8.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+Audio: buffer 1024, used 0, dropouts 0, every core 99.9% busy: no-data
+Responsiveness: 8 waiting tasks for 120 seconds
+
+Finished, 2026-11-13 21:51:13

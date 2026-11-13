@@ -1,0 +1,4 @@
+date,label,governor,preempt,idle_package_watts,wakeup_avg_us,wakeup_worst_us
+2026-11-13 19:53,baseline,menu,full,9.49,58.2,102
+2026-11-13 20:26,teo,teo,full,9.85,58.1,182
+2026-11-13 20:58,lazy,menu,lazy,9.64,58.1,84

@@ -13,3 +13,5 @@ Measuring speed on CachyOS, and what made a difference.
 - Power mode performance gains nothing over balanced on this machine: all CPU figures within 0.5%. Leave it on balanced.
 - `pgrep -f` matches the shell that runs it, if that shell's command line holds the same words. A wait loop `while pgrep -f "[m]easure.sh run"` written into the same command waited for itself. Start the second job from a separate command, or wait on a PID.
 
+- CachyMod's TEO idle governor and lazy preemption, tested live on 7.3.3-1-cachyos, 13 Nov 2026: no gain from either. TEO used 4% more power at idle; lazy's one good worst-case figure did not repeat. Keep menu and full. Repeat any surprising single run before acting on it. `results/tuning-2026-11-13/`.
+- measure.sh's audio test plays through the monitor's DisplayPort audio. If the screen sleeps or is switched off mid-run, the audio line reads no-data and `Setup` shows no screen. Keep the screen awake for a full run.
