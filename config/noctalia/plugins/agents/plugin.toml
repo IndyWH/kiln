@@ -1,0 +1,14 @@
+# Kiln: the four agents' status on the bar. Source: ~/Projects/kiln/config/noctalia/plugins/agents,
+# installed in ~/.local/share/noctalia/plugins/agents. States come from kiln-agent-status.
+id = "kiln/agents"
+name = "Kiln agents"
+version = "1.0.0"
+plugin_api = 32
+author = "kiln"
+license = "GPL-2.0"
+icon = "robot"
+description = "Status of Kiln's operator, reviewer, researcher and watcher: blue inactive, green working, red needs you."
+
+[[widget]]
+id = "status"
+entry = "status.luau"

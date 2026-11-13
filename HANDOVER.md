@@ -22,6 +22,12 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 
 ## Log
 
+### 13 Nov 2026 — Claude Code, pull-down Claude and agent icons
+
+- Owner installed the new rules hook. Checked live: a change from the operator ran; the same change from a helper was refused with the right message.
+- Middle mouse opens and hides Claude Code in a pull-down window, carrying on the last conversation.
+- Four boxed icons on the bar, one per agent: blue inactive, green working, red needs the owner. Each shows a note on hover; clicking opens the pull-down. Fed by Claude Code hooks and the watcher's service. See lessons/agents.md.
+
 ### 13 Nov 2026 — Claude Code, agents
 
 - Owner asked for the agent design and approved it. Operator: Opus 5.5 high, the only one that changes things. Reviewer: Fable 5.2 high, read-only, before risky changes. Researcher: Opus 5.5 high, read-only. Watcher: `kiln-watch`, a script on a daily timer, installed and running; first report: all well. See docs/PHILOSOPHY.md, Agents.
