@@ -1,0 +1,63 @@
+--- PKGBUILD.cachyos	2026-11-13 22:05:34.680696132 +0000
++++ PKGBUILD	2026-11-13 22:14:18.821807702 +0000
+@@ -179,6 +179,8 @@
+     _pkgsuffix=cachyos
+ fi
+ 
++# Kiln: its own name, so it never replaces or is replaced by a CachyOS kernel
++_pkgsuffix=cachyos-kiln
+ pkgbase="linux-$_pkgsuffix"
+ _major=7.3
+ _minor=4
+@@ -621,11 +623,6 @@
+                 'modprobed-db: Keeps track of EVERY kernel module that has ever been probed - useful for those of us who make localmodconfig'
+                 'scx-scheds: to use sched-ext schedulers')
+     provides=(VIRTUALBOX-GUEST-MODULES WIREGUARD-MODULE KSMBD-MODULE V4L2LOOPBACK-MODULE NTSYNC-MODULE VHBA-MODULE ADIOS-MODULE)
+-    # Replace LTO kernel with the default kernel
+-    if _is_lto_kernel; then
+-        provides+=(linux-cachyos-lto=$_kernver)
+-        replaces=(linux-cachyos-lto)
+-    fi
+ 
+     cd "$_srcname"
+ 
+@@ -662,8 +659,6 @@
+     provides=(LINUX-HEADERS)
+ 
+     if _is_lto_kernel; then
+-        provides+=(linux-cachyos-lto-headers=$_kernver)
+-        replaces=(linux-cachyos-lto-headers)
+         depends+=(clang llvm lld 'pahole>=1:1.32-2')
+     fi
+ 
+@@ -803,7 +798,9 @@
+ 
+ _package-nvidia-open(){
+     pkgdesc="nvidia open modules of ${_nv_ver} driver for the ${pkgbase} kernel"
+-    depends=("$pkgbase=$_kernver" "nvidia-utils=${_nv_ver}" "libglvnd")
++    # Kiln: no exact nvidia-utils version, so a driver update never blocks a system update.
++    # kiln-watch reports when this module and nvidia-utils differ: rebuild then.
++    depends=("$pkgbase=$_kernver" "nvidia-utils" "libglvnd")
+     provides=('NVIDIA-MODULE')
+     conflicts=("$pkgbase-nvidia" "$pkgbase-nvidia-580xx")
+     license=('MIT AND GPL-2.0-only')
+@@ -877,3 +874,19 @@
+         'SKIP'
+         '1857e2984cb148c524dc178e41a45dae8b1c649267150fe29b86bd3fc75358c6e1aa203d70f152d0f62fc6ac37de81cfa5e5e06f5cb3716eb7bed36525416fe1'
+         'c992567bd7dd8553432be496ffa1c17e2f5ebe9c7edb51945cf977e1b742dd6517c210d8843bb82744ca705efd07f8027cd7dde41b50215ebd707a34aa81462e')
++
++# Kiln: checksums for the sources CachyOS's script adds without one, in source order:
++# the NVIDIA module source and CachyOS's three patches for it (the tarball matches NVIDIA's
++# published SHA-256, d65c8bbe...355e); then this machine's profiles, whose sums build.sh
++# passes in _kiln_profile_b2sums; then the BORE patch (CachyOS's own sum, from
++# linux-cachyos-bore/.SRCINFO at the same commit, and checked against the download).
++if [ "$_build_nvidia_open" = "yes" ]; then
++    b2sums+=('b0bb5f8a23765c73fb59febe23bf649fc10ad0cfc822ed8bcae0578915711ec24123bdca7d0c132a8196d679d350353cfad13d15b21dd9cf315c3cd074809646'
++             '43386fb36a975bd5215d477bd2e11d91adbdc20393b9898788ee5734834aaeb6af83e8e493a0d20f6bd7fd6ecbff124f7877ede44c3beafb007b9c7effa44fe6'
++             '8106fe252012ca17f32c56877a98e047befe15c71adc0e6c97927760e08bfe7f78a8b71721470564514328c470f26345ec81796bd9dedd47a6c330d57205fae8'
++             '4731aa2e4bff627c27f61e9ef31a01bf33611b85085a35859b3ed5c903e9e3457ce78b1a7f471f7253b3c4f51ce8914dc299b36c552067ebbc77db091c90c502')
++fi
++b2sums+=(${_kiln_profile_b2sums:-})
++if [ "$_cpusched" = "bore" ]; then
++    b2sums+=('355a279dea4edf0148cc6499b770bb6d07c55623ea334e6b0db52eba746454d5afafe58bbcf357c9bc53aaa1319a610cd167dba77f6c866835077aed85a2d45c')
++fi
