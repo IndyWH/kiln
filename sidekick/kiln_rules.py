@@ -277,9 +277,12 @@ def check_rescue_command(text):
 
 def personal_target(path, cwd):
     """True if the path is in the owner's home, but not a hidden settings folder,
-    the repo, or Claude's own space. Those hidden folders are covered by snapshots."""
+    ~/Projects, or Claude's own space. Those are covered by home snapshots.
+    The owner allowed deleting anything inside ~/Projects on 13 Nov 2026."""
     full = resolve(path, cwd)
     if not (full + "/").startswith(OWNER_HOME + "/") or is_free(full, cwd):
+        return False
+    if full.startswith(OWNER_HOME + "/Projects/"):
         return False
     rest = full[len(OWNER_HOME):].strip("/")
     return rest == "" or not rest.startswith(".")

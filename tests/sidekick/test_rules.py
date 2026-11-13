@@ -86,13 +86,14 @@ class Commands(unittest.TestCase):
                        ("sudo rm -rf $HOME/Music", REPO), ("rm -rf $SOMEWHERE", REPO),
                        ("find ~/Downloads -name '*.iso' -delete", REPO),
                        ("rsync -a --delete /tmp/x/ ~/Videos/", REPO),
-                       ("rm -rf ~/Projects/other-project", REPO),
+                       ("rm -rf ~/Projects", REPO), ("rm -rf /home/indy/Projects/", REPO),
                        ("gio trash ~/Desktop/a", REPO), ("shred ~/secret.txt", REPO)):
             with self.assertRaises(r.Refused, msg=c):
                 r.check_personal_files(c, cwd)
         for c in ("rm -rf build", "rm ~/.cache/foo", "rm -rf ~/.config/old-app",
                   "rm -rf /tmp/claude-%d/x" % os.getuid(), "rm /etc/motd",
-                  "rm ~/Projects/kiln/x", "cp ~/Documents/a /tmp/a", "find ~ -name x",
+                  "rm ~/Projects/kiln/x", "rm -rf ~/Projects/other-project",
+                  "rm -rf /home/indy/Projects/a/b.txt", "cp ~/Documents/a /tmp/a", "find ~ -name x",
                   "rsync -a ~/Music/ /tmp/m/"):
             r.check_personal_files(c, REPO)
 

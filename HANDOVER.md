@@ -27,7 +27,7 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 - CachyOS installed on the P2: btrfs, Limine, kernel 7.3.3 with the LTS 6.18 kernel as the rescue entry, snapper with limine-snapper-sync and snap-pac, NVIDIA 620.70.06 working, Hyprland 0.57.2. No failed services.
 - All other disks were already plugged in at first start. Nothing on them was mounted or touched. The owner installed the guard; all four other disks are locked.
 - Memory notes restored. The owner installed policy/sudoers-kiln as /etc/sudoers.d/10-kiln.
-- Sidekick rewritten for v2: changes are snapshotted and logged, then run without asking; only `git push` asks. New hard limits in code: rescue packages, snapshot services and snapshots cannot be removed, and the owner's personal files (anything in /home/indy outside hidden folders, this repo and Claude's space) cannot be deleted. A session-start summary and desktop notices for kernel and driver changes. CachyOS's limine-snapper-sync replaces v1's boot menu code, and `restore` now runs limine-snapper-restore. 24 tests pass.
+- Sidekick rewritten for v2: changes are snapshotted and logged, then run without asking; only `git push` asks. New hard limits in code: rescue packages, snapshot services and snapshots cannot be removed, and the owner's personal files (anything in /home/indy outside hidden folders, ~/Projects and Claude's space; the owner allowed ~/Projects the same day) cannot be deleted. A session-start summary and desktop notices for kernel and driver changes. CachyOS's limine-snapper-sync replaces v1's boot menu code, and `restore` now runs limine-snapper-restore. 24 tests pass.
 
 ### 13 Nov 2026 — Claude Code, v2 started
 
