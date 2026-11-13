@@ -4,8 +4,8 @@
 
 Part 5 of docs/INSTALL.md, first start. Done: memory notes, disk guard, passwordless `sudo`. Next:
 
-1. The owner runs `sudo sidekick/install.sh`: the rules hook (snapshot and log before every change, then act without asking), `undo`, `restore`, home snapshots, and policy/CLAUDE.md as the machine rules. Then restart Claude Code and check a test change is snapshotted and logged.
-2. Then NVIDIA checks, the Hyprland look, and a measured baseline.
+1. Done and checked: `sudo sidekick/install.sh`, the rules hook, `undo`, `restore`, home snapshots and the machine rules.
+2. Next: NVIDIA checks, the Hyprland look, and a measured baseline.
 
 Known gap: snapshots 1 to 6 are older than the guard. Booting one from the menu starts without the guard.
 
@@ -21,6 +21,12 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 - `kiln-stories/`, `ai-bug-reports/`, and Claude's memory notes in `claude-memory/`.
 
 ## Log
+
+### 13 Nov 2026 — Claude Code, sidekick checked
+
+- `sidekick/install.sh` is installed: every installed file matches the repo. A test change got before and after snapshots of root and home, and log lines. 24 sidekick tests pass. The guard's own tests are blocked for Claude, as designed; the owner runs them.
+- Guard OK: only the P2 is writable. No failed services. Both kernels in the boot menu. NVIDIA 620.70.06 and Hyprland 0.57.2 working.
+- Small gap: when the guard blocks a command, the rules hook has already taken a "before" snapshot and logged it, with no closing line, and leaves a file in /var/log/kiln/pending. `undo` skips such entries, so it is harmless.
 
 ### 13 Nov 2026 — Claude Code, first start on CachyOS
 
