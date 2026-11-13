@@ -63,4 +63,4 @@ cd ~/Projects/kiln && ~/.local/bin/claude
 First start of Kiln v2. Read HANDOVER.md and take over.
 ```
 
-From here Claude Code takes over, in this order: the disk guard first, then automatic snapshots and `undo`, the rescue entry, the new machine rules in policy/CLAUDE.md, then NVIDIA, the Hyprland look, and a measured baseline. Plug the SATA disks back in only after the guard is installed.
+From here Claude Code takes over, in this order: its memory notes from claude-memory/, the disk guard, then automatic snapshots and `undo`, the rescue entry, the new machine rules in policy/CLAUDE.md, then NVIDIA, the Hyprland look, and a measured baseline. Plug the SATA disks back in only after the guard is installed.

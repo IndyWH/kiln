@@ -1,0 +1,6 @@
+- [Kiln moves to CachyOS, Claude as superuser](kiln-cachyos-superuser.md) — 13 Nov 2026 decision; act, then inform
+- [Owner wants a mentor](owner-wants-a-mentor.md) — give candid judgement and recommendations, tone down overreach, no flattery
+- [Kiln: maximum optimisation](kiln-maximum-optimisation.md) — "overfire": the strongest setting, measured; updated 13 Nov for CachyOS
+- [Login screen to improve](login-screen-to-improve.md) — Omarchy style: autologin into hyprlock, when the owner can log out to test
+- [AI bug reports folder](ai-bug-reports-folder.md) — one verified report per bug found in other projects; records only, Claude files nothing
+- [Kiln Stories folder](kiln-stories-folder.md) — overfiring stories with real numbers; each ends with one bold philosophical sentence
