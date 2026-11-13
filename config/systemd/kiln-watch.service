@@ -6,6 +6,8 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
+ExecStartPre=-/usr/local/bin/kiln-agent-status watcher-start
 ExecStart=/usr/local/bin/kiln-watch
+ExecStopPost=-/usr/local/bin/kiln-agent-status watcher-done
 Nice=10
 IOSchedulingClass=idle

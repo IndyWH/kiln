@@ -1,0 +1,149 @@
+#!/usr/bin/python3
+"""kiln-agent-status: the state of Kiln's four agents, for the icons on the bar.
+
+Each agent has a file in /run/user/1000/kiln-agents/: its state on the first line
+(idle, working or alert) and a short note on the second. The Noctalia bar plugin
+reads them. Blue is idle, green working, red alert: a question, a request or a failure.
+
+  kiln-agent-status hook            Claude Code hook: reads the event's JSON on stdin
+  kiln-agent-status set AGENT STATE [NOTE]
+  kiln-agent-status watcher-start   from kiln-watch.service (ExecStartPre), as root
+  kiln-agent-status watcher-done    from kiln-watch.service (ExecStopPost), as root
+  kiln-agent-status show            print all four
+
+A hook must never stop Claude, so the hook command always exits 0.
+"""
+import json
+import os
+import re
+import sys
+import time
+
+OWNER_UID = 1000
+DIR = "/run/user/%d/kiln-agents" % OWNER_UID
+AGENTS = ("operator", "reviewer", "researcher", "watcher")
+STATES = ("idle", "working", "alert")
+WATCH_REPORT = "/var/log/kiln/watch/latest.txt"
+NEEDS_YOU = {"permission_prompt", "elicitation_dialog", "elicitation_url_dialog",
+             "agent_needs_input"}
+
+
+def read(agent):
+    try:
+        with open(os.path.join(DIR, agent)) as f:
+            lines = f.read().splitlines()
+        return (lines + ["", ""])[0], (lines + ["", ""])[1]
+    except OSError:
+        return "idle", ""
+
+
+def write(agent, state, note=""):
+    if agent not in AGENTS or state not in STATES:
+        raise ValueError("unknown agent or state: %s %s" % (agent, state))
+    if read(agent) == (state, note):
+        return
+    os.makedirs(DIR, exist_ok=True)
+    path = os.path.join(DIR, agent)
+    temp = path + ".new"
+    with open(temp, "w") as f:
+        f.write("%s\n%s\n" % (state, note))
+    if os.geteuid() == 0:
+        os.chown(DIR, OWNER_UID, OWNER_UID)
+        os.chown(temp, OWNER_UID, OWNER_UID)
+    os.replace(temp, path)  # The bar never sees half a file.
+
+
+def stamp(text):
+    return "%s, %s" % (text, time.strftime("%H:%M"))
+
+
+def from_hook(event):
+    """Returns (agent, state, note) for a Claude Code hook event, or None."""
+    name = event.get("hook_event_name", "")
+    helper = event.get("agent_type") or ""
+    agent = helper if helper in ("reviewer", "researcher") else None
+
+    if name == "SubagentStart":
+        return (agent, "working", stamp("Started")) if agent else None
+    if name == "SubagentStop":
+        if not agent:
+            return None
+        last = event.get("last_assistant_message") or ""
+        verdict = re.search(r"VERDICT:\s*(GO|CONCERNS|STOP)", last)
+        if agent == "reviewer" and verdict and verdict[1] != "GO":
+            return agent, "alert", stamp("Verdict: " + verdict[1])
+        return agent, "idle", stamp("Finished" + (": " + verdict[1] if verdict else ""))
+    if helper:
+        # A tool call inside a helper: it is working. Other helper types are not shown.
+        return (agent, "working", stamp("Working")) if agent else None
+
+    if name in ("UserPromptSubmit", "PreToolUse", "PostToolUse"):
+        if name == "PreToolUse" and event.get("tool_name") == "AskUserQuestion":
+            return "operator", "alert", stamp("Has a question for you")
+        return "operator", "working", stamp("Working")
+    if name == "PermissionRequest":
+        return "operator", "alert", stamp("Needs your permission")
+    if name == "Notification":
+        kind = event.get("notification_type", "")
+        if kind in NEEDS_YOU:
+            return "operator", "alert", stamp(event.get("message") or "Needs you")
+        if kind == "idle_prompt" and read("operator")[0] == "working":
+            return "operator", "idle", stamp("Waiting for you")  # e.g. after an interrupt
+        return None
+    if name == "Stop":
+        return "operator", "idle", stamp("Finished")
+    if name == "StopFailure":
+        return "operator", "alert", stamp("Failed: %s" % event.get("error", "unknown"))
+    if name == "SessionEnd":
+        return "operator", "idle", stamp("Closed")
+    if name == "SessionStart":
+        return "operator", "idle", stamp("Ready")
+    return None
+
+
+def watcher_done():
+    if os.environ.get("SERVICE_RESULT", "success") != "success":
+        write("watcher", "alert", stamp("The check failed to run"))
+        return
+    try:
+        with open(WATCH_REPORT) as f:
+            head = f.readline().strip()
+    except OSError:
+        write("watcher", "alert", stamp("No report written"))
+        return
+    if "all well" in head:
+        write("watcher", "idle", stamp("All well"))
+    else:
+        write("watcher", "alert", stamp(head.split(": ", 1)[-1] or "Needs attention"))
+
+
+def main(argv):
+    command = argv[1] if len(argv) > 1 else ""
+    if command == "hook":
+        try:
+            found = from_hook(json.loads(sys.stdin.read() or "{}"))
+            if found:
+                write(*found)
+        except Exception:  # noqa: BLE001 - a status light must never stop Claude
+            pass
+        return 0
+    if command == "set" and len(argv) >= 4:
+        write(argv[2], argv[3], " ".join(argv[4:]))
+        return 0
+    if command == "watcher-start":
+        write("watcher", "working", stamp("Checking"))
+        return 0
+    if command == "watcher-done":
+        watcher_done()
+        return 0
+    if command == "show":
+        for agent in AGENTS:
+            state, note = read(agent)
+            print("%-10s %-8s %s" % (agent, state, note))
+        return 0
+    print(__doc__)
+    return 64
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

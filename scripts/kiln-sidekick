@@ -1,0 +1,10 @@
+#!/bin/sh
+# Kiln: the pull-down Claude Code window, on the middle mouse button.
+# The first press opens Claude Code in ~/Projects/kiln, carrying on the last conversation.
+# Later presses hide and show it. A hidden window keeps running, so work carries on.
+# The window rules in ~/.config/hypr/config/kiln.lua put it on the hidden "sidekick" workspace.
+if hyprctl -j clients | grep -q '"class": "kiln-sidekick"'; then
+    exec hyprctl dispatch 'hl.dsp.workspace.toggle_special("sidekick")'
+fi
+exec kitty --class kiln-sidekick --title "Kiln: Claude Code" --directory "$HOME/Projects/kiln" \
+    sh -c 'claude --continue || claude'
