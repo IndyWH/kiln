@@ -1,0 +1,25 @@
+# GPU test, CachyOS, 13 Nov 2026: driver 620.70.06 (open), kernel 7.3.3-1-cachyos, python-pytorch-opt-cuda 2.15.0, CUDA 13.4.3, cuDNN 9.28.1
+
+PyTorch 2.15.0 built for CUDA 13.4
+Python 3.14.10 from /usr/lib/python3.14/site-packages/torch/__init__.py
+CPU maths: AVX2 threads 24
+oneDNN: True OpenMP: True
+GPU: NVIDIA GeForce RTX 4090 cuDNN 92801 memory 24131 MiB
+Multiply two 8192 x 8192 matrices: GPU 20.7 ms, CPU 836.8 ms
+Gradients on the GPU: OK
+Convolution through cuDNN: OK
+Training on cuda, 500 steps: loss 0.694 to 0.008, accuracy 100.0%, 0.40 s
+Training on cpu, 500 steps: loss 0.696 to 0.008, accuracy 100.0%, 70.49 s
+torchvision: not installed
+Peak GPU memory: 776 MiB
+All passed.
+
+# Matrix multiply repeated after 10 warm-up runs (scripts: /tmp/kiln-lab/matmul.py, not kept)
+TF32 allowed: False precision: highest
+round 1: median 18.0 ms, best 18.0 ms
+round 2: median 18.1 ms, best 18.0 ms
+round 3: median 18.9 ms, best 18.9 ms
+round 4: median 18.9 ms, best 18.4 ms
+round 5: median 18.4 ms, best 18.3 ms
+
+# v1 on Gentoo, 3 Nov 2026: GPU 17.8 ms, CPU 869.6 ms; training cuda 0.45 s, cpu 71.89 s
