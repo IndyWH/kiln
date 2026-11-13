@@ -2,6 +2,8 @@
 
 Hyprland, graphics and the screen.
 
+- CachyOS, 13 Nov 2026: Hyprland's config is CachyOS's Lua files in `~/.config/hypr/config/`. Kiln's own settings go in `config/kiln.lua`, loaded last. Mouse copy and paste are there.
+- CachyOS, 13 Nov 2026: the Philips 49M2C8900L reports 3840x1080@60 as its preferred mode, so `mode = "preferred"` gives the wrong one. `config/monitors.lua` names `5120x1440@120` with `vrr = 1`. The screen is `DP-4` on the WX 3200 (`card1`).
 - The screen is on mini DisplayPort from the WX 3200, which has only mini DisplayPort sockets. HDMI into the RTX 4090 is the fallback if a live image shows a black screen.
 - Kiln needs a login screen that reaches graphical.target, for a fair boot comparison with Ubuntu.
 - Card numbers and connector names change. Ubuntu called the screen `card2-DP-7`, and the live system `card0-DP-4`, on the same WX 3200. Choose the card by PCI address 02:00.0.

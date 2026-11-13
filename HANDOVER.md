@@ -22,6 +22,10 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 
 ## Log
 
+### 13 Nov 2026 — Claude Code, screen and mouse
+
+- Owner asked for the screen's full mode with VRR, and mouse copy and paste. The screen now runs 5120x1440 at 120 Hz with VRR always on. Mouse forward copies, back pastes; a terminal gets Ctrl+Shift. See lessons/desktop.md.
+
 ### 13 Nov 2026 — Claude Code, sidekick checked
 
 - `sidekick/install.sh` is installed: every installed file matches the repo. A test change got before and after snapshots of root and home, and log lines. 24 sidekick tests pass. The guard's own tests are blocked for Claude, as designed; the owner runs them.
