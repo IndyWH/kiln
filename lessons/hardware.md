@@ -50,3 +50,4 @@ Full report: `docs/HARDWARE.md`.
 - Writing to the first sectors of a disk damages its partition table, and the kernel then removes the partitions. That is how the node above went missing during a test.
 - The hook looks for a program path before the command runs, outside the chroot. A path that only exists inside the chroot, or that an earlier part of the same command creates, is refused. Check such a program in a later command, by its `/mnt/gentoo` path.
 - The hook reads the lines of a heredoc as commands, so write notes with the file tools.
+- CachyOS, 13 Nov 2026: the guard blocks even `which smartctl`, as it names a disk tool with no Crucial path. Reading health is allowed when the full path is written out: `smartctl -j -H -A /dev/disk/by-id/nvme-CT1000P2SSD8_2128E5B7DBBC`. `kiln-watch` does this. btrfs's error counts need no tool: `/sys/fs/btrfs/<uuid>/devinfo/*/error_stats`.

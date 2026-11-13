@@ -12,5 +12,6 @@ The first line of each section says what it holds.
 | [network](network.md) | Working on the network |
 | [packages](packages.md) | Installing or building packages, repos, CPU level |
 | [speed](speed.md) | Measuring speed, benchmarks, kernel memory settings |
+| [agents](agents.md) | Helper agents, the watcher, the rules hook's locks |
 
 Never put another disk's full serial number here. This folder is copied to a public repo, so show the last 4 characters only.

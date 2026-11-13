@@ -41,11 +41,19 @@ Why: in v1, Claude asked before every change. The owner hardly read the requests
 
 ## Agents
 
-One agent changes the machine; any others only watch and report.
+One agent changes the machine; the others only watch and report. Built 13 Nov 2026.
 
-- **The operator** is the only agent with `sudo`. All changes go through it, one at a time, so every snapshot and `undo` belongs to one known change. A lock enforces this.
-- **Helpers are read-only.** They advise; the operator acts.
-  - **Watcher**, on a schedule: failed services, disk health, pending updates, and Arch news that needs a manual step.
-  - **Reviewer**: a fresh, independent check before risky changes, such as an AUR build script or a boot loader change. It has not seen the operator's reasoning, so it is not anchored on it, and text trying to steer Claude would have to fool both.
-  - **Researcher**: looks things up, such as which driver version, so the operator's context stays clear.
-- Order: the operator first. The watcher once the basics are stable, then the reviewer.
+| Agent | Role | Model | Starts |
+|---|---|---|---|
+| **Operator** | The only one that changes anything. Every change goes through it, one at a time, so every snapshot and `undo` belongs to one known change | Opus 5.5, high | The owner opens it: `cd ~/Projects/kiln && claude` |
+| **Reviewer** | A fresh, independent check before risky changes: AUR build scripts, the boot loader, kernel settings, fstab, pacman.conf, sudoers, anything near the safety pieces. It sees the change, never the operator's reasoning | Fable 5.2, high: a different model, so different blind spots | The operator calls it |
+| **Researcher** | Looks things up, so the operator's context stays clear | Opus 5.5, high | The operator calls it |
+| **Watcher** | Daily health check: failed services, the P2's health, btrfs errors, free space, snapshots, the rescue entry and guard, updates, Arch and CachyOS news. A desktop notice when something needs attention; the operator reads its report at each session start | None: a plain script, `kiln-watch` | Its timer, daily and after each start |
+
+Enforced in code, not by asking:
+
+- The reviewer and researcher have no tools that write (`.claude/agents/`).
+- The rules hook refuses any change from a helper agent, whatever its tools.
+- Only one Claude window changes the machine at a time. Another takes over once the first is closed, or has made no change for 15 minutes.
+
+The watcher is a script, not an AI, for now: an AI on a timer would need a long-lived login token on disk, would spend the owner's allowance daily, and would read untrusted news with no one watching. The judgement happens when the owner opens a session.

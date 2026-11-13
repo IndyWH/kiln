@@ -22,6 +22,12 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 
 ## Log
 
+### 13 Nov 2026 — Claude Code, agents
+
+- Owner asked for the agent design and approved it. Operator: Opus 5.5 high, the only one that changes things. Reviewer: Fable 5.2 high, read-only, before risky changes. Researcher: Opus 5.5 high, read-only. Watcher: `kiln-watch`, a script on a daily timer, installed and running; first report: all well. See docs/PHILOSOPHY.md, Agents.
+- Rules hook: helpers cannot change anything; one Claude window at a time; the watcher's report in the session summary. 32 tests pass. Waiting for the owner to run `sudo sidekick/install.sh`, which also installs the new machine rules.
+- `~/.claude/settings.json` now names `claude-opus-5-5` as the model.
+
 ### 13 Nov 2026 — Claude Code, CachyOS against Gentoo
 
 - Owner asked: v1's five-program test on CachyOS, against v1's Gentoo results. Same files and work, outputs match v1's exactly. CachyOS is as fast or faster on all five: dav1d 1.0%, SQLite 5.6%, RawTherapee 7.8%, LightCraft 21% faster, darktable 0.5% slower. LightCraft's gain is mostly CachyOS's huge pages setting. results/cachyos-vs-gentoo/, lessons/speed.md.
