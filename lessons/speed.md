@@ -9,3 +9,7 @@ Measuring speed on CachyOS, and what made a difference.
 - SQLite's `speedtest1.c` needs `-DSQLITE_ENABLE_RTREE` itself, or it stops at once, even when the library has R-Tree.
 - The disk guard checks every program a script runs before it starts. Build in one script and time in another, and make links such as `current` before the timing script is named in any command, even `bash -n`.
 - raw.pixls.us answers `getfile.php/2414` with a short error text; the full address in LightCraft's `xtask/src/raw_samples.rs` works. Always check the checksum.
+- Baseline, 13 Nov 2026, `results/cachyos-2026-11-13/PREDICTIONS.md`: CachyOS matches Ubuntu's CPU figures (0.3% to 2.5% faster), and under full load gives clean audio at 128 samples against 256, and a worst wake-up delay of 3.1 ms against 11.0 ms.
+- Power mode performance gains nothing over balanced on this machine: all CPU figures within 0.5%. Leave it on balanced.
+- `pgrep -f` matches the shell that runs it, if that shell's command line holds the same words. A wait loop `while pgrep -f "[m]easure.sh run"` written into the same command waited for itself. Start the second job from a separate command, or wait on a PID.
+

@@ -2,10 +2,11 @@
 
 ## Next step
 
-Part 5 of docs/INSTALL.md, first start. Done: memory notes, disk guard, passwordless `sudo`. Next:
+Part 5 of docs/INSTALL.md, first start, is done: guard, snapshots, rules hook, machine rules, agents, NVIDIA checks, the Omarchy look, and a measured baseline. Open:
 
-1. Done and checked: `sudo sidekick/install.sh`, the rules hook, `undo`, `restore`, home snapshots and the machine rules.
-2. Next: NVIDIA checks, the Hyprland look, and a measured baseline.
+1. Boot times: `scripts/measure.sh boot` after each of 5 restarts, when the owner can restart.
+2. The login screen: autologin into hyprlock, when the owner can log out to test (see Claude's memory notes).
+3. The small gap from the first session: a command the guard blocks still leaves a "before" snapshot and an open log entry.
 
 Known gap: snapshots 1 to 6 are older than the guard. Booting one from the menu starts without the guard.
 
@@ -21,6 +22,15 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 - `kiln-stories/`, `ai-bug-reports/`, and Claude's memory notes in `claude-memory/`.
 
 ## Log
+
+### 13 Nov 2026 — Claude Code, updates, NVIDIA, the Omarchy look, baseline
+
+- Owner asked for all of: push, updates, NVIDIA checks, the Omarchy look, the baseline. All done.
+- Updates: flex, noctalia 5.5.0, openssh. The agent icons work on Noctalia 5.5.0.
+- NVIDIA: driver 620.70.06 for both kernels, the 4090 idles, the desktop runs on the WX 3200. `python-pytorch-opt-cuda` (Arch's x86-64-v3 build) installed; `scripts/test-pytorch.py` passes; warm GPU speed level with v1. NVIDIA's sleep services stay off, as CachyOS intends. results/nvidia-cachyos-2026-11-13/.
+- Omarchy look: Tokyo Night, solid windows, Omarchy's animations, in `~/.config/hypr/config/kiln.lua` (copy in config/hypr/kiln.lua). CachyOS's keys kept.
+- Baseline against Ubuntu: CPU level or a little faster; audio and responsiveness under load clearly better. Performance mode gains nothing over balanced, so balanced stays. results/cachyos-2026-11-13/PREDICTIONS.md.
+- gpu-unlock, which Ubuntu's run had: owner's decision, not for Kiln.
 
 ### 13 Nov 2026 — Claude Code, pull-down Claude and agent icons
 

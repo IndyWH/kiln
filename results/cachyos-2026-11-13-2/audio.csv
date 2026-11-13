@@ -1,0 +1,6 @@
+buffer,actual,rate,samples,dropouts,worst_wait,worst_busy,cpu_busy,status
+1024,1024,48000,120,0,0.08,0.00,99.8,clean
+512,512,48000,120,0,0.16,0.00,99.9,clean
+256,256,48000,120,0,0.31,0.00,100.0,clean
+128,128,48000,120,0,0.62,0.00,99.8,clean
+64,64,48000,120,429,0.22,0.01,100.0,dropouts
