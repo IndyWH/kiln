@@ -2,12 +2,12 @@
 
 ## Next step
 
-Kiln v2: wipe the Crucial P2 and install CachyOS. Follow docs/INSTALL.md, one part at a time:
+Part 5 of docs/INSTALL.md, first start. Done: memory notes, disk guard, passwordless `sudo`. Next:
 
-1. Claude gets and checks the CachyOS ISO on the current system, and checks everything is on GitHub.
-2. The owner makes the USB stick on another computer: the guard locks USB sticks on mlrig too.
-3. The owner installs. Choose the disk by model, CT1000P2SSD8, never by size: the Samsung 870 QVO is also 931.5 GB.
-4. First start: the owner installs Claude Code and clones `v2` to ~/Projects/kiln. Claude Code then restores its memory notes from claude-memory/ (see its README), installs the disk guard first, before the SATA disks go back in, then snapshots and `undo`, the rescue entry, the new rules, NVIDIA, the Hyprland look and a baseline.
+1. The owner runs `sudo sidekick/install.sh`: the rules hook (snapshot and log before every change, then act without asking), `undo`, `restore`, home snapshots, and policy/CLAUDE.md as the machine rules. Then restart Claude Code and check a test change is snapshotted and logged.
+2. Then NVIDIA checks, the Hyprland look, and a measured baseline.
+
+Known gap: snapshots 1 to 6 are older than the guard. Booting one from the menu starts without the guard.
 
 ## What carried over from v1
 
@@ -21,6 +21,13 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 - `kiln-stories/`, `ai-bug-reports/`, and Claude's memory notes in `claude-memory/`.
 
 ## Log
+
+### 13 Nov 2026 — Claude Code, first start on CachyOS
+
+- CachyOS installed on the P2: btrfs, Limine, kernel 7.3.3 with the LTS 6.18 kernel as the rescue entry, snapper with limine-snapper-sync and snap-pac, NVIDIA 620.70.06 working, Hyprland 0.57.2. No failed services.
+- All other disks were already plugged in at first start. Nothing on them was mounted or touched. The owner installed the guard; all four other disks are locked.
+- Memory notes restored. The owner installed policy/sudoers-kiln as /etc/sudoers.d/10-kiln.
+- Sidekick rewritten for v2: changes are snapshotted and logged, then run without asking; only `git push` asks. New hard limits in code: rescue packages, snapshot services and snapshots cannot be removed, and the owner's personal files (anything in /home/indy outside hidden folders, this repo and Claude's space) cannot be deleted. A session-start summary and desktop notices for kernel and driver changes. CachyOS's limine-snapper-sync replaces v1's boot menu code, and `restore` now runs limine-snapper-restore. 24 tests pass.
 
 ### 13 Nov 2026 — Claude Code, v2 started
 

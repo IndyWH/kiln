@@ -7,7 +7,10 @@
           {
             "type": "command",
             "command": "/usr/bin/python3",
-            "args": ["/usr/local/lib/kiln-guard/kiln_rules.py", "pre"],
+            "args": [
+              "/usr/local/lib/kiln-guard/kiln_rules.py",
+              "pre"
+            ],
             "timeout": 180,
             "onFailure": "block"
           }
@@ -21,7 +24,10 @@
           {
             "type": "command",
             "command": "/usr/bin/python3",
-            "args": ["/usr/local/lib/kiln-guard/kiln_rules.py", "post"],
+            "args": [
+              "/usr/local/lib/kiln-guard/kiln_rules.py",
+              "post"
+            ],
             "timeout": 180
           }
         ]
@@ -34,8 +40,26 @@
           {
             "type": "command",
             "command": "/usr/bin/python3",
-            "args": ["/usr/local/lib/kiln-guard/kiln_rules.py", "post"],
+            "args": [
+              "/usr/local/lib/kiln-guard/kiln_rules.py",
+              "post"
+            ],
             "timeout": 180
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3",
+            "args": [
+              "/usr/local/lib/kiln-guard/kiln_rules.py",
+              "session"
+            ],
+            "timeout": 30
           }
         ]
       }

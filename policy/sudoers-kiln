@@ -1,0 +1,3 @@
+# Kiln v2: Claude Code runs as indy and is the superuser (docs/PHILOSOPHY.md).
+# Installed as /etc/sudoers.d/10-kiln, mode 440, owner root.
+indy ALL=(ALL:ALL) NOPASSWD: ALL

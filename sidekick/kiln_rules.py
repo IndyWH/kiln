@@ -1,14 +1,18 @@
 #!/usr/bin/python3
-"""Kiln rules 1 and 2, as Claude Code hooks, and the undo command.
+"""Kiln v2 safety rules, as Claude Code hooks, and the undo command.
 
 Commands:
-  pre    PreToolUse hook. A change is logged, snapshotted, then sent to the owner.
-  post   PostToolUse hook. Takes the snapshot after the change.
-  undo   Rolls back the last change. Run as root, through /usr/local/bin/undo.
+  pre      PreToolUse hook. A change is snapshotted and logged, then runs without asking.
+  post     PostToolUse hook. Takes the after snapshot, checks the rescue entry.
+  session  SessionStart hook. Tells Claude what changed since the last session.
+  undo     Rolls back the last change. Run as root, through /usr/local/bin/undo.
+
+Act, then inform (docs/PHILOSOPHY.md). Only outward actions, such as git push, ask.
+Hard limits block silently: the rescue pieces and the owner's personal files.
 
 This reads command text, so it can misjudge. Anything it does not recognise counts
-as a change, which only means one more question for the owner. The disk guard runs
-beside it and does not depend on it.
+as a change, which only means one more snapshot. The disk guard runs beside it and
+does not depend on it.
 """
 import fcntl
 import json
@@ -24,7 +28,10 @@ from kiln_guard import CannotParse, base, strip_wrappers, substitutions, tokeniz
 LOG_DIR = "/var/log/kiln"
 LOG = LOG_DIR + "/changes.log"
 PENDING = LOG_DIR + "/pending"
+LAST_SESSION = LOG_DIR + "/last-session"
+PACMAN_LOG = "/var/log/pacman.log"
 GUARD_FILE = "/usr/local/lib/kiln-guard/kiln_guard.py"
+OWNER_HOME = "/home/indy"
 
 READ, CHANGE, OUTWARD = "read", "change", "outward"
 
@@ -37,7 +44,8 @@ READ_PROGRAMS = {
     "lspci", "lsusb", "lscpu", "lsmod", "free", "uptime", "who", "whoami", "id",
     "which", "type", "uniq", "cut", "tr", "paste", "strings", "nproc", "sensors",
     "ps", "pgrep", "ping", "getent", "uname", "cd", "pwd", "for", "export", "read",
-    "wait", "seq", "column", "rev", "tac", "nl", "set",
+    "wait", "seq", "column", "rev", "tac", "nl", "set", "nvidia-smi", "checkupdates",
+    "pacman-conf", "limine-snapper-list", "inxi", "fastfetch", "visudo",
 }
 # Programs that only read, unless given one of these arguments.
 READ_UNLESS = {
@@ -56,7 +64,6 @@ READ_SUBCOMMANDS = {
     "wpctl": {"status", "get-volume", "inspect"},
     "pactl": {"list", "info", "stat"},
     "snapper": {"list", "status", "diff", "get-config", "list-configs"},
-    "bootctl": {"list", "status"},
     "networkctl": {"list", "status"},
     "resolvectl": {"status", "query"},
     "localectl": {"status"},
@@ -66,11 +73,17 @@ READ_SUBCOMMANDS = {
 GIT_FREE = {"status", "log", "show", "diff", "add", "commit", "rev-list", "rev-parse",
             "ls-files", "ls-remote", "blame", "grep", "fetch", "check-ignore", "describe",
             "merge-base", "cat-file", "for-each-ref", "shortlog"}
+PACKAGE_TOOLS = ("pacman", "paru", "yay")
 
-RESCUE = re.compile(r"gentoo-dist-bin|gentoo-kernel-bin")
-REMOVING = re.compile(r"\b(?:rm|unlink|mv|shred)\b|--unmerge|--depclean|--rage-clean"
-                      r"|\s-[a-zA-Z]*[Cc][a-zA-Z]*\b|kernel-install\s+remove")
-WIPE_BOOT = re.compile(r"\b(?:rm|shred)\b[^;&|\n]*\s/boot(?:[/\s]|$)|\bbootctl\s+(?:remove|unlink)")
+# The rescue pieces (rule 2 of docs/PHILOSOPHY.md): the LTS kernel in the boot menu,
+# the boot loader, and the snapshots with their boot menu entries.
+RESCUE_PACKAGES = ("linux-cachyos-lts", "linux-cachyos-lts-nvidia-open", "limine",
+                   "limine-snapper-sync", "limine-mkinitcpio-hook", "snapper", "snap-pac",
+                   "btrfs-progs")
+RESCUE_UNITS = ("limine-snapper-sync", "limine-snapper-watcher", "snapper-cleanup")
+RESCUE_KERNEL = "/boot/vmlinuz-linux-cachyos-lts"
+BOOT_MENU = "/boot/limine.conf"
+REMOVERS = {"rm", "shred", "unlink", "rmdir", "trash", "trash-put", "gio"}
 
 
 class Refused(Exception):
@@ -85,10 +98,14 @@ def free_paths():
             "/tmp/claude-%d/" % os.getuid())
 
 
+def resolve(path, cwd):
+    return os.path.realpath(path if os.path.isabs(path)
+                            else os.path.join(cwd or ".", path))
+
+
 def is_free(path, cwd):
     """True for the repo and Claude's own scratch space. Those are not the system."""
-    full = os.path.realpath(path if os.path.isabs(path)
-                            else os.path.join(cwd or ".", path))
+    full = resolve(path, cwd)
     return "/.git/" not in full + "/" and (full + "/").startswith(free_paths())
 
 
@@ -114,6 +131,21 @@ def git_kind(args):
     return CHANGE
 
 
+def package_kind(args):
+    """pacman -Q, -Ss, -Si and -F only read. -Fy refreshes a database, so it changes."""
+    op = next((a for a in args if a.startswith("-") and not a.startswith("--")), "")
+    long_ops = [a for a in args if a.startswith("--")]
+    if any(a in ("--query", "--deptest") for a in long_ops):
+        return READ
+    if op.startswith("-Q") or op.startswith("-T"):
+        return READ
+    if op.startswith("-S") and re.fullmatch(r"-S[sigl]+", op):
+        return READ
+    if op.startswith("-F") and "y" not in op:
+        return READ
+    return CHANGE
+
+
 def program_kind(name, args):
     if name == "git":
         return git_kind(args)
@@ -121,6 +153,8 @@ def program_kind(name, args):
         return READ
     if name in READ_PROGRAMS:
         return READ
+    if name in PACKAGE_TOOLS:
+        return package_kind(args)
     if name in READ_UNLESS:
         return CHANGE if any(a.startswith(READ_UNLESS[name]) for a in args) else READ
     if name == "hostname":
@@ -136,9 +170,6 @@ def program_kind(name, args):
     if name == "find":
         return CHANGE if any(a in ("-delete", "-exec", "-execdir", "-ok", "-okdir")
                              or a.startswith("-fprint") for a in args) else READ
-    if name == "emerge":
-        return READ if any(a in ("--pretend", "--info", "--search", "--version") or
-                           re.match(r"^-[a-zA-Z]*p[a-zA-Z]*$", a) for a in args) else CHANGE
     if name == "ip":
         return CHANGE if any(a in ("add", "del", "delete", "set", "flush", "change",
                                    "replace", "append") for a in args) else READ
@@ -196,13 +227,87 @@ def text_kind(text, cwd, depth=0):
     return kind
 
 
-def check_rescue_command(text):
-    """Rule 1: the rescue kernel always stays in the boot menu."""
-    if (RESCUE.search(text) and REMOVING.search(text)) or WIPE_BOOT.search(text):
-        raise Refused("Rule 1: this could remove a kernel or the boot menu, and the "
-                      "rescue kernel must stay. If this is really needed, the owner "
-                      "runs it by hand.")
+# ---------------------------------------------------------------- hard limits
 
+def each_command(text, depth=0):
+    """Every simple command in the text, wrappers such as sudo removed, as word lists."""
+    if depth > 6:
+        return
+    try:
+        commands = tokenize(text)
+    except CannotParse:
+        return
+    for words, _, _ in commands:
+        for word in words:
+            for inner in substitutions(word):
+                yield from each_command(inner, depth + 1)
+        real = strip_wrappers(words)
+        if real:
+            yield [base(real[0])] + real[1:]
+
+
+def removes_packages(words):
+    if words[0] not in PACKAGE_TOOLS:
+        return False
+    return any(re.fullmatch(r"-R\w*", a) or a == "--remove" for a in words[1:])
+
+
+def check_rescue_command(text):
+    """Rescue pieces stay: the LTS kernel, the boot loader, snapshots and their menu."""
+    why = ("This could remove the rescue kernel, the boot menu or the snapshots, which "
+           "must stay. If it is really needed, the owner runs it by hand.")
+    for words in each_command(text):
+        name, args = words[0], words[1:]
+        if removes_packages(words) and any(
+                re.sub(r"^[\w-]+/", "", a) in RESCUE_PACKAGES for a in args):
+            raise Refused(why)
+        if name == "systemctl" and any(a in ("disable", "mask", "stop") for a in args) \
+                and any(u in a for a in args for u in RESCUE_UNITS):
+            raise Refused(why)
+        if name == "snapper" and any(a in ("delete", "rm", "remove", "delete-config")
+                                     for a in args):
+            raise Refused(why)
+        if name in REMOVERS | {"btrfs", "mv"}:
+            for a in args:
+                path = os.path.normpath(a) if a.startswith("/") else ""
+                if path == "/boot" or path.startswith(("/boot/", "/.snapshots")) \
+                        or "/.snapshots" in a:
+                    raise Refused(why)
+
+
+def personal_target(path, cwd):
+    """True if the path is in the owner's home, but not a hidden settings folder,
+    the repo, or Claude's own space. Those hidden folders are covered by snapshots."""
+    full = resolve(path, cwd)
+    if not (full + "/").startswith(OWNER_HOME + "/") or is_free(full, cwd):
+        return False
+    rest = full[len(OWNER_HOME):].strip("/")
+    return rest == "" or not rest.startswith(".")
+
+
+def check_personal_files(text, cwd):
+    """Never delete the owner's personal files."""
+    why = ("This could delete the owner's personal files, which is never allowed. "
+           "If it is really needed, the owner does it by hand.")
+    for words in each_command(text):
+        name, args = words[0], words[1:]
+        targets = []
+        if name in REMOVERS:
+            targets = [a for a in args if not a.startswith("-") and a not in ("trash", "rm")]
+        elif name == "find" and any(a in ("-delete", "-exec", "-execdir") for a in args):
+            targets = [a for a in args if not a.startswith("-")][:1] or ["."]
+        elif name == "rsync" and any(a.startswith("--delete") for a in args):
+            targets = [a for a in args if not a.startswith("-")][-1:]
+        for t in targets:
+            t = os.path.expanduser(t.replace("$HOME", OWNER_HOME).replace("${HOME}", OWNER_HOME))
+            if "$" in t:
+                raise Refused("Name the path to delete plainly, without a variable, "
+                              "so the personal files rule can check it.")
+            if personal_target(t, cwd):
+                raise Refused(why)
+
+
+# ---------------------------------------------------------------- judging
 
 def judge(payload):
     """Returns (kind, plain English text, command to log)."""
@@ -211,22 +316,22 @@ def judge(payload):
     command = tool_input.get("command")
     if isinstance(command, str):
         check_rescue_command(command)
+        check_personal_files(command, cwd)
         kind = text_kind(command, cwd)
         if kind == READ:
             return READ, "", ""
         said = " ".join(str(tool_input.get("description") or "").split())
         if len(said) < 10:
-            raise Refused("Rule 2: this changes the system, so say in plain English "
-                          "what it does, in the command's description.")
+            raise Refused("This changes the system, so say in plain English what it "
+                          "does, in the command's description.")
         return kind, said, command
     path = tool_input.get("file_path") or tool_input.get("notebook_path")
     if not isinstance(path, str):
         return READ, "", ""
-    full = os.path.realpath(path if os.path.isabs(path)
-                            else os.path.join(cwd or ".", path))
-    if full.startswith("/boot/loader/entries/") and RESCUE.search(full):
-        raise Refused("Rule 1: the rescue kernel's boot entry is not to be changed. "
-                      "The owner does that by hand.")
+    full = resolve(path, cwd)
+    if full.startswith(("/boot/", "/.snapshots/")):
+        raise Refused("Files in /boot and /.snapshots are not edited by hand. The boot "
+                      "menu is made by limine-snapper-sync and the kernel packages.")
     if is_free(full, cwd):
         return READ, "", ""
     said = last_words(payload.get("transcript_path")) or "Change the file %s" % full
@@ -266,7 +371,7 @@ def snapper(config, *args):
 
 
 def snapshot_before(said):
-    text = "before: " + said[:80]
+    text = "kiln: " + said[:80]
     return {c: snapper(c, "create", "--type", "pre", "--print-number",
                        "--cleanup-algorithm", "number", "--description", text)
             for c in ("root", "home")}
@@ -283,15 +388,16 @@ def numbers(snaps):
     return "[root %s home %s]" % (snaps["root"], snaps["home"])
 
 
-def new_entry(said, command, snaps):
+def new_entry(word, said, command, snaps):
     """Adds the first lines for a change. Returns its number."""
     stamp = time.strftime("%Y-%m-%d %H:%M")
     with open(LOG, "a+") as f:
         fcntl.flock(f, fcntl.LOCK_EX)
         f.seek(0)
-        number = sum(" ASKED " in line for line in f) + 1
+        number = sum(bool(re.match(r"^\S+ \S+  #\d+ (?:CHANGE|OUTWARD|ASKED) ", line))
+                     for line in f) + 1
         where = numbers(snaps) if snaps else "[no snapshot]"
-        f.write("%s  #%d ASKED %s %s\n" % (stamp, number, where, said))
+        f.write("%s  #%d %s %s %s\n" % (stamp, number, word, where, said))
         f.write("    command: %s\n" % " ".join(command.split())[:300])
     return number
 
@@ -308,6 +414,18 @@ def pending_file(payload):
     return os.path.join(PENDING, name + ".json")
 
 
+BIG = re.compile(r"\b(?:pacman|paru|yay)\b[^;&|\n]*\s-S\w*u|linux-cachyos|nvidia|limine")
+
+
+def notify(text):
+    """A desktop notice for something big. Never stops the hook."""
+    try:
+        subprocess.run(["notify-send", "--app-name=Kiln", "Kiln", text],
+                       capture_output=True, timeout=10, check=False)
+    except (OSError, subprocess.SubprocessError):
+        pass
+
+
 # ---------------------------------------------------------------- hooks
 
 def hook_pre(payload):
@@ -315,22 +433,31 @@ def hook_pre(payload):
     if kind == READ:
         return 0
     snaps = snapshot_before(said) if kind == CHANGE else None
-    number = new_entry(said, command, snaps)
+    number = new_entry("CHANGE" if snaps else "OUTWARD", said, command, snaps)
     with open(pending_file(payload), "w") as f:
-        json.dump({"number": number, "snaps": snaps}, f)
-    note = "Snapshot taken." if snaps else "This cannot be undone."
+        json.dump({"number": number, "snaps": snaps, "said": said, "command": command}, f)
+    if kind == OUTWARD:
+        decision, note = "ask", "This cannot be undone, so the owner decides."
+    else:
+        decision, note = "allow", "Snapshot taken."
     print(json.dumps({"hookSpecificOutput": {
         "hookEventName": "PreToolUse",
-        "permissionDecision": "ask",
+        "permissionDecision": decision,
         "permissionDecisionReason": "Change #%d: %s. %s" % (number, said.rstrip("."), note),
     }}))
     return 0
 
 
 def rescue_entry_present():
-    done = subprocess.run(["sudo", "-n", "ls", "/boot/loader/entries"],
-                          capture_output=True, text=True, timeout=20, check=False)
-    return done.returncode != 0 or "dist-bin" in done.stdout
+    """The LTS kernel is on disk and in the boot menu."""
+    done = subprocess.run(["sudo", "-n", "cat", BOOT_MENU], capture_output=True,
+                          text=True, timeout=20, check=False)
+    kernel = subprocess.run(["sudo", "-n", "test", "-e", RESCUE_KERNEL],
+                            capture_output=True, timeout=20, check=False)
+    if done.returncode != 0:
+        return False
+    in_menu = any(line.strip() == "//linux-cachyos-lts" for line in done.stdout.splitlines())
+    return in_menu and kernel.returncode == 0
 
 
 def hook_post(payload):
@@ -339,7 +466,7 @@ def hook_post(payload):
             record = json.load(f)
         os.unlink(pending_file(payload))
     except OSError:
-        return 0  # Not a change this hook asked about.
+        return 0  # Not a change this hook logged.
     snaps, number = record["snaps"], record["number"]
     failed = payload.get("hook_event_name") == "PostToolUseFailure"
     word = "FAILED" if failed else "DONE"
@@ -349,10 +476,55 @@ def hook_post(payload):
         add_line(number, word, snapshot_after(snaps))
     else:
         add_line(number, word)
+    if BIG.search(record.get("command") or ""):
+        notify("Change #%d %s: %s" % (number, "failed" if failed else "done",
+                                       record.get("said", "")))
     if snaps and not rescue_entry_present():
-        print("Rule 1: the rescue kernel is no longer in the boot menu. Tell the owner "
-              "now, and put it back, or run undo.", file=sys.stderr)
+        notify("The rescue kernel is missing from the boot menu.")
+        print("The rescue LTS kernel is no longer in the boot menu. Tell the owner now, "
+              "and put it back, or run undo.", file=sys.stderr)
         return 2
+    return 0
+
+
+def hook_session(payload):
+    """Prints what changed since the last session. Claude reads it and tells the owner."""
+    try:
+        with open(LAST_SESSION) as f:
+            since = f.read().strip()
+    except OSError:
+        since = ""
+    now = time.strftime("%Y-%m-%d %H:%M")
+    if (payload or {}).get("source") not in ("resume", "compact", "clear"):
+        try:
+            with open(LAST_SESSION, "w") as f:
+                f.write(now + "\n")
+        except OSError:
+            pass
+    changes, packages = [], []
+    try:
+        with open(LOG) as f:
+            changes = [l.rstrip() for l in f
+                       if re.match(r"^\S+ \S+  #", l) and l[:16] >= since[:16]]
+    except OSError:
+        pass
+    try:
+        with open(PACMAN_LOG) as f:
+            for line in f:
+                m = re.match(r"^\[(\S{16})\S*\] \[ALPM\] (installed|upgraded|removed) (.*)$",
+                             line)
+                if m and m[1].replace("T", " ") >= since[:16]:
+                    packages.append("%s %s" % (m[2], m[3]))
+    except OSError:
+        pass
+    lines = ["Kiln: since the last session (%s):" % (since or "first session"),
+             "%d change log lines, %d package changes." % (len(changes), len(packages))]
+    lines += changes[-20:]
+    if packages:
+        lines.append("Packages, last 15:")
+        lines += packages[-15:]
+    lines.append("Tell the owner briefly what changed, in plain words.")
+    print("\n".join(lines))
     return 0
 
 
@@ -367,21 +539,22 @@ def read_changes(path=None):
     entries = {}
     with open(path or LOG) as f:
         for line in f:
-            m = re.match(r"^\S+ \S+  #(\d+) (ASKED|DONE|FAILED|BACKGROUND|UNDONE|EMPTY|RESTORED)"
-                         r"(?: \[root (\d+) home (\d+)\])?(?: (.*))?$", line.rstrip("\n"))
+            m = re.match(r"^\S+ \S+  #(\d+) (ASKED|CHANGE|DONE|FAILED|BACKGROUND|UNDONE|"
+                         r"EMPTY|RESTORED)(?: \[root (\d+) home (\d+)\])?(?: (.*))?$",
+                         line.rstrip("\n"))
             if not m:
                 continue
             number, word = int(m[1]), m[2]
             if word == "RESTORED":
                 entries.clear()  # Earlier changes no longer match the system.
-            elif word == "ASKED" and m[3]:
+            elif word in ("ASKED", "CHANGE") and m[3]:
                 entries[number] = {"number": number, "said": m[5] or "", "root": m[3],
                                    "home": m[4], "ran": False, "root2": "0", "home2": "0"}
             elif number not in entries:
                 continue
             elif word in ("UNDONE", "EMPTY"):
                 del entries[number]
-            elif word != "ASKED":
+            elif word not in ("ASKED", "CHANGE"):
                 entries[number]["ran"] = True
                 if m[3]:
                     entries[number].update(root2=m[3], home2=m[4])
@@ -455,8 +628,8 @@ def cmd_undo(argv):
     if settings:
         root_snapper("home", "undochange", home_range, *settings)
     add_line(last["number"], "UNDONE")
-    print("Done. Change #%d is undone. If the desktop still looks wrong, restart it "
-          "with Super+Shift+E, or restart the machine." % last["number"])
+    print("Done. Change #%d is undone. If the desktop still looks wrong, log out and in "
+          "again, or restart the machine." % last["number"])
     return 0
 
 
@@ -468,6 +641,12 @@ def main(argv):
         except (RuntimeError, OSError, subprocess.SubprocessError) as why:
             print("undo failed: %s" % why)
             return 1
+    if command == "session":
+        try:
+            raw = sys.stdin.read() if not sys.stdin.isatty() else ""
+            return hook_session(json.loads(raw) if raw.strip() else {})
+        except BaseException:  # A summary must never stop a session starting.
+            return 0
     if command not in ("pre", "post"):
         print(__doc__)
         return 64
@@ -478,6 +657,9 @@ def main(argv):
         print("Kiln rules: blocked. %s" % why, file=sys.stderr)
         return 2
     except BaseException as why:  # A change must not run without its snapshot.
+        if command == "post":
+            print("Kiln rules: the after step hit an error: %r" % why, file=sys.stderr)
+            return 1
         print("Kiln rules: blocked, because the rules hook hit an error: %r" % why,
               file=sys.stderr)
         return 2
