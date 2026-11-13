@@ -21,6 +21,12 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 
 ## Log
 
+### 13 Nov 2026 — Claude Code, Kiln's own kernel, stage 1
+
+- Owner asked for the full-fat kernel, as the boot default. `kernel/`: CachyOS's build script with Kiln's changes, reviewer checked (CONCERNS, all answered: the BORE patch's checksum added; the default set only after a good first boot; no hand edit of /boot/limine.conf; back-out written in kernel/README.md).
+- Stage 1 built (BORE, full LTO, -O3, x86-64-v3, NVIDIA module 620.70.06) and installed as `linux-cachyos-kiln` 7.3.4, second in the boot menu. Stock and LTS kernels unchanged.
+- Next: owner restarts and picks linux-cachyos-kiln by hand. Then check desktop, network, `nvidia-smi`, guard, snapshots; set `BOOT_ORDER="*kiln, *, *lts, *fallback, Snapshots"` in /etc/default/limine and run `limine-update`; measure.sh run; AutoFDO profile with perf during a kernel build; stage 2. Propeller (stage 3) needs google/llvm-propeller built from source, reviewer first.
+
 ### 13 Nov 2026 — Claude Code, CachyMod ideas tested
 
 - Owner asked what to take from CachyMod (archived 13 Nov 2026; not adopted). Two live kernel settings tested on the stock kernel, predictions written first: TEO idle governor and lazy preemption. Neither gained anything; lazy's one good figure did not repeat. Both stay at the defaults, nothing made permanent. results/tuning-2026-11-13/.
