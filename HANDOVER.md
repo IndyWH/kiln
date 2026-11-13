@@ -22,6 +22,10 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 
 ## Log
 
+### 13 Nov 2026 — Claude Code, x86-64-v3 packages
+
+- Owner's decision: no compiler benchmark. CachyOS's v3 packages whenever they exist; otherwise wait for CachyOS (owner chose this over rebuilding the 72 generic system packages after every update). From-source builds use x86-64-v3 instead of CachyOS's `native`. pacman already moves to v3 builds by itself; `kiln-v3` reports what is generic. See lessons/packages.md.
+
 ### 13 Nov 2026 — Claude Code, black background
 
 - Owner asked for a black wallpaper. Noctalia's wallpaper is off, Hyprland's background is black, and Noctalia uses its built-in colour scheme instead of colours from the wallpaper.

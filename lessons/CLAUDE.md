@@ -10,5 +10,6 @@ The first line of each section says what it holds.
 | [desktop](desktop.md) | Working on Hyprland, graphics or the screen |
 | [audio](audio.md) | Working on PipeWire or sound |
 | [network](network.md) | Working on the network |
+| [packages](packages.md) | Installing or building packages, repos, CPU level |
 
 Never put another disk's full serial number here. This folder is copied to a public repo, so show the last 4 characters only.

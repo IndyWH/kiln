@@ -1,0 +1,90 @@
+#!/usr/bin/python3
+"""kiln-v3: which installed packages are not CachyOS's x86-64-v3 builds, and why.
+
+Owner's rule, 13 Nov 2026: use CachyOS's v3 packages whenever they exist, and wait
+for CachyOS when they do not. pacman does this by itself: the v3 repos come first in
+/etc/pacman.conf, and CachyOS numbers a v3 build with an extra ".1" (5.05-6.1 against
+Arch's 5.05-6), so the next update moves a generic package to v3 once it exists.
+This only reports. Run: kiln-v3
+"""
+import subprocess
+import sys
+
+def run(*cmd):
+    return subprocess.run(cmd, capture_output=True, text=True, check=True).stdout
+
+
+def blocks(text):
+    """Parses pacman -Qi / -Si output into dicts."""
+    out = []
+    for block in text.split("\n\n"):
+        d = {}
+        for line in block.splitlines():
+            if " : " in line and not line.startswith(" "):
+                key, value = line.split(" : ", 1)
+                d[key.strip()] = value.strip()
+        if "Name" in d:
+            out.append(d)
+    return out
+
+
+def vercmp(a, b):
+    return int(run("vercmp", a, b))
+
+
+def survey():
+    repos = run("pacman-conf", "--repo-list").split()
+    v3 = [r for r in repos if r.endswith("-v3")]
+    first = {}  # package -> (repo, version) of the first repo that has it
+    for line in run("pacman", "-Sl").splitlines():
+        repo, name, version = line.split()[:3]
+        if name not in first or repos.index(repo) < repos.index(first[name][0]):
+            first[name] = (repo, version)
+    foreign = set(subprocess.run(["pacman", "-Qqm"], capture_output=True,  # 1 when none
+                                 text=True).stdout.split())
+    installed = blocks(run("pacman", "-Qi"))
+
+    switch, waiting, lib32, coming = [], [], [], []
+    same = []
+    for p in installed:
+        name, ver = p["Name"], p["Version"]
+        if p.get("Architecture") == "any" or name in foreign:
+            continue
+        repo, repo_ver = first.get(name, (None, None))
+        if repo not in v3:
+            (lib32 if name.startswith("lib32-") else waiting).append((name, ver, repo))
+            continue
+        c = vercmp(ver, repo_ver)
+        if c < 0:
+            coming.append((name, repo_ver, repo))
+        elif c > 0:
+            waiting.append((name, ver, "newer than %s %s" % (repo, repo_ver)))
+        else:
+            same.append((p, repo))
+    if same:
+        dates = {d["Name"]: d.get("Build Date") for d in
+                 blocks(run("pacman", "-Si", *("%s/%s" % (r, p["Name"]) for p, r in same)))}
+        for p, repo in same:
+            if dates.get(p["Name"]) != p.get("Build Date"):
+                switch.append((p["Name"], p["Version"], repo))
+    return switch, waiting, lib32, coming
+
+
+def report(switch, waiting, lib32, coming):
+    print("Same version as v3, but not the v3 build: %d" % len(switch))
+    for n, v, r in switch:
+        print("  %s %s: sudo pacman -S %s/%s" % (n, v, r, n))
+    print("v3 build in the next update: %d" % len(coming))
+    print("Generic, waiting for CachyOS to build v3: %d" % len(waiting))
+    for n, v, r in sorted(waiting):
+        print("  %s %s (%s)" % (n, v, r or "not in any repo"))
+    print("32-bit libraries, v3 does not apply: %d" % len(lib32))
+
+
+def main(argv):
+    report(*survey())
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))
