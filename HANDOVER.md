@@ -22,6 +22,10 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 
 ## Log
 
+### 13 Nov 2026 — Claude Code, black background
+
+- Owner asked for a black wallpaper. Noctalia's wallpaper is off, Hyprland's background is black, and Noctalia uses its built-in colour scheme instead of colours from the wallpaper.
+
 ### 13 Nov 2026 — Claude Code, window layout
 
 - Owner asked for no gaps, and 1 window full, 2 halves, 3 thirds, 4 quarters. Done, and from 5 on, Claude's choice: 4 columns, extra windows stacked from the right, so 8 make a 4 by 2 grid. Corners squared; the 2-pixel active border kept.
