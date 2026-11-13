@@ -146,6 +146,12 @@ class Flow(unittest.TestCase):
         self.dir = tempfile.mkdtemp()
         r.LOG = self.dir + "/changes.log"
         r.PENDING = self.dir
+        r.OPERATOR = self.dir + "/operator.json"
+        self.window = (100, "1")
+        self.alive = {(100, "1")}
+        self.real_proc = r.claude_process, r.process_alive
+        r.claude_process = lambda: self.window
+        r.process_alive = lambda pid, start: (pid, start) in self.alive
         self.count = {"root": 10, "home": 20}
         self.notices = []
         self.real = r.snapper, r.rescue_entry_present, r.notify
@@ -159,6 +165,7 @@ class Flow(unittest.TestCase):
 
     def tearDown(self):
         r.snapper, r.rescue_entry_present, r.notify = self.real
+        r.claude_process, r.process_alive = self.real_proc
 
     def pre(self, payload):
         out = io.StringIO()
@@ -238,11 +245,75 @@ class Flow(unittest.TestCase):
         self.assertEqual(len(self.notices), 1)
 
 
+    def test_helper_cannot_change(self):
+        payload = {"tool_use_id": "h", "cwd": REPO, "agent_id": "a1", "agent_type": "reviewer",
+                   "tool_input": {"command": "sudo pacman -S vim",
+                                  "description": "Install the vim editor"}}
+        with self.assertRaises(r.Refused):
+            r.hook_pre(payload)
+        self.assertEqual(self.count, {"root": 10, "home": 20})  # No snapshot taken.
+
+    def test_helper_cannot_push(self):
+        payload = {"tool_use_id": "h", "cwd": REPO, "agent_type": "general-purpose",
+                   "tool_input": {"command": "git push", "description": "Push to GitHub"}}
+        with self.assertRaises(r.Refused):
+            r.hook_pre(payload)
+
+    def test_helper_can_read(self):
+        payload = {"tool_use_id": "h", "cwd": REPO, "agent_type": "researcher",
+                   "tool_input": {"command": "pacman -Qi vim"}}
+        self.assertIsNone(self.pre(payload))
+
+    def test_same_window_keeps_working(self):
+        self.run_change("a")
+        self.run_change("b")
+        self.assertEqual(self.decision["permissionDecision"], "allow")
+
+    def test_second_window_is_blocked(self):
+        self.run_change("a")
+        self.window = (200, "5")
+        self.alive.add(self.window)
+        with self.assertRaises(r.Refused):
+            self.run_change("b")
+        self.assertEqual(self.count, {"root": 11, "home": 21})  # Only the first snapshot.
+
+    def test_second_window_takes_over_when_first_closed(self):
+        self.run_change("a")
+        self.alive.clear()
+        self.window = (200, "5")
+        self.alive.add(self.window)
+        self.run_change("b")
+        self.assertEqual(self.decision["permissionDecision"], "allow")
+
+    def test_second_window_takes_over_when_first_idle(self):
+        self.run_change("a")
+        with open(r.OPERATOR) as f:
+            held = json.load(f)
+        held["time"] -= r.OPERATOR_IDLE + 1
+        with open(r.OPERATOR, "w") as f:
+            json.dump(held, f)
+        self.window = (200, "5")
+        self.alive.add(self.window)
+        self.run_change("b")
+        self.assertEqual(self.decision["permissionDecision"], "allow")
+
+    def test_reused_pid_is_not_the_same_window(self):
+        self.run_change("a")
+        self.window = (100, "9")  # Same number, started later: a different process.
+        self.alive = {self.window}
+        self.run_change("b")
+        self.assertEqual(self.decision["permissionDecision"], "allow")
+
+
 class Session(unittest.TestCase):
     def test_summary_since_last_session(self):
         folder = tempfile.mkdtemp()
         r.LOG, r.LAST_SESSION = folder + "/changes.log", folder + "/last"
         r.PACMAN_LOG = folder + "/pacman.log"
+        r.WATCH_REPORT = folder + "/latest.txt"
+        with open(r.WATCH_REPORT, "w") as f:
+            f.write("Kiln watch, 2026-11-13 12:00: 1 thing needs attention.\n\n"
+                    "NEEDS ATTENTION: Failed services: foo.service.\n")
         with open(r.LAST_SESSION, "w") as f:
             f.write("2026-11-13 12:00\n")
         with open(r.LOG, "w") as f:
@@ -260,6 +331,7 @@ class Session(unittest.TestCase):
         self.assertIn("New one", text)
         self.assertNotIn("Old one", text)
         self.assertIn("upgraded vim", text)
+        self.assertIn("NEEDS ATTENTION: Failed services: foo.service.", text)
         self.assertNotIn("upgraded old", text)
         with open(r.LAST_SESSION) as f:
             self.assertNotEqual(f.read().strip(), "2026-11-13 12:00")

@@ -9,6 +9,8 @@ Commands:
 
 Act, then inform (docs/PHILOSOPHY.md). Only outward actions, such as git push, ask.
 Hard limits block silently: the rescue pieces and the owner's personal files.
+Only the operator changes the machine: helper agents (subagents) are read-only, and
+only one Claude window at a time may make changes (docs/PHILOSOPHY.md, Agents).
 
 This reads command text, so it can misjudge. Anything it does not recognise counts
 as a change, which only means one more snapshot. The disk guard runs beside it and
@@ -29,6 +31,9 @@ LOG_DIR = "/var/log/kiln"
 LOG = LOG_DIR + "/changes.log"
 PENDING = LOG_DIR + "/pending"
 LAST_SESSION = LOG_DIR + "/last-session"
+OPERATOR = LOG_DIR + "/operator.json"
+OPERATOR_IDLE = 15 * 60  # seconds without a change before another window may take over
+WATCH_REPORT = LOG_DIR + "/watch/latest.txt"
 PACMAN_LOG = "/var/log/pacman.log"
 GUARD_FILE = "/usr/local/lib/kiln-guard/kiln_guard.py"
 OWNER_HOME = "/home/indy"
@@ -420,6 +425,68 @@ def pending_file(payload):
 BIG = re.compile(r"\b(?:pacman|paru|yay)\b[^;&|\n]*\s-S\w*u|linux-cachyos|nvidia|limine")
 
 
+def claude_process():
+    """(pid, start time) of the Claude Code window this hook runs under, or None."""
+    pid = os.getppid()
+    for _ in range(12):
+        try:
+            with open("/proc/%d/comm" % pid) as f:
+                comm = f.read().strip()
+            with open("/proc/%d/stat" % pid) as f:
+                fields = f.read().rsplit(")", 1)[1].split()
+        except OSError:
+            return None
+        if comm == "claude":
+            return pid, fields[19]  # field 22 of stat: start time, against PID reuse
+        pid = int(fields[1])
+        if pid <= 1:
+            return None
+    return None
+
+
+def process_alive(pid, start):
+    try:
+        with open("/proc/%d/stat" % pid) as f:
+            return f.read().rsplit(")", 1)[1].split()[19] == start
+    except (OSError, IndexError):
+        return False
+
+
+def check_helper(payload):
+    """Helpers, that is subagents, only read and report. The operator acts."""
+    if payload.get("agent_id") or payload.get("agent_type"):
+        raise Refused("Only the operator changes the machine; helper agents are read-only. "
+                      "Report back to the operator instead.")
+
+
+def claim_operator(payload):
+    """One Claude window at a time makes changes, so each snapshot and undo belongs to
+    one known change. Another window takes over once this one has closed, or has made
+    no change for OPERATOR_IDLE seconds."""
+    me = claude_process()
+    now = time.time()
+    with open(OPERATOR, "a+") as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        f.seek(0)
+        try:
+            held = json.load(f)
+        except ValueError:
+            held = {}
+        other = held.get("pid")
+        if (me and other and [other, held.get("start")] != list(me)
+                and process_alive(other, held.get("start"))
+                and now - held.get("time", 0) < OPERATOR_IDLE):
+            raise Refused(
+                "Another Claude window is the operator: it made a change at %s. Only one "
+                "window changes the machine at a time. Carry on in that window, close it, "
+                "or wait until it has made no change for %d minutes."
+                % (time.strftime("%H:%M", time.localtime(held["time"])), OPERATOR_IDLE // 60))
+        f.seek(0)
+        f.truncate()
+        json.dump({"pid": me[0] if me else None, "start": me[1] if me else None,
+                   "session": payload.get("session_id"), "time": now}, f)
+
+
 def notify(text):
     """A desktop notice for something big. Never stops the hook."""
     try:
@@ -435,6 +502,8 @@ def hook_pre(payload):
     kind, said, command = judge(payload)
     if kind == READ:
         return 0
+    check_helper(payload)
+    claim_operator(payload)
     snaps = snapshot_before(said) if kind == CHANGE else None
     number = new_entry("CHANGE" if snaps else "OUTWARD", said, command, snaps)
     with open(pending_file(payload), "w") as f:
@@ -526,7 +595,13 @@ def hook_session(payload):
     if packages:
         lines.append("Packages, last 15:")
         lines += packages[-15:]
-    lines.append("Tell the owner briefly what changed, in plain words.")
+    try:
+        with open(WATCH_REPORT) as f:
+            lines += ["", "The watcher's last report:"] + [l.rstrip() for l in f if l.strip()][:30]
+    except OSError:
+        lines += ["", "No report from the watcher (kiln-watch.timer) yet."]
+    lines.append("Tell the owner briefly what changed, in plain words, and anything the "
+                 "watcher says needs attention.")
     print("\n".join(lines))
     return 0
 
