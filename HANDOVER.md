@@ -25,7 +25,7 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 ### 13 Nov 2026 — Claude Code, CachyOS against Gentoo
 
 - Owner asked: v1's five-program test on CachyOS, against v1's Gentoo results. Same files and work, outputs match v1's exactly. CachyOS is as fast or faster on all five: dav1d 1.0%, SQLite 5.6%, RawTherapee 7.8%, LightCraft 21% faster, darktable 0.5% slower. LightCraft's gain is mostly CachyOS's huge pages setting. results/cachyos-vs-gentoo/, lessons/speed.md.
-- Installed for it, official packages: `rust`, `darktable`, `rawtherapee`, `meson`, `nasm`. Owner to say whether to keep them. The lab in /tmp/kiln-lab goes at restart.
+- Installed for it, official packages: `rust`, `darktable`, `rawtherapee`, `meson`, `nasm`. Owner chose to keep them for now. The lab in /tmp/kiln-lab goes at restart.
 
 ### 13 Nov 2026 — Claude Code, weather
 
