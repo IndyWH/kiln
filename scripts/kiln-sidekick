@@ -6,5 +6,8 @@
 if hyprctl -j clients | grep -q '"class": "kiln-sidekick"'; then
     exec hyprctl dispatch 'hl.dsp.workspace.toggle_special("sidekick")'
 fi
+# Claude Code by its full path: the desktop's PATH does not include ~/.local/bin.
+# If it cannot start, the window stays open with a message instead of vanishing.
 exec kitty --class kiln-sidekick --title "Kiln: Claude Code" --directory "$HOME/Projects/kiln" \
-    sh -c 'claude --continue || claude'
+    sh -c '"$HOME/.local/bin/claude" --continue || "$HOME/.local/bin/claude" ||
+           { echo; echo "Claude Code did not start. Press Enter to close."; read x; }'
