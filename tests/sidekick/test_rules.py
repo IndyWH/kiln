@@ -150,6 +150,8 @@ class Flow(unittest.TestCase):
         self.window = (100, "1")
         self.alive = {(100, "1")}
         self.real_proc = r.claude_process, r.process_alive
+        self.real_guard = r.guard_blocks
+        r.guard_blocks = lambda payload: False
         r.claude_process = lambda: self.window
         r.process_alive = lambda pid, start: (pid, start) in self.alive
         self.count = {"root": 10, "home": 20}
@@ -166,6 +168,7 @@ class Flow(unittest.TestCase):
     def tearDown(self):
         r.snapper, r.rescue_entry_present, r.notify = self.real
         r.claude_process, r.process_alive = self.real_proc
+        r.guard_blocks = self.real_guard
 
     def pre(self, payload):
         out = io.StringIO()
@@ -305,12 +308,51 @@ class Flow(unittest.TestCase):
         self.assertEqual(self.decision["permissionDecision"], "allow")
 
 
+    def test_guard_blocked_leaves_nothing(self):
+        r.guard_blocks = lambda payload: True
+        self.run_change("a")
+        self.assertIsNone(self.decision)
+        self.assertEqual(self.count, {"root": 10, "home": 20})  # No snapshot.
+        self.assertFalse(os.path.exists(r.LOG))
+        self.assertEqual([n for n in os.listdir(self.dir) if n.endswith(".json")], [])
+
+    def test_guard_check_blocks_on_block_or_error(self):
+        real = r.kiln_guard.decide, r.kiln_guard.Disks
+        try:
+            r.kiln_guard.Disks = lambda: None
+            r.kiln_guard.decide = lambda payload, disks: None
+            self.assertFalse(self.real_guard({}))
+            def blocked(payload, disks):
+                raise r.kiln_guard.Blocked("no")
+            r.kiln_guard.decide = blocked
+            self.assertTrue(self.real_guard({}))
+            r.kiln_guard.decide = lambda payload, disks: 1 / 0
+            self.assertTrue(self.real_guard({}))
+        finally:
+            r.kiln_guard.decide, r.kiln_guard.Disks = real
+
+    def test_stale_entry_is_closed(self):
+        self.run_change("old")  # Its after step never came.
+        self.run_change("new")
+        path = os.path.join(self.dir, "old.json")
+        os.utime(path, (1, 1))
+        r.sweep_pending()
+        self.assertFalse(os.path.exists(path))
+        self.assertTrue(os.path.exists(os.path.join(self.dir, "new.json")))
+        with open(r.LOG) as f:
+            self.assertIn("#1 NOTRUN", f.read())
+        r.hook_post({"tool_use_id": "new", "hook_event_name": "PostToolUse",
+                     "tool_input": {"command": "sudo pacman -S vim"}})
+        self.assertEqual([e["number"] for e in r.read_changes(r.LOG)], [2])
+
+
 class Session(unittest.TestCase):
     def test_summary_since_last_session(self):
         folder = tempfile.mkdtemp()
         r.LOG, r.LAST_SESSION = folder + "/changes.log", folder + "/last"
         r.PACMAN_LOG = folder + "/pacman.log"
         r.WATCH_REPORT = folder + "/latest.txt"
+        r.PENDING = folder
         with open(r.WATCH_REPORT, "w") as f:
             f.write("Kiln watch, 2026-11-13 12:00: 1 thing needs attention.\n\n"
                     "NEEDS ATTENTION: Failed services: foo.service.\n")

@@ -25,11 +25,13 @@ import sys
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+import kiln_guard
 from kiln_guard import CannotParse, base, strip_wrappers, substitutions, tokenize
 
 LOG_DIR = "/var/log/kiln"
 LOG = LOG_DIR + "/changes.log"
 PENDING = LOG_DIR + "/pending"
+STALE = 60 * 60  # seconds: a change with no after step by then never ran
 LAST_SESSION = LOG_DIR + "/last-session"
 OPERATOR = LOG_DIR + "/operator.json"
 OPERATOR_IDLE = 15 * 60  # seconds without a change before another window may take over
@@ -498,10 +500,42 @@ def notify(text):
 
 # ---------------------------------------------------------------- hooks
 
+def guard_blocks(payload):
+    """True if the disk guard, which runs beside this hook, will block the call. Then
+    this hook does nothing, so a blocked command leaves no snapshot or open log entry."""
+    try:
+        kiln_guard.decide(payload, kiln_guard.Disks())
+    except Exception:  # The guard blocks on any error too.
+        return True
+    return False
+
+
+def sweep_pending(now=None):
+    """Closes log entries whose after step never came, for example a call that another
+    hook blocked or that the owner declined. They are marked NOTRUN, so undo skips them."""
+    now = now or time.time()
+    try:
+        names = os.listdir(PENDING)
+    except OSError:
+        return
+    for name in names:
+        path = os.path.join(PENDING, name)
+        try:
+            if not name.endswith(".json") or now - os.path.getmtime(path) < STALE:
+                continue
+            with open(path) as f:
+                number = json.load(f)["number"]
+            os.unlink(path)
+        except (OSError, ValueError, KeyError, TypeError):
+            continue
+        add_line(number, "NOTRUN")
+
+
 def hook_pre(payload):
     kind, said, command = judge(payload)
-    if kind == READ:
+    if kind == READ or guard_blocks(payload):
         return 0
+    sweep_pending()
     check_helper(payload)
     claim_operator(payload)
     snaps = snapshot_before(said) if kind == CHANGE else None
@@ -561,6 +595,7 @@ def hook_post(payload):
 
 def hook_session(payload):
     """Prints what changed since the last session. Claude reads it and tells the owner."""
+    sweep_pending()
     try:
         with open(LAST_SESSION) as f:
             since = f.read().strip()
@@ -617,7 +652,7 @@ def read_changes(path=None):
     entries = {}
     with open(path or LOG) as f:
         for line in f:
-            m = re.match(r"^\S+ \S+  #(\d+) (ASKED|CHANGE|DONE|FAILED|BACKGROUND|UNDONE|"
+            m = re.match(r"^\S+ \S+  #(\d+) (ASKED|CHANGE|DONE|FAILED|BACKGROUND|UNDONE|NOTRUN|"
                          r"EMPTY|RESTORED)(?: \[root (\d+) home (\d+)\])?(?: (.*))?$",
                          line.rstrip("\n"))
             if not m:
@@ -630,7 +665,7 @@ def read_changes(path=None):
                                    "home": m[4], "ran": False, "root2": "0", "home2": "0"}
             elif number not in entries:
                 continue
-            elif word in ("UNDONE", "EMPTY"):
+            elif word in ("UNDONE", "EMPTY", "NOTRUN"):
                 del entries[number]
             elif word not in ("ASKED", "CHANGE"):
                 entries[number]["ran"] = True

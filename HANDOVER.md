@@ -4,9 +4,8 @@
 
 Part 5 of docs/INSTALL.md, first start, is done: guard, snapshots, rules hook, machine rules, agents, NVIDIA checks, the Omarchy look, and a measured baseline. Open:
 
-1. Boot times: `scripts/measure.sh boot` after each of 5 restarts, when the owner can restart.
-2. The login screen: autologin into hyprlock, when the owner can log out to test (see Claude's memory notes).
-3. The small gap from the first session: a command the guard blocks still leaves a "before" snapshot and an open log entry.
+1. The owner runs `sudo sidekick/install.sh` for the log gap fix, below. Then check that the 13 leftover entries in /var/log/kiln/pending are closed as NOTRUN.
+2. Boot times: `scripts/measure.sh boot` after each of 5 restarts, when the owner can restart.
 
 Known gap: snapshots 1 to 6 are older than the guard. Booting one from the menu starts without the guard.
 
@@ -22,6 +21,11 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 - `kiln-stories/`, `ai-bug-reports/`, and Claude's memory notes in `claude-memory/`.
 
 ## Log
+
+### 13 Nov 2026 — Claude Code, log gap, login screen
+
+- Owner's decision: CachyOS's login screen stays as it is. Claude's memory note about changing it removed.
+- Log gap fixed in the rules hook: it asks the guard first, with the guard's own check, and does nothing for a call the guard will block. A change whose after step has not come within an hour is marked NOTRUN, its pending file removed, and `undo` skips it. 35 tests pass. Waiting for the owner to install it.
 
 ### 13 Nov 2026 — Claude Code, updates, NVIDIA, the Omarchy look, baseline
 
