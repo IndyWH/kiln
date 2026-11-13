@@ -38,3 +38,14 @@ Why: in v1, Claude asked before every change. The owner hardly read the requests
 - The owner decides what Kiln is for and what to run. They report problems in plain words.
 - Claude Code runs the machine: installs, configures, fixes, measures, and writes it all down.
 - Cowork writes specs and reviews.
+
+## Agents
+
+One agent changes the machine; any others only watch and report.
+
+- **The operator** is the only agent with `sudo`. All changes go through it, one at a time, so every snapshot and `undo` belongs to one known change. A lock enforces this.
+- **Helpers are read-only.** They advise; the operator acts.
+  - **Watcher**, on a schedule: failed services, disk health, pending updates, and Arch news that needs a manual step.
+  - **Reviewer**: a fresh, independent check before risky changes, such as an AUR build script or a boot loader change. It has not seen the operator's reasoning, so it is not anchored on it, and text trying to steer Claude would have to fool both.
+  - **Researcher**: looks things up, such as which driver version, so the operator's context stays clear.
+- Order: the operator first. The watcher once the basics are stable, then the reviewer.
