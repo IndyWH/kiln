@@ -22,6 +22,10 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 
 ## Log
 
+### 13 Nov 2026 — Claude Code, window layout
+
+- Owner asked for no gaps, and 1 window full, 2 halves, 3 thirds, 4 quarters. Done, and from 5 on, Claude's choice: 4 columns, extra windows stacked from the right, so 8 make a 4 by 2 grid. Corners squared; the 2-pixel active border kept.
+
 ### 13 Nov 2026 — Claude Code, screen and mouse
 
 - Owner asked for the screen's full mode with VRR, and mouse copy and paste. The screen now runs 5120x1440 at 120 Hz with VRR always on. Mouse forward copies, back pastes; a terminal gets Ctrl+Shift. See lessons/desktop.md.
