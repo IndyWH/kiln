@@ -10,3 +10,5 @@ Run 1, this folder: CachyOS's default power mode, balanced. Run 2, `cachyos-2026
 | CPU, performance against balanced | Under 3% better with all cores busy, and under 2% on one thread |
 | Audio, smallest clean buffer | 128 samples or smaller in both runs, one step better than Ubuntu's 256, from CachyOS's lower-latency kernel |
 | Wake-up delay, worst, under full load | Under Ubuntu's 11 ms in both runs |
+
+Note, 13 Nov 2026: Ubuntu was booted with gpu-unlock on the RTX 4090 (`gpu_unlock.targets=0000:01:00.0`). It changes only the GPU's tensor-core rate, so it does not touch these measures. See lessons/hardware.md.
