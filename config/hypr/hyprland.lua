@@ -137,6 +137,9 @@ hl.config({
         bell_sound                 = "none",
         key_press_enables_dpms     = true,
         mouse_move_enables_dpms    = true,
+        -- Kiln has no recipe for hyprland-guiutils yet, so Hyprland warned at each start.
+        -- Without it, the "not responding" box cannot show. See lessons/desktop.md.
+        disable_hyprland_guiutils_check = true,
     },
     cursor = {
         hide_on_key_press        = true,

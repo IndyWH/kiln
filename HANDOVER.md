@@ -46,6 +46,10 @@ Baseline still open: 4 more Ubuntu boots. The owner runs `scripts/measure.sh boo
 
 ## Log
 
+### 13 Nov 2026 — Claude Code, Hyprland guiutils warning off
+
+- After a restart Hyprland warned that `hyprland-guiutils` is not installed. Kiln never packaged it; nothing installed lately touches Hyprland. Owner chose to turn the warning off rather than write recipes for it and `hyprtoolkit` now. `misc.disable_hyprland_guiutils_check = true` in config/hypr/hyprland.lua, copied to ~/.config/hypr. Reload showed no errors. The "not responding" box stays unavailable until a recipe exists.
+
 ### 11 Nov 2026 — Claude Code, LightCraft compile speed, our Rust against rust-bin
 
 - Owner asked. LightCraft 0.18.1, kept out of all training, its own debug and release settings, all cores, rust-bin's cargo for both. Builds took turns, rust-bin then ours, 3 each. `scripts/lightcraft-compile.sh`.
