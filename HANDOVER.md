@@ -25,7 +25,7 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 
 - Owner: Chrome (Google sync), accelerated on the WX 3200, never the 4090. AUR google-chrome 157.0.8103.78, reviewer CONCERNS answered; checked on the running browser. See lessons/browsers.md. kiln-watch reports newer AUR packages and Chrome versions.
 - Owner: Claude Desktop, from CachyOS's repository (claude-desktop 5.11492.0-1), with a system update. Cowork not set up (needs the kvm group).
-- Waiting: limine 12.9.6 to 12.10.0, held back with --ignore; reviewer first, then update.
+- limine 12.10.0 (released 14 Nov): reviewer CONCERNS, package safe; owner agreed to wait about a week, until about 21 Nov, as it is a same-day release and a recent version hung on machines with a screenless GPU (the 4090). Keep `--ignore limine` until then. Ready: today's files in ~/.cache/kiln-limine-backup/12.9.6; the old package in pacman's cache; firmware entry "UEFI OS" (F8 at the ASUS logo) is the untouched 12.9.6 fallback. After updating, expect /boot/EFI/BOOT/BOOTX64.EFI to stay 12.9.6: do not change it until the new one has booted.
 
 ### 14 Nov 2026 — Claude Code, one-command kernel rebuild and the sentry
 
