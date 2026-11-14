@@ -144,3 +144,9 @@ hl.animation({ leaf = "specialWorkspaceOut", enabled = true, speed = 2, bezier =
 -- with acceleration ("adaptive": quick movements go further). For no acceleration, delete
 -- the accel_profile here, and inputs.lua's "flat" applies again.
 hl.config({ input = { sensitivity = 0.1, accel_profile = "adaptive" } })
+
+-- Screenshot key (owner, 14 Nov 2026): the keyboard's Print key sends Shift+Super+S, the
+-- Windows screenshot shortcut, which binds.lua had on "move window to the scratchpad".
+-- It takes a region screenshot now, like Print. The scratchpad move has no key for now.
+hl.unbind("SUPER + SHIFT + S")
+hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("noctalia msg screenshot-region"))
