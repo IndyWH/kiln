@@ -36,6 +36,7 @@ LAST_SESSION = LOG_DIR + "/last-session"
 OPERATOR = LOG_DIR + "/operator.json"
 OPERATOR_IDLE = 15 * 60  # seconds without a change before another window may take over
 WATCH_REPORT = LOG_DIR + "/watch/latest.txt"
+SENTRY_REPORT = LOG_DIR + "/sentry/latest.txt"
 PACMAN_LOG = "/var/log/pacman.log"
 GUARD_FILE = "/usr/local/lib/kiln-guard/kiln_guard.py"
 OWNER_HOME = "/home/indy"
@@ -635,8 +636,13 @@ def hook_session(payload):
             lines += ["", "The watcher's last report:"] + [l.rstrip() for l in f if l.strip()][:30]
     except OSError:
         lines += ["", "No report from the watcher (kiln-watch.timer) yet."]
+    try:
+        with open(SENTRY_REPORT) as f:
+            lines += ["", "The sentry's last report:"] + [l.rstrip() for l in f if l.strip()][:30]
+    except OSError:
+        lines += ["", "No report from the sentry (kiln-sentry.timer) yet."]
     lines.append("Tell the owner briefly what changed, in plain words, and anything the "
-                 "watcher says needs attention.")
+                 "watcher or the sentry says needs attention.")
     print("\n".join(lines))
     return 0
 

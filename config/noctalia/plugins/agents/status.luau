@@ -1,6 +1,7 @@
 --!nonstrict
--- Kiln agents: one boxed icon per agent. Blue inactive, green working, red needs you
--- (a question, a request or a failure). Each agent's state is a small file in
+-- Kiln agents: one boxed icon per agent, and one for the sentry. Blue inactive or clear,
+-- green working, amber an update or setting due (the sentry), red needs you (a question,
+-- a request, a failure or a possible threat). Each agent's state is a small file in
 -- $XDG_RUNTIME_DIR/kiln-agents/, written by kiln-agent-status: the state on the first
 -- line, a note on the second. Read once a second. Click: open or hide the Claude pull-down.
 
@@ -9,9 +10,10 @@ local AGENTS = {
   { id = "reviewer",   name = "Reviewer",   glyph = "shield-check" },
   { id = "researcher", name = "Researcher", glyph = "search" },
   { id = "watcher",    name = "Watcher",    glyph = "activity-heartbeat" },
+  { id = "sentry",     name = "Sentry",     glyph = "shield-lock" },
 }
-local COLOURS = { idle = "#4A8FE7", working = "#3FB950", alert = "#F85149" }
-local WORDS = { idle = "inactive", working = "working", alert = "needs you" }
+local COLOURS = { idle = "#4A8FE7", working = "#3FB950", warn = "#E3B341", alert = "#F85149" }
+local WORDS = { idle = "inactive", working = "working", warn = "something due", alert = "needs you" }
 local dir = (noctalia.getenv("XDG_RUNTIME_DIR") or "/run/user/1000") .. "/kiln-agents/"
 local shown = nil
 

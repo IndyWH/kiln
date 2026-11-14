@@ -14,3 +14,8 @@ The helper agents, the watcher, and the rules hook's locks.
 - `grim -g "X,Y WxH" file.png` screenshots part of the screen, to check what the bar shows.
 - The watcher also checks the boot partition (/boot, 4 GB vfat), as every boot entry depends on it: attention below 25% free.
 
+- The sentry, 14 Nov 2026: `kiln-sentry` on `kiln-sentry.timer`, every 10 minutes: samples outside connections, daily and weekly checks when due (weekly only when the load is low). Report in `/var/log/kiln/sentry/latest.txt`, state in `/var/lib/kiln-sentry/state.json`, generic rules in `/usr/local/share/kiln-sentry/rules.toml` (from `config/sentry/rules.toml`). Findings stay until `sudo kiln-sentry accept`, after the operator has looked into each. `sudo kiln-sentry --print` checks without saving or notifying.
+- Sudo from Claude has no `TTY=` in the journal; from a terminal it has one. The sentry matches no-terminal sudo against the operator's Bash call times in `~/.claude/projects/*/*.jsonl`. The rules hook's snapshots come up to a minute before the call reaches the transcript.
+- `pacman -Qkk` compares content too (SHA256). On CachyOS it differs by design for VLC's plugins.dat, plymouth-update-initrd (a link) and utempter (setgid utmp), and for /boot (FAT). Listed with reasons in the rules.
+- The bar shows a fifth box, the sentry (shield). `kiln-agent-status` has a fourth state, `warn`, amber.
+- The disk guard reads scripts before they run. It blocks `$'...'` quoting with a backslash, `x+=` with a slash in it (taken for a program path), helper scripts named by a variable path, and any command naming `/dev` itself (so `bwrap --dev` too). Write scripts it can follow: run from the repo, name helpers as `kernel/...`.

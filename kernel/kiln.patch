@@ -41,28 +41,3 @@
      provides=('NVIDIA-MODULE')
      conflicts=("$pkgbase-nvidia" "$pkgbase-nvidia-580xx")
      license=('MIT AND GPL-2.0-only')
-@@ -877,3 +874,24 @@
-         'SKIP'
-         '1857e2984cb148c524dc178e41a45dae8b1c649267150fe29b86bd3fc75358c6e1aa203d70f152d0f62fc6ac37de81cfa5e5e06f5cb3716eb7bed36525416fe1'
-         'c992567bd7dd8553432be496ffa1c17e2f5ebe9c7edb51945cf977e1b742dd6517c210d8843bb82744ca705efd07f8027cd7dde41b50215ebd707a34aa81462e')
-+
-+# Kiln: checksums for the sources CachyOS's script adds without one, in source order:
-+# the NVIDIA module source and CachyOS's three patches for it (the tarball matches NVIDIA's
-+# published SHA-256, d65c8bbe...355e); then this machine's profiles, whose sums build.sh
-+# passes in _kiln_profile_b2sums; then the BORE patch (CachyOS's own sum, from
-+# linux-cachyos-bore/.SRCINFO at the same commit, and checked against the download).
-+if [ "$_build_nvidia_open" = "yes" ]; then
-+    b2sums+=('b0bb5f8a23765c73fb59febe23bf649fc10ad0cfc822ed8bcae0578915711ec24123bdca7d0c132a8196d679d350353cfad13d15b21dd9cf315c3cd074809646'
-+             '43386fb36a975bd5215d477bd2e11d91adbdc20393b9898788ee5734834aaeb6af83e8e493a0d20f6bd7fd6ecbff124f7877ede44c3beafb007b9c7effa44fe6'
-+             '8106fe252012ca17f32c56877a98e047befe15c71adc0e6c97927760e08bfe7f78a8b71721470564514328c470f26345ec81796bd9dedd47a6c330d57205fae8'
-+             '4731aa2e4bff627c27f61e9ef31a01bf33611b85085a35859b3ed5c903e9e3457ce78b1a7f471f7253b3c4f51ce8914dc299b36c552067ebbc77db091c90c502')
-+fi
-+b2sums+=(${_kiln_profile_b2sums:-})
-+if [ "$_cpusched" = "bore" ]; then
-+    b2sums+=('355a279dea4edf0148cc6499b770bb6d07c55623ea334e6b0db52eba746454d5afafe58bbcf357c9bc53aaa1319a610cd167dba77f6c866835077aed85a2d45c')
-+fi
-+
-+# Kiln: CachyOS's kernel gives the linker its AutoFDO and Propeller settings only with thin LTO.
-+# With full LTO the code is generated in the linker as well, so it needs them too.
-+source+=("kiln-lto-profiles.patch")
-+b2sums+=('a5ff1253fb2313ffec92569e419a049a87f815944172c8a4299e6b088c72ed671bc438f12c8a01a71622f1e1620e3bbb2067324ce82aed4f1606fb41232e56a2')

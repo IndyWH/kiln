@@ -2,7 +2,7 @@
 # Builds Kiln's own kernel, linux-cachyos-kiln, from CachyOS's build script (PKGBUILD.cachyos,
 # from github.com/CachyOS/linux-cachyos at commit 8c1b372, 13 Nov 2026) with Kiln's small
 # changes (kiln.patch). Builds as the owner, never as root, in ~/.cache/kiln-kernel/stageN.
-# Installing is a separate step.
+# Installing is a separate step. kernel/rebuild.sh runs this for each stage, and installs.
 #
 #   kernel/build.sh 1                                 BORE, full LTO, ready to be profiled (AutoFDO)
 #   kernel/build.sh 2 AUTOFDO_PROFILE                 plus the AutoFDO profile, ready to be profiled (Propeller)
@@ -10,9 +10,11 @@
 set -euo pipefail
 stage=${1:?stage 1, 2 or 3}
 here=$(cd "$(dirname "$0")" && pwd)
+# The build files: kernel/ itself, or the reviewed copies kernel/rebuild.sh passes.
+files=${KILN_BUILD_FILES:-$here}
 dir="$HOME/.cache/kiln-kernel/stage$stage"
 mkdir -p "$dir"
-cp "$here/PKGBUILD" "$here/config" "$here/kiln-lto-profiles.patch" "$dir/"
+cp "$files/PKGBUILD" "$files/config" "$files/kiln-lto-profiles.patch" "$dir/"
 cd "$dir"
 
 # The strongest settings (Kiln's maximum-optimisation rule); CPU level x86-64-v3, never native.

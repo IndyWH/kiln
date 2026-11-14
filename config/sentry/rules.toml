@@ -1,0 +1,54 @@
+# Kiln sentry: the generic rules, the same on every Kiln machine, shared through the repo.
+# What this machine has seen (its record and findings) stays in /var/lib/kiln-sentry and
+# /var/log/kiln/sentry, never in the repo. Installed as /usr/local/share/kiln-sentry/rules.toml.
+# ~ is the owner's home. ** matches any depth.
+
+[files]
+# A change here that no package update and no logged operator change explains is a possible
+# threat (red): logins, sudo, remote access, accounts, code loaded into every program, and
+# Kiln's own safety pieces.
+red = [
+  "/etc/pam.d/*", "/etc/sudoers", "/etc/sudoers.d/*", "/etc/security/*.conf",
+  "/etc/ssh/sshd_config", "/etc/ssh/sshd_config.d/*", "~/.ssh/authorized_keys",
+  "/root/.ssh/authorized_keys", "/etc/passwd", "/etc/group", "/etc/shadow", "/etc/gshadow",
+  "/etc/ld.so.preload", "/etc/ld.so.conf", "/etc/ld.so.conf.d/*", "/etc/polkit-1/rules.d/*",
+  "/etc/ufw/*.rules", "/etc/ufw/ufw.conf", "/etc/environment", "/etc/profile", "/etc/profile.d/*",
+  "/usr/local/lib/kiln-guard/*", "/etc/udev/rules.d/*kiln*", "/etc/claude-code/**",
+]
+# Places programs start from by themselves. New or changed entries are shown (amber), or only
+# noted when a package update or an operator change explains them.
+amber = [
+  "/etc/systemd/system/**", "/etc/systemd/user/**", "~/.config/systemd/user/**",
+  "/etc/xdg/autostart/*", "~/.config/autostart/*", "/etc/cron.d/*", "/etc/crontab",
+  "/var/spool/cron/*", "~/.bashrc", "~/.bash_profile", "~/.profile", "~/.zshrc", "~/.zprofile",
+  "~/.zshenv", "~/.config/fish/config.fish", "~/.config/fish/conf.d/*", "~/.config/hypr/**",
+  "~/.config/environment.d/*", "/usr/local/bin/*", "/usr/local/sbin/*", "/etc/udev/rules.d/*",
+  "/etc/modprobe.d/*", "/etc/modules-load.d/*", "/etc/sysctl.d/*", "/etc/pacman.conf",
+  "/etc/pacman.d/hooks/*", "/etc/resolv.conf", "/etc/hosts", "/etc/systemd/resolved.conf.d/*",
+]
+
+[unowned]
+# Folders where a file that belongs to no package is a possible threat (red), unless it was
+# there when the sentry first ran. Programs, services, boot rules and package hooks.
+dirs = ["/usr/bin", "/usr/lib/systemd/system", "/usr/lib/systemd/user", "/usr/lib/udev/rules.d",
+        "/usr/share/libalpm/hooks", "/usr/lib/security"]
+
+[setuid]
+# Folders searched for setuid and setgid files, each on its own file system.
+roots = ["/", "/root", "/home", "/srv", "/var/cache", "/var/tmp", "/var/log", "/tmp"]
+
+[network]
+# Programs that reach many places by design: only their counts are shown each week.
+many_places = ["firefox", "chromium", "chrome", "brave", "librewolf", "zen", "thunderbird",
+               "steam", "steamwebhelper", "claude", "node", "python3", "curl", "git", "pacman",
+               "pacman-key", "gpg", "dirmngr", "freshclam", "fwupd", "fwupdmgr", "makepkg", "ssh"]
+
+[package_files]
+# Package files that differ from the package by design, for the weekly pacman -Qkk check.
+# Each with its reason. Files under /etc and /var are left out anyway: they are settings and data.
+ignore = [
+  "/boot", "/boot/*",                          # FAT: cannot keep Linux owners and permissions
+  "/usr/lib/vlc/plugins/plugins.dat",          # rebuilt by VLC's own pacman hook
+  "/usr/lib/plymouth/plymouth-update-initrd",  # made a link by CachyOS's cachyos-plymouth-initramfs hook
+  "/usr/lib/utempter/utempter",                # setgid utmp by libutempter's own tmpfiles.d rule
+]

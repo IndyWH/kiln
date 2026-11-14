@@ -21,6 +21,16 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 
 ## Log
 
+### 14 Nov 2026 — Claude Code, one-command kernel rebuild and the sentry
+
+- Owner asked: the one-command rebuild, then the sentry.
+- `kernel/rebuild.sh`: run it, and again after each restart it asks for. Check (CachyOS's new build read in a sandbox with no network; every download without a CachyOS sum checked; a review file), then stops for the reviewer; `reviewed` builds and installs stage 1, and so on to stage 3. New NVIDIA driver alone: stage 3 with the saved profiles, one restart. `back` puts the last good kernel back. Seeded with today's 7.3.4 stage 3. Tested up to the review step (tests/kernel/test_rebuild.sh, 14 pass); the build, install and after-restart steps run first for real with 7.3.5 or 7.4. Reviewer: CONCERNS twice, all answered. Second round fixed: the test no longer touches the real cache; a missing package can no longer empty the fallback; the boot checks are proven on today's kernel (`kernel/rebuild.sh status` runs them); the sandbox also hides home, /run and the environment; `..` in a download address stops it; build.sh and profile.sh are checked against the reviewed ones before each build. Not covered by tests: the steps after review. A third review is worth having before the first real rebuild.
+- `kiln.patch` lost its checksum block; that is now `kernel/kiln-tail.sh`, filled in per version. kernel/PKGBUILD regenerated: same sums, only comments and layout differ.
+- kiln-watch says when CachyOS's stock kernel is newer than Kiln's (installed).
+- The sentry: `kiln-sentry`, timer every 10 minutes, daily and weekly checks when due, read-only. Fifth box on the bar (shield): blue clear, amber due, red possible threat. First run clear after the first findings were looked into and accepted (one sudo from the 13 Nov idle test; by-design package files now listed in the rules). Tested: a planted file in /etc/profile.d and a setuid file in /tmp were both flagged red, then removed.
+- Installed for it, official: arch-audit, clamav, fwupd; timers on for ClamAV's virus list and fwupd's list. LLMNR off (/etc/systemd/resolved.conf.d/kiln-no-llmnr.conf); port 5355 closed, DNS works.
+- Waiting for the owner: `sudo sidekick/install.sh`, so the session summary shows the sentry's report too (the rules hook is the owner's to install). DNS blocking of bad sites: the owner to choose (e.g. Quad9). Not built yet: sharing rules with other Kiln machines; the generic rules are kept apart in config/sentry/rules.toml for that.
+
 ### 14 Nov 2026 — Claude Code, Kiln's kernel, overnight
 
 - Stage 2 (AutoFDO from this machine's recording) booted cleanly at 00:45. One run: CPU same as stock; worst wake-up 2.07 ms and audio timing 0.03, like stage 1 and better than every stock run.

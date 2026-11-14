@@ -178,10 +178,20 @@ def check_kiln_kernel(r):
         _, module = run("modinfo", "-k", version, "-F", "version", "nvidia")
         module = module.strip() or "none"
         if module != utils:
-            r.bad("Kiln's kernel %s has NVIDIA module %s but the driver is %s. Rebuild it with "
-                  "kernel/build.sh; the stock kernel is fine meanwhile." % (version, module, utils))
+            r.bad("Kiln's kernel %s has NVIDIA module %s but the driver is %s. Ask Claude to run "
+                  "kernel/rebuild.sh; the stock kernel is fine meanwhile." % (version, module, utils))
         else:
             r.fact("Kiln's kernel %s: NVIDIA module matches the driver (%s)." % (version, utils))
+    # The stock kernel updates with the system, so its version is CachyOS's latest release.
+    # Kiln's own does not; when the stock one is newer, a rebuild is due.
+    _, stock = run("pacman", "-Q", "linux-cachyos")
+    _, kiln = run("pacman", "-Q", "linux-cachyos-kiln")
+    if len(stock.split()) == 2 and len(kiln.split()) == 2:
+        stock, kiln = stock.split()[1], kiln.split()[1]
+        _, newer = run("vercmp", stock, kiln)
+        if newer.strip().lstrip("-").isdigit() and int(newer) > 0:
+            r.bad("CachyOS's kernel is now %s; Kiln's own is still %s. Ask Claude to run "
+                  "kernel/rebuild.sh (three restarts for a new kernel)." % (stock, kiln))
 
 
 def check_updates(r):

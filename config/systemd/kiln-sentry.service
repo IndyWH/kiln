@@ -1,0 +1,11 @@
+[Unit]
+Description=Kiln sentry: read-only security checks
+Documentation=file:///home/indy/Projects/kiln/scripts/kiln-sentry
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/kiln-sentry
+Nice=19
+IOSchedulingClass=idle
+TimeoutStartSec=3h

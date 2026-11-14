@@ -1,0 +1,700 @@
+#!/usr/bin/python3
+"""kiln-sentry: Kiln's security watcher. Read-only: it changes nothing on the machine. It
+reports, and the operator fixes, with the reviewer. No AI runs on its timer.
+
+Run as root by kiln-sentry.timer every 10 minutes. Each run samples the outside connections
+each program has open. Once a day it runs the daily checks; once a week, when the machine is
+quiet, the weekly ones. It writes /var/log/kiln/sentry/latest.txt, which the operator reads
+at the start of every Claude session, sets the sentry's icon on the bar (blue clear, amber
+something due, red a possible threat) and sends a desktop notice when that changes.
+
+  kiln-sentry            the timer's run: sample, and the checks that are due
+  kiln-sentry daily      the daily checks now      kiln-sentry weekly   the weekly checks now
+  kiln-sentry --print    the daily checks, printed; nothing written, no notice
+  kiln-sentry accept     after the operator has looked into every finding: clear them
+
+Daily: known holes in installed packages (arch-audit); the firewall on; new listening ports;
+changes to logins, sudo, ssh keys, accounts, start-up places and Kiln's safety pieces; files in
+system folders that belong to no package; new setuid files; new packages from outside the
+official repositories (AUR, pip, npm, cargo); failed logins; sudo use not from the operator;
+new programs connecting out. Weekly: a virus scan of ~/Downloads (ClamAV), package files
+changed on disk (pacman -Qkk), firmware updates (fwupd), new places each program connected to.
+
+A change is explained when a package update since the last check owns the file, or when it
+happened during an operator change in /var/log/kiln/changes.log. Explained changes are noted;
+unexplained ones stay in the report until `kiln-sentry accept`.
+"""
+import fnmatch
+import glob
+import hashlib
+import json
+import os
+import re
+import stat
+import subprocess
+import sys
+import time
+import tomllib
+from datetime import datetime, timezone
+
+OWNER, OWNER_UID, HOME = "indy", 1000, "/home/indy"
+RULES = "/usr/local/share/kiln-sentry/rules.toml"
+OUT_DIR = "/var/log/kiln/sentry"
+STATE = "/var/lib/kiln-sentry/state.json"
+CHANGES_LOG = "/var/log/kiln/changes.log"
+PACMAN_LOG = "/var/log/pacman.log"
+PACMAN_DB = "/var/lib/pacman/local"
+TRANSCRIPTS = HOME + "/.claude/projects"
+AGENT_STATUS = "/usr/local/bin/kiln-agent-status"
+DAY, WEEK = 86400, 7 * 86400
+RED, AMBER = "POSSIBLE THREAT", "TO LOOK AT"
+
+
+def run(*cmd, timeout=600):
+    try:
+        done = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+        return done.returncode, done.stdout + done.stderr
+    except (OSError, subprocess.SubprocessError) as why:
+        return -1, str(why)
+
+
+def ts(t):
+    return time.strftime("%Y-%m-%d %H:%M", time.localtime(t))
+
+
+class Report:
+    """Findings are (level, key, text). Live ones are worked out afresh every run; open ones
+    stay until accepted. Facts are plain lines."""
+
+    def __init__(self, state):
+        self.state, self.live, self.facts = state, [], []
+
+    def add(self, level, text, key=None, live=False):
+        if live:
+            self.live.append([level, key or text, text])
+            return
+        found = self.state.setdefault("open", [])
+        key = key or text
+        if not any(f[1] == key for f in found):
+            found.append([level, key, "%s (%s)" % (text, ts(time.time()))])
+
+    def fact(self, text):
+        self.facts.append(text)
+
+
+# ------------------------------------------------------------------ what explains a change
+
+class Explain:
+    """Package installs and operator changes since the last daily check."""
+
+    def __init__(self, since):
+        self.since = since
+        self.packages = {}  # name -> (time, verb)
+        self.windows = []   # (start, end, number, description, command)
+        try:
+            with open(PACMAN_LOG, errors="replace") as f:
+                for line in f:
+                    m = re.match(r"\[(\S+)\] \[ALPM\] (installed|upgraded|downgraded|reinstalled|removed) (\S+)", line)
+                    if m:
+                        t = datetime.fromisoformat(m[1]).timestamp()
+                        if t >= since - 120:
+                            self.packages[m[3]] = (t, m[2])
+        except OSError:
+            pass
+        try:
+            open_changes = {}
+            with open(CHANGES_LOG, errors="replace") as f:
+                last = None
+                for line in f:
+                    m = re.match(r"(\d{4}-\d\d-\d\d \d\d:\d\d)\s+#(\d+) (CHANGE|OUTWARD|DONE|NOTRUN)\b(?:\s*\[[^\]]*\])?\s*(.*)", line)
+                    if m:
+                        t = time.mktime(time.strptime(m[1], "%Y-%m-%d %H:%M"))
+                        if m[3] in ("CHANGE", "OUTWARD"):
+                            open_changes[m[2]] = [t, m[4].strip(), ""]
+                            last = m[2]
+                        elif m[3] == "DONE" and m[2] in open_changes:
+                            start, desc, cmd = open_changes.pop(m[2])
+                            if t + 60 >= since:
+                                self.windows.append((start, t + 60, m[2], desc, cmd))
+                        continue
+                    if line.startswith("    command:") and last in open_changes:
+                        open_changes[last][2] = line.split(":", 1)[1].strip()
+        except OSError:
+            pass
+
+    NOUNS = {"installed": "install", "upgraded": "update", "downgraded": "downgrade",
+             "reinstalled": "reinstall", "removed": "removal"}
+
+    def why(self, path, mtime, owner):
+        if owner and owner in self.packages:
+            return "from the %s of %s" % (self.NOUNS[self.packages[owner][1]], owner)
+        for start, end, number, desc, cmd in self.windows:
+            if mtime is not None and start <= mtime <= end:
+                return "during operator change #%s: %s" % (number, desc)
+            if mtime is None and os.path.basename(path) in cmd:
+                return "removed by operator change #%s: %s" % (number, desc)
+        return None
+
+
+# ------------------------------------------------------------------------------ helpers
+
+def owners():
+    """Every packaged path -> its package, from pacman's own database."""
+    found = {}
+    for entry in os.listdir(PACMAN_DB):
+        name = entry.rsplit("-", 2)[0]
+        try:
+            with open(os.path.join(PACMAN_DB, entry, "files"), errors="replace") as f:
+                section = None
+                for line in f:
+                    line = line.rstrip("\n")
+                    if line.startswith("%"):
+                        section = line
+                    elif section == "%FILES%" and line:
+                        found["/" + line.rstrip("/")] = name
+        except OSError:
+            pass
+    return found
+
+
+def digest(path):
+    h = hashlib.sha256()
+    try:
+        st = os.lstat(path)
+        if stat.S_ISLNK(st.st_mode):
+            h.update(b"link:" + os.readlink(path).encode())
+        else:
+            with open(path, "rb") as f:
+                for block in iter(lambda: f.read(1 << 20), b""):
+                    h.update(block)
+        h.update(b"mode:%o uid:%d gid:%d" % (st.st_mode, st.st_uid, st.st_gid))
+    except OSError:
+        return None
+    return h.hexdigest()[:24]
+
+
+def expand(patterns):
+    paths = set()
+    for p in patterns:
+        p = p.replace("~", HOME, 1) if p.startswith("~") else p
+        for found in glob.glob(p, recursive=True):
+            if os.path.isfile(found) or os.path.islink(found):
+                paths.add(found)
+    return paths
+
+
+def journal(since, *match):
+    code, out = run("journalctl", "-q", "--no-pager", "-o", "json",
+                    "--since", "@%d" % int(since), *match, timeout=120)
+    for line in out.splitlines():
+        try:
+            yield json.loads(line)
+        except ValueError:
+            continue
+
+
+# ------------------------------------------------------------------------- daily checks
+
+def check_audit(r):
+    code, out = run("arch-audit", "--upgradable")
+    if code != 0:
+        r.add(AMBER, "arch-audit did not run (exit %d)." % code, live=True)
+        return
+    fixable = [l.split()[0] for l in out.splitlines() if " is affected by " in l]
+    if fixable:
+        r.add(AMBER, "Update due: fixes for known holes are waiting for %s. Run the system update."
+              % ", ".join(fixable), live=True)
+    _, every = run("arch-audit")
+    lines = [l for l in every.splitlines() if " is affected by " in l]
+    high = [l.split()[0] for l in lines if "High risk" in l or "Critical risk" in l]
+    r.fact("Known holes with no fix released yet: %d packages%s." % (
+        len(lines), (", high risk: " + ", ".join(high)) if high else ""))
+
+
+def check_firewall(r):
+    code, out = run("ufw", "status", "verbose")
+    if code != 0 or "Status: active" not in out:
+        r.add(RED, "The firewall (ufw) is not on.", key="ufw-off", live=True)
+        return
+    default = re.search(r"Default: (.*)", out)
+    r.fact("Firewall: on, %s." % (default[1] if default else "defaults unknown"))
+    if default and "deny (incoming)" not in default[1] and "reject (incoming)" not in default[1]:
+        r.add(RED, "The firewall lets incoming connections in by default.", live=True)
+
+
+def check_ports(r, state, explain):
+    code, out = run("ss", "-tulpnH")
+    now = set()
+    for line in out.splitlines():
+        parts = line.split()
+        if len(parts) < 5:
+            continue
+        local = parts[4]
+        addr, _, port = local.rpartition(":")
+        if addr.startswith(("127.", "[::1]", "[::ffff:127.")) or "%lo" in addr:
+            continue
+        prog = re.search(r'\(\("([^"]+)"', line)
+        now.add("%s %s %s" % (parts[0], port, prog[1] if prog else "?"))
+    before = set(state.get("ports", []))
+    if "ports" in state:
+        for p in sorted(now - before):
+            proto, port, prog = p.split()
+            why = ("; it may be from: " + ", ".join(explain.packages)) if explain.packages else ""
+            r.add(AMBER, "New listening port, open beyond this machine: %s %s by %s%s."
+                  % (proto, port, prog, why))
+    state["ports"] = sorted(now)
+    r.fact("Listening beyond this machine: %s." % (", ".join(sorted(now)) or "nothing"))
+
+
+def check_files(r, state, explain, rules, owner_of):
+    red, amber = expand(rules["files"]["red"]), expand(rules["files"]["amber"])
+    seen = state.get("files")
+    current = {}
+    for path in sorted(red | amber):
+        current[path] = [digest(path), owner_of.get(path, ""), "red" if path in red else "amber"]
+    if seen is not None:
+        changed = 0
+        for path in sorted(set(current) | set(seen)):
+            new, old = current.get(path), seen.get(path)
+            if new and old and new[0] == old[0]:
+                continue
+            changed += 1
+            what = "new" if not old else "removed" if not new else "changed"
+            owner = (new or old)[1]
+            try:
+                mtime = os.lstat(path).st_mtime if new else None
+            except OSError:
+                mtime = None
+            why = explain.why(path, mtime, owner)
+            level = RED if (new or old)[2:3] == ["red"] else AMBER
+            if why:
+                r.fact("%s %s, %s." % (path, what, why))
+            else:
+                r.add(level, "%s %s, and no package update or operator change explains it." % (path, what),
+                      key="file " + path)
+        r.fact("Watched files: %d, %d changed since the last check." % (len(current), changed))
+    else:
+        r.fact("Watched files: %d." % len(current))
+    state["files"] = current
+
+
+def check_unowned(r, state, rules, owner_of):
+    now = set()
+    for d in rules["unowned"]["dirs"]:
+        try:
+            for name in os.listdir(d):
+                path = os.path.join(d, name)
+                if path not in owner_of and not os.path.isdir(path):
+                    now.add(path)
+        except OSError:
+            continue
+    if "unowned" in state:
+        for path in sorted(now - set(state["unowned"])):
+            r.add(RED, "%s belongs to no package and is new." % path, key="unowned " + path)
+    state["unowned"] = sorted(now)
+    r.fact("Files in system folders that belong to no package: %d." % len(now))
+
+
+def check_setuid(r, state, rules, owner_of):
+    now = {}
+    for root in rules["setuid"]["roots"]:
+        code, out = run("find", root, "-xdev", "-type", "f", "-perm", "/6000",
+                        "-printf", "%m %p\n", timeout=900)
+        for line in out.splitlines():
+            mode, _, path = line.partition(" ")
+            if path.startswith("/"):
+                now[path] = mode
+    if "setuid" in state:
+        for path in sorted(set(now) - set(state["setuid"])):
+            owner = owner_of.get(path)
+            if owner:
+                r.fact("New setuid or setgid file %s, from the package %s." % (path, owner))
+            else:
+                r.add(RED, "New setuid or setgid file that belongs to no package: %s (mode %s)."
+                      % (path, now[path]), key="setuid " + path)
+    state["setuid"] = now
+    r.fact("Setuid and setgid files: %d." % len(now))
+
+
+def foreign(owner_of):
+    found = set()
+    _, out = run("pacman", "-Qmq")
+    found |= {"pacman-not-from-a-repo/" + p for p in out.split()}  # AUR, or built here
+    for sp in glob.glob("/usr/lib/python3*/site-packages/*.dist-info"):
+        if sp not in owner_of:
+            found.add("pip/" + os.path.basename(sp).split("-")[0])
+    for sp in glob.glob(HOME + "/.local/lib/python3*/site-packages/*.dist-info"):
+        found.add("pip-user/" + os.path.basename(sp).split("-")[0])
+    for d in ("/usr/lib/node_modules", HOME + "/.npm-global/lib/node_modules"):
+        for name in (os.listdir(d) if os.path.isdir(d) else []):
+            if os.path.join(d, name) not in owner_of:
+                found.add("npm/" + name)
+    for d, kind in ((HOME + "/.cargo/bin", "cargo"), (HOME + "/.local/bin", "local-bin")):
+        for name in (os.listdir(d) if os.path.isdir(d) else []):
+            found.add("%s/%s" % (kind, name))
+    if os.path.exists("/usr/bin/flatpak"):
+        _, out = run("flatpak", "list", "--app", "--columns=application")
+        found |= {"flatpak/" + a for a in out.split()}
+    return found
+
+
+def check_foreign(r, state, owner_of):
+    now = foreign(owner_of)
+    if "foreign" in state:
+        for item in sorted(now - set(state["foreign"])):
+            r.add(AMBER, "New software from outside the official repositories: %s." % item,
+                  key="foreign " + item)
+    state["foreign"] = sorted(now)
+    r.fact("Software from outside the official repositories: %d (%s)." % (
+        len(now), ", ".join(sorted(now))[:300]))
+
+
+def operator_times(since):
+    """When the operator's Bash commands ran: (start, end) from Claude Code's transcripts."""
+    spans, starts = [], {}
+    for path in glob.glob(TRANSCRIPTS + "/*/*.jsonl") + glob.glob(TRANSCRIPTS + "/*/*/subagents/*.jsonl"):
+        try:
+            if os.path.getmtime(path) < since:
+                continue
+            with open(path, errors="replace") as f:
+                lines = f.readlines()
+        except OSError:
+            continue
+        background = {}
+        for line in lines:
+            try:
+                d = json.loads(line)
+                t = datetime.fromisoformat(d["timestamp"].replace("Z", "+00:00")).timestamp()
+            except (ValueError, KeyError, TypeError):
+                continue
+            content = (d.get("message") or {}).get("content")
+            for c in content if isinstance(content, list) else []:
+                if not isinstance(c, dict):
+                    continue
+                if c.get("type") == "tool_use" and c.get("name") == "Bash":
+                    starts[c.get("id")] = (t, bool((c.get("input") or {}).get("run_in_background")))
+                elif c.get("type") == "tool_result" and c.get("tool_use_id") in starts:
+                    start, bg = starts.pop(c["tool_use_id"])
+                    text = json.dumps(c.get("content"))
+                    m = re.search(r"with ID:? ?(\w+)", text) if bg else None
+                    if m:
+                        background[m[1]] = start
+                    else:
+                        spans.append((start - 60, t + 5))
+            for task, start in list(background.items()):
+                if task in line and t > start + 1:
+                    spans.append((start - 60, t + 5))
+                    del background[task]
+        spans += [(s - 60, s + 7200) for s in background.values()]
+    spans += [(s - 60, s + 7200) for s, _ in starts.values()]
+    return spans
+
+
+def check_logins(r, state, since):
+    failed_remote, failed_local = [], []
+    pattern = re.compile(r"authentication failure|Failed password|Invalid user|incorrect password|"
+                         r"NOT in sudoers|FAILED SU|Failed publickey|maximum authentication", re.I)
+    for e in journal(since, "_TRANSPORT=syslog", "_TRANSPORT=journal"):
+        ident, msg = e.get("SYSLOG_IDENTIFIER", ""), str(e.get("MESSAGE", ""))
+        if not pattern.search(msg):
+            continue
+        when = ts(int(e.get("__REALTIME_TIMESTAMP", 0)) / 1e6)
+        entry = "%s %s: %s" % (when, ident, msg[:160])
+        remote = ident.startswith("sshd") or ident in ("su", "su-l", "runuser")
+        (failed_remote if remote else failed_local).append(entry)
+    for e in failed_remote[:5]:
+        r.add(RED, "Failed login: " + e)
+    if len(failed_local) >= 3:
+        r.add(AMBER, "%d failed password attempts on this machine since the last check; first: %s"
+              % (len(failed_local), failed_local[0]))
+    r.fact("Failed logins since the last check: %d remote, %d local." % (len(failed_remote), len(failed_local)))
+
+    spans = operator_times(since)
+    owner_tty = operator = root = 0
+    others = []
+    for e in journal(since, "SYSLOG_IDENTIFIER=sudo"):
+        # "indy : TTY=pts/1 ; PWD=/x ; USER=root ; COMMAND=/usr/bin/y z"; TTY only from a terminal
+        user, _, rest = str(e.get("MESSAGE", "")).strip().partition(" : ")
+        fields, parts = {}, rest.split(" ; ")
+        for i, part in enumerate(parts):
+            key, eq, value = part.partition("=")
+            if key == "COMMAND":
+                fields[key] = " ; ".join([value] + parts[i + 1:])
+                break
+            if eq and key.isupper():
+                fields[key] = value
+        if "COMMAND" not in fields:
+            continue
+        tty, command = fields.get("TTY"), fields["COMMAND"]
+        t = int(e.get("__REALTIME_TIMESTAMP", 0)) / 1e6
+        if user == "root":
+            root += 1  # root asking sudo for root: it had every right already
+        elif user != OWNER:
+            r.add(RED, "sudo used by %s at %s: %s" % (user, ts(t), command[:120]))
+        elif tty:
+            owner_tty += 1
+        elif any(a <= t <= b for a, b in spans):
+            operator += 1
+        else:
+            others.append("%s %s" % (ts(t), command[:100]))
+    if others:
+        r.add(AMBER, "sudo used without a terminal, not during an operator command: %d times; %s"
+              % (len(others), "; ".join(others[:4])), key="sudo %s" % others[0])
+    r.fact("sudo since the last check: %d by the operator, %d from a terminal, %d by root, %d other."
+           % (operator, owner_tty, root, len(others)))
+
+
+def check_new_programs(r, state, owner_of):
+    net = state.setdefault("net", {})
+    for name in sorted(n for n, v in net.items() if not v.get("reported")):
+        exe = net[name].get("exe", "?")
+        owner = owner_of.get(exe)
+        if owner:
+            r.fact("New program connecting out: %s (%s, package %s)." % (name, exe, owner))
+        else:
+            r.add(AMBER, "New program connecting out: %s (%s), not from any package." % (name, exe),
+                  key="net " + name)
+        net[name]["reported"] = True
+
+
+def check_dns(r):
+    _, out = run("resolvectl", "dns")
+    servers = sorted(set(re.findall(r"(?<=\s)[0-9a-f.:]{7,}(?=\s|$)", out)))
+    r.fact("DNS servers: %s." % (", ".join(servers) or "unknown"))
+
+
+# ------------------------------------------------------------------------ weekly checks
+
+def check_clamav(r):
+    if not glob.glob("/var/lib/clamav/*.c[lv]d"):
+        r.add(AMBER, "ClamAV has no virus list yet; enable clamav-freshclam-once.timer.", live=True)
+        return
+    target = HOME + "/Downloads"
+    if not os.path.isdir(target):
+        r.fact("Virus scan: no Downloads folder.")
+        return
+    code, out = run("nice", "-n19", "ionice", "-c3", "clamscan", "-r", "-i", "--no-summary",
+                    target, timeout=7200)
+    hits = [l for l in out.splitlines() if l.endswith(" FOUND")]
+    if code == 1 or hits:
+        for h in hits[:10]:
+            r.add(RED, "Virus scan found: %s" % h, key="clam " + h)
+    elif code != 0:
+        r.add(AMBER, "The virus scan did not finish (exit %d)." % code)
+    r.fact("Virus scan of ~/Downloads, %s: %d found." % (ts(time.time()), len(hits)))
+
+
+def check_package_files(r, rules):
+    ignore = rules.get("package_files", {}).get("ignore", [])
+    code, out = run("pacman", "-Qkk", timeout=3600)
+    bad, perms = {}, {}
+    for line in out.splitlines():
+        m = re.match(r"(?:warning|error): (\S+): (/\S+) \((.*)\)", line)
+        if not m or m[2].startswith(("/etc/", "/var/")) or any(fnmatch.fnmatch(m[2], i) for i in ignore):
+            continue
+        reason = m[3].lower()
+        if any(w in reason for w in ("size", "checksum", "no such file", "file type", "symlink")):
+            bad.setdefault(m[2], [m[1]]).append(m[3])
+        elif any(w in reason for w in ("permissions", "uid", "gid")):
+            perms.setdefault(m[2], [m[1]]).append(m[3])
+    for path, (pkg, *why) in sorted(bad.items())[:8]:
+        r.add(RED, "A package's file differs from what the package installed: %s (%s: %s)"
+              % (path, pkg, ", ".join(why)), key="qkk " + path)
+    for path, (pkg, *why) in sorted(perms.items())[:8]:
+        r.add(AMBER, "A package's file has another owner or permissions than packaged: %s (%s: %s)"
+              % (path, pkg, ", ".join(why)), key="qkk-perms " + path)
+    r.fact("Package files checked against the packages: %d differ in content, %d in owner or permissions."
+           % (len(bad), len(perms)))
+
+
+def check_firmware(r, state):
+    code, out = run("fwupdmgr", "get-updates", "--json", "--no-unreported-check", timeout=300)
+    try:
+        devices = json.loads(out[out.index("{"):]).get("Devices", [])
+    except ValueError:
+        devices = []
+    names = ["%s %s" % (d.get("Name", "?"), (d.get("Releases") or [{}])[0].get("Version", ""))
+             for d in devices if d.get("Releases")]
+    if names:
+        state["firmware_due"] = names
+    else:
+        state.pop("firmware_due", None)
+    r.fact("Firmware updates: %s." % (", ".join(names) if names else "none known"))
+
+
+def check_destinations(r, state, rules):
+    net = state.get("net", {})
+    many = set(rules["network"]["many_places"])
+    lines = []
+    for name, v in sorted(net.items()):
+        new = len(v.get("seen", [])) - v.get("seen_at_week", 0)
+        v["seen_at_week"] = len(v.get("seen", []))
+        if new > 0:
+            lines.append("%s %d%s" % (name, new, "" if name in many else " (%s)" % ", ".join(v["seen"][-new:][:5])))
+    r.fact("New places connected to this week, per program: %s." % ("; ".join(lines) or "none"))
+
+
+# ------------------------------------------------------------------------ the sampling
+
+def sample(state, cap=2000):
+    net = state.setdefault("net", {})
+    _, out = run("ss", "-tunpH", "state", "established", timeout=60)
+    for line in out.splitlines():
+        prog = re.search(r'\(\("([^"]+)",pid=(\d+)', line)
+        parts = line.split()
+        if not prog or len(parts) < 5:
+            continue
+        peer = parts[-2].rsplit(":", 1)[0].strip("[]")
+        if peer.startswith(("127.", "::1", "fe80", "::ffff:127.")) or peer in ("*", "0.0.0.0", "::"):
+            continue
+        name = prog[1]
+        entry = net.setdefault(name, {"seen": [], "first": ts(time.time())})
+        if "exe" not in entry:
+            try:
+                entry["exe"] = os.readlink("/proc/%s/exe" % prog[2])
+            except OSError:
+                entry["exe"] = "?"
+        if peer not in entry["seen"]:
+            entry["seen"] = (entry["seen"] + [peer])[-cap:]
+    if not state.get("net_started"):
+        state["net_started"] = time.time()
+        for v in net.values():
+            v["reported"] = True
+
+
+# ------------------------------------------------------------------------------- output
+
+def level_of(findings):
+    levels = {f[0] for f in findings}
+    return "alert" if RED in levels else "warn" if AMBER in levels else "idle"
+
+
+def write_report(state, findings):
+    reds = sum(f[0] == RED for f in findings)
+    head = ("Kiln sentry, %s: clear." % ts(time.time()) if not findings else
+            "Kiln sentry, %s: %d possible threat%s, %d to look at." % (
+                ts(time.time()), reds, "" if reds == 1 else "s", len(findings) - reds))
+    order = sorted(findings, key=lambda f: f[0] != RED)
+    lines = [head, ""] + ["%s: %s" % (f[0], f[2]) for f in order] + ([""] if order else [])
+    lines.append("Last daily check %s, last weekly %s." % (
+        ts(state["last_daily"]) if state.get("last_daily") else "never",
+        ts(state["last_weekly"]) if state.get("last_weekly") else "not yet"))
+    lines += state.get("facts_daily", [])
+    if state.get("facts_weekly"):
+        lines += ["", "Weekly:"] + state["facts_weekly"]
+    text = "\n".join(lines) + "\n"
+    os.makedirs(OUT_DIR, exist_ok=True)
+    for path in (os.path.join(OUT_DIR, "latest.txt"),
+                 os.path.join(OUT_DIR, time.strftime("%Y-%m-%d") + ".txt")):
+        with open(path + ".new", "w") as f:
+            f.write(text)
+        os.chmod(path + ".new", 0o644)
+        os.replace(path + ".new", path)
+    for name in sorted(n for n in os.listdir(OUT_DIR) if re.match(r"^\d{4}-\d\d-\d\d\.txt$", n))[:-30]:
+        os.unlink(os.path.join(OUT_DIR, name))
+    return head
+
+
+def show(head, findings, state):
+    """The bar icon, every run; a desktop notice only when the findings change."""
+    level = level_of(findings)
+    first = sorted(findings, key=lambda f: f[0] != RED)[0][2][:90] if findings else ""
+    run(AGENT_STATUS, "set", "sentry", level, time.strftime("%H:%M ") + (first or "Clear"), timeout=20)
+    keys = sorted(f[1] for f in findings)
+    if findings and keys != state.get("notified", []):
+        env = "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%d/bus" % OWNER_UID
+        run("runuser", "-u", OWNER, "--", "env", env, "notify-send", "--app-name=Kiln",
+            "--urgency=%s" % ("critical" if level == "alert" else "normal"), "Kiln sentry",
+            "%s %s Open Claude to look into it." % (head.split(": ", 1)[-1], first), timeout=20)
+    state["notified"] = keys
+
+
+def idle():
+    busy = run("pgrep", "-x", "makepkg|clang|ld.lld|cc1|perf|7z|sysbench|cyclictest|clamscan")[0] == 0
+    return os.getloadavg()[0] < 2.0 and not busy
+
+
+def daily_steps(state, rules, explain, owner_of, since):
+    return (check_audit, check_firewall, lambda r: check_ports(r, state, explain),
+            lambda r: check_files(r, state, explain, rules, owner_of),
+            lambda r: check_unowned(r, state, rules, owner_of),
+            lambda r: check_setuid(r, state, rules, owner_of),
+            lambda r: check_foreign(r, state, owner_of),
+            lambda r: check_logins(r, state, since),
+            lambda r: check_new_programs(r, state, owner_of), check_dns)
+
+
+def weekly_steps(state, rules):
+    return (check_clamav, lambda r: check_package_files(r, rules), lambda r: check_firmware(r, state),
+            lambda r: check_destinations(r, state, rules))
+
+
+def main(argv):
+    command = argv[1] if len(argv) > 1 else "timer"
+    if command not in ("timer", "daily", "weekly", "--print", "accept"):
+        print(__doc__)
+        return 64
+    with open(RULES, "rb") as f:
+        rules = tomllib.load(f)
+    try:
+        with open(STATE) as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        state = {}
+    note = None
+    if command == "accept":
+        note = "Accepted %d findings, %s." % (len(state.get("open", [])), ts(time.time()))
+        state["open"] = []
+
+    now = time.time()
+    sample(state)
+    due = {
+        "daily": command in ("daily", "--print") or now - state.get("last_daily", 0) >= DAY,
+        "weekly": command == "weekly" or (command == "timer" and bool(state.get("last_daily"))
+                                          and now - state.get("last_weekly", 0) >= WEEK and idle()),
+    }
+    since = state.get("last_daily", now - DAY)
+    for kind in ("daily", "weekly"):
+        if not due[kind]:
+            continue
+        r = Report(state)
+        explain = Explain(since)
+        owner_of = owners()
+        steps = (daily_steps(state, rules, explain, owner_of, since) if kind == "daily"
+                 else weekly_steps(state, rules))
+        if command == "--print":
+            state = json.loads(json.dumps(state))  # nothing is saved
+            r.state = state
+        for step in steps:
+            try:
+                step(r)
+            except Exception as why:  # noqa: BLE001 - one broken check must not stop the rest
+                r.add(AMBER, "A %s check failed to run: %r" % (kind, why), live=True)
+        if not state.get("first_" + kind):
+            state["first_" + kind] = now
+            r.fact("First %s run: what is here now is the starting record." % kind)
+        if command == "--print":
+            print("\n".join("%s: %s" % (f[0], f[2]) for f in state.get("open", []) + r.live))
+            print("\n".join(r.facts))
+            return 0
+        state["facts_" + kind], state["live_" + kind] = r.facts, r.live
+        state["last_" + kind] = now
+    if note:
+        state["facts_daily"] = [note] + state.get("facts_daily", [])
+
+    findings = state.get("open", []) + state.get("live_daily", []) + state.get("live_weekly", [])
+    if state.get("firmware_due"):
+        findings = findings + [[AMBER, "firmware", "Firmware updates waiting: %s."
+                                % ", ".join(state["firmware_due"])]]
+    head = write_report(state, findings)
+    show(head, findings, state)
+    os.makedirs(os.path.dirname(STATE), exist_ok=True)
+    with open(STATE + ".new", "w") as f:
+        json.dump(state, f)
+    os.chmod(STATE + ".new", 0o600)
+    os.replace(STATE + ".new", STATE)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

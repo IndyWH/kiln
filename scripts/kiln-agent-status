@@ -1,15 +1,16 @@
 #!/usr/bin/python3
-"""kiln-agent-status: the state of Kiln's four agents, for the icons on the bar.
+"""kiln-agent-status: the state of Kiln's agents and the sentry, for the icons on the bar.
 
 Each agent has a file in /run/user/1000/kiln-agents/: its state on the first line
-(idle, working or alert) and a short note on the second. The Noctalia bar plugin
-reads them. Blue is idle, green working, red alert: a question, a request or a failure.
+(idle, working, warn or alert) and a short note on the second. The Noctalia bar plugin
+reads them. Blue is idle, green working, amber warn (the sentry: an update or setting due),
+red alert: a question, a request, a failure or a possible threat.
 
   kiln-agent-status hook            Claude Code hook: reads the event's JSON on stdin
   kiln-agent-status set AGENT STATE [NOTE]
   kiln-agent-status watcher-start   from kiln-watch.service (ExecStartPre), as root
   kiln-agent-status watcher-done    from kiln-watch.service (ExecStopPost), as root
-  kiln-agent-status show            print all four
+  kiln-agent-status show            print them all
 
 A hook must never stop Claude, so the hook command always exits 0.
 """
@@ -21,8 +22,8 @@ import time
 
 OWNER_UID = 1000
 DIR = "/run/user/%d/kiln-agents" % OWNER_UID
-AGENTS = ("operator", "reviewer", "researcher", "watcher")
-STATES = ("idle", "working", "alert")
+AGENTS = ("operator", "reviewer", "researcher", "watcher", "sentry")
+STATES = ("idle", "working", "warn", "alert")
 WATCH_REPORT = "/var/log/kiln/watch/latest.txt"
 NEEDS_YOU = {"permission_prompt", "elicitation_dialog", "elicitation_url_dialog",
              "agent_needs_input"}

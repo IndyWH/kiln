@@ -352,7 +352,10 @@ class Session(unittest.TestCase):
         r.LOG, r.LAST_SESSION = folder + "/changes.log", folder + "/last"
         r.PACMAN_LOG = folder + "/pacman.log"
         r.WATCH_REPORT = folder + "/latest.txt"
+        r.SENTRY_REPORT = folder + "/sentry.txt"
         r.PENDING = folder
+        with open(r.SENTRY_REPORT, "w") as f:
+            f.write("Kiln sentry, 2026-11-13 12:00: clear.\n")
         with open(r.WATCH_REPORT, "w") as f:
             f.write("Kiln watch, 2026-11-13 12:00: 1 thing needs attention.\n\n"
                     "NEEDS ATTENTION: Failed services: foo.service.\n")
@@ -373,6 +376,7 @@ class Session(unittest.TestCase):
         self.assertIn("New one", text)
         self.assertNotIn("Old one", text)
         self.assertIn("upgraded vim", text)
+        self.assertIn("Kiln sentry, 2026-11-13 12:00: clear.", text)
         self.assertIn("NEEDS ATTENTION: Failed services: foo.service.", text)
         self.assertNotIn("upgraded old", text)
         with open(r.LAST_SESSION) as f:

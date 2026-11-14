@@ -1,0 +1,10 @@
+[Unit]
+Description=Run the Kiln sentry every 10 minutes (daily and weekly checks when due)
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=10min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
