@@ -111,3 +111,12 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 - Part 1 done. ISO: cachyos-desktop-linux-260809.iso, 3,188,850,688 bytes, SHA-256 959f6577f45e25ee9fd8c220fd221b08e4ea79412c7315c0f922dd6d86d5e33c. Checksum OK, and a good signature from CachyOS's key 882DCFE48E2051D48E2562ABF3B607488DB35A47, which matches wiki.cachyos.org. Both repo folders were fully pushed. Six Claude memory notes from v1 sessions were found only on the P2; see the owner's decision on keeping them.
 - v1's last commit pushed to `stage1-guards`. Wrote docs/INSTALL.md, after checking CachyOS's current installer: Limine is its default boot loader since January 2026, with snapshots in the boot menu.
 - Wrote docs/DECISION-cachyos.md, docs/PHILOSOPHY.md and policy/CLAUDE.md, the new machine rules, as a draft until the safety pieces are installed.
+
+## 14 Nov 2026, 09:22: keyring fix, waiting for log-out test
+
+- Stage 3 kernel installed and booted; first measure run in results/cachyos-2026-11-14-2 (audio 128 dropped out, owner was using the PC; repeat). Still to do: repeat runs, stock comparison, 5 boot timings each, write-up in results/kernel-kiln-2026-11-13/README.md.
+- Keyring prompt at login (owner asked). Reviewer: CONCERNS, answered. /etc/pam.d/greetd now has `auth optional pam_gnome_keyring.so` and `session optional pam_gnome_keyring.so auto_start`; ~/.local/share/keyrings/Default_keyring.keyring renamed login.keyring, `default` says login. Owner says keyring password = login password. Backup (taken once): ~/.cache/kiln-keyring-backup/.
+- Check after log-in: `journalctl -b | grep gkr-pam` should say the login keyring was unlocked; exactly one gnome-keyring-daemon for indy, the systemd unit; no prompt.
+- Back out: copy the greetd backup back; for the keyring, with daemons stopped, `mv login.keyring Default_keyring.keyring` and `printf Default_keyring > default` (never copy the old folder back).
+- Hello CachyOS autostart: `Hidden=true` added to ~/.config/autostart/cachyos-hello.desktop; app not removed.
+- Later, separate reviewed change: /etc/pam.d/passwd has no pam_gnome_keyring line, so a login password change won't carry to the keyring.
