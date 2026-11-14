@@ -890,3 +890,8 @@ b2sums+=(${_kiln_profile_b2sums:-})
 if [ "$_cpusched" = "bore" ]; then
     b2sums+=('355a279dea4edf0148cc6499b770bb6d07c55623ea334e6b0db52eba746454d5afafe58bbcf357c9bc53aaa1319a610cd167dba77f6c866835077aed85a2d45c')
 fi
+
+# Kiln: CachyOS's kernel gives the linker its AutoFDO and Propeller settings only with thin LTO.
+# With full LTO the code is generated in the linker as well, so it needs them too.
+source+=("kiln-lto-profiles.patch")
+b2sums+=('a5ff1253fb2313ffec92569e419a049a87f815944172c8a4299e6b088c72ed671bc438f12c8a01a71622f1e1620e3bbb2067324ce82aed4f1606fb41232e56a2')

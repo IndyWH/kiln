@@ -1,5 +1,5 @@
 --- PKGBUILD.cachyos	2026-11-13 22:05:34.680696132 +0000
-+++ PKGBUILD	2026-11-13 22:14:18.821807702 +0000
++++ PKGBUILD	2026-11-14 00:52:13.609947182 +0000
 @@ -179,6 +179,8 @@
      _pkgsuffix=cachyos
  fi
@@ -41,7 +41,7 @@
      provides=('NVIDIA-MODULE')
      conflicts=("$pkgbase-nvidia" "$pkgbase-nvidia-580xx")
      license=('MIT AND GPL-2.0-only')
-@@ -877,3 +874,19 @@
+@@ -877,3 +874,24 @@
          'SKIP'
          '1857e2984cb148c524dc178e41a45dae8b1c649267150fe29b86bd3fc75358c6e1aa203d70f152d0f62fc6ac37de81cfa5e5e06f5cb3716eb7bed36525416fe1'
          'c992567bd7dd8553432be496ffa1c17e2f5ebe9c7edb51945cf977e1b742dd6517c210d8843bb82744ca705efd07f8027cd7dde41b50215ebd707a34aa81462e')
@@ -61,3 +61,8 @@
 +if [ "$_cpusched" = "bore" ]; then
 +    b2sums+=('355a279dea4edf0148cc6499b770bb6d07c55623ea334e6b0db52eba746454d5afafe58bbcf357c9bc53aaa1319a610cd167dba77f6c866835077aed85a2d45c')
 +fi
++
++# Kiln: CachyOS's kernel gives the linker its AutoFDO and Propeller settings only with thin LTO.
++# With full LTO the code is generated in the linker as well, so it needs them too.
++source+=("kiln-lto-profiles.patch")
++b2sums+=('a5ff1253fb2313ffec92569e419a049a87f815944172c8a4299e6b088c72ed671bc438f12c8a01a71622f1e1620e3bbb2067324ce82aed4f1606fb41232e56a2')

@@ -1,0 +1,30 @@
+diff --color -ru a/scripts/Makefile.autofdo b/scripts/Makefile.autofdo
+--- a/scripts/Makefile.autofdo
++++ b/scripts/Makefile.autofdo
+@@ -25,4 +25,13 @@
+   KBUILD_LDFLAGS += $(call ld-option,-plugin-opt=-function-splitting=all,-plugin-opt=-split-machine-functions)
+ endif
+ 
++# Kiln: the same for full LTO, where all code is generated in the linker too.
++ifdef CONFIG_LTO_CLANG_FULL
++  ifdef CLANG_AUTOFDO_PROFILE
++    KBUILD_LDFLAGS += --lto-sample-profile=$(CLANG_AUTOFDO_PROFILE)
++  endif
++  KBUILD_LDFLAGS += --mllvm=-enable-fs-discriminator=true --mllvm=-improved-fs-discriminator=true
++  KBUILD_LDFLAGS += $(call ld-option,-plugin-opt=-function-splitting=all,-plugin-opt=-split-machine-functions)
++endif
++
+ export CFLAGS_AUTOFDO_CLANG RUSTFLAGS_AUTOFDO_CLANG
+diff --color -ru a/scripts/Makefile.propeller b/scripts/Makefile.propeller
+--- a/scripts/Makefile.propeller
++++ b/scripts/Makefile.propeller
+@@ -24,7 +24,8 @@
+   endif
+ endif
+ 
+-ifdef CONFIG_LTO_CLANG_THIN
++# Kiln: full LTO generates code in the linker too, so it needs these as well.
++ifneq ($(CONFIG_LTO_CLANG_THIN)$(CONFIG_LTO_CLANG_FULL),)
+   ifdef CLANG_PROPELLER_PROFILE_PREFIX
+     KBUILD_LDFLAGS += --lto-basic-block-sections=$(CLANG_PROPELLER_PROFILE_PREFIX)_cc_profile.txt
+   else

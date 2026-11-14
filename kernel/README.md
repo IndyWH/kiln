@@ -4,7 +4,9 @@
 
 - `PKGBUILD.cachyos`: CachyOS's build script, unchanged, from github.com/CachyOS/linux-cachyos at commit 8c1b372 (13 Nov 2026). `config` is from the same commit.
 - `PKGBUILD`: Kiln's copy; `kiln.patch` shows every change. Its own name; no exact nvidia-utils version, so driver updates never block a system update; checksums for every download.
-- `build.sh 1|2|3`: builds as the owner in ~/.cache/kiln-kernel/stageN. Installing is separate.
+- `kiln-lto-profiles.patch`: the kernel passes AutoFDO and Propeller settings to the linker only with thin LTO. With full LTO all code is generated in the linker, so without this patch the profiles are only partly used and Propeller has no code map to work from. Reviewer: sound, untested upstream.
+- `build.sh 1|2|3`: builds as the owner in ~/.cache/kiln-kernel/stageN. Installing is separate. Move old packages out of the stage folder first, or makepkg refuses.
+- `profile.sh`: records the AutoFDO and Propeller profiles while a kernel build runs.
 
 ## Costs
 

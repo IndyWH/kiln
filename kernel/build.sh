@@ -12,7 +12,7 @@ stage=${1:?stage 1, 2 or 3}
 here=$(cd "$(dirname "$0")" && pwd)
 dir="$HOME/.cache/kiln-kernel/stage$stage"
 mkdir -p "$dir"
-cp "$here/PKGBUILD" "$here/config" "$dir/"
+cp "$here/PKGBUILD" "$here/config" "$here/kiln-lto-profiles.patch" "$dir/"
 cd "$dir"
 
 # The strongest settings (Kiln's maximum-optimisation rule); CPU level x86-64-v3, never native.
