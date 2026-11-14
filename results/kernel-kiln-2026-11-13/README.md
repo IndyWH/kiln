@@ -41,3 +41,33 @@ Booted cleanly at 00:45 on 14 Nov. One run: sysbench 1728 / 39215, 7-Zip 10788 /
 Found after: the kernel passes the linker its AutoFDO and Propeller settings only with thin LTO. With full LTO the code is generated in the linker, so this stage got only the compile-time part of the profile, and its Propeller code map was 460 bytes instead of megabytes. Google's tool refused it ("Fewer than 0.05% recorded jumps are converted"). `kernel/kiln-lto-profiles.patch` passes the same settings for full LTO; stage 2 is rebuilt with it. Upstream supports profiles only with thin LTO; full LTO with profiles is untested upstream, so Kiln goes beyond what CachyOS and the kernel test.
 
 Rebuilt with the patch, 01:43: Propeller code map 8.1 MB (was 460 bytes), 612 functions split into hot and cold parts (was none), so AutoFDO's code-generation part now applies too. Build warnings identical in number and kind to the first stage 2 build. The first stage 2's packages are kept in ~/.cache/kiln-kernel/keep/.
+
+## Stage 3, the final kernel (14 Nov)
+
+- Recording with the rebuilt stage 2, 08:04: perf 800 MB. `llvm-profgen` then rejected it ("Invalid perf script input", cause not found); stage 3 uses stage 1's AutoFDO profile, so not needed. Google's tool made the Propeller profiles from the same recording: 2543 hot functions, its layout score for calls between functions +101%.
+- Built 08:24 to 08:43: build warnings identical in number and kind; 2401 functions split hot and cold (stage 2: 612); the profile's hottest functions sit together in memory.
+- Booted cleanly at 08:51. Two runs: `results/cachyos-2026-11-14-2` (owner using the PC) and `-3`.
+
+## Against stock 7.3.4, the same day
+
+| | sysbench 1 / 32 | 7-Zip 1 / 32 | Audio, worst timing | Worst wake-up, loaded |
+|---|---|---|---|---|
+| Stock 7.3.4, two runs (`-4`, `-5`) | 1722-1728 / 39158-39206 | 10803-10834 / 216622-217128 | 128, 0.60-0.63 | 2.97-3.96 ms |
+| Kiln stage 3, two runs | 1721-1726 / 39099-39213 | 10824-10831 / 216995-217391 | 128 and 256, 0.02-0.53 | 2.12-2.20 ms |
+| All Kiln stages, five runs | | | 0.02-0.53 | 2.07-2.20 ms |
+| All stock, six runs (7.3.3 and 7.3.4) | | | 0.26-0.63 | 2.43-3.96 ms |
+
+Boot, 5 each (`journalctl -b -N`, "Startup finished"), median (range):
+
+| | Kernel stage | Start-up files | Desktop ready after | Total |
+|---|---|---|---|---|
+| Stock 7.3.4 | 0.980 s (0.912-0.997) | 4.50 s | 5.13 s | 37.9 s |
+| Kiln stage 3 | 0.911 s (0.905-0.915) | 4.50 s | 5.12 s | 37.8 s |
+
+## Verdict, against the predictions
+
+- CPU: within 1%, as predicted. No gain: the first round's small lead was against stock 7.3.3; stock 7.3.4 is level.
+- Boot: within 0.5 s, as predicted. The kernel stage is 70 ms faster, lost in a 38 s boot: firmware takes 21 s and the Limine menu waits 5 s (`timeout: 5`).
+- Worst wake-up under full load: the one real gain, better than predicted. Every Kiln run (2.07 to 2.20 ms) beat every stock run (2.43 to 3.96 ms), across 11 runs; most likely BORE.
+- Audio: 128 samples clean on both. Kiln's worst timing was lower in four of five runs; not proven.
+- Kept as the default. Its costs are in `kernel/README.md`: rebuild for each new kernel, and after each NVIDIA update.

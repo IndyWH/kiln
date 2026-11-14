@@ -1,0 +1,7 @@
+Kiln measurement: cachyos, 2026-11-14
+Audio: smallest clean buffer 128 samples (2.67 ms), every core 99.7% busy. Worst timing 0.63 wait, 0.00 busy, as a share of the buffer.
+Audio, not clean: 64=dropouts
+Responsiveness: wake-up delay median 0.06 ms, 99% 0.06 ms, worst 2.97 ms, every core 99.8% busy.
+CPU: sysbench 1722 (1 thread), 39206 (32 threads) events per second. 7-Zip 10834 (1 thread), 217128 (32 threads) MIPS.
+Setup: power mode balanced, screen on card1-DP-4 1002:6981 
+Details: results/cachyos-2026-11-14-5
