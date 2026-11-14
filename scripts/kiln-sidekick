@@ -4,6 +4,15 @@
 # Later presses hide and show it. A hidden window keeps running, so work carries on.
 # The window rules in ~/.config/hypr/config/kiln.lua put it on the hidden "sidekick" workspace.
 if hyprctl -j clients | grep -q '"class": "kiln-sidekick"'; then
+    # If the window was moved off its workspace (14 Nov 2026: a key sent it to the
+    # scratchpad, and the button only flashed an empty pull-down), bring it back first.
+    where=$(hyprctl -j clients | python3 -c 'import json, sys
+for c in json.load(sys.stdin):
+    if c["class"] == "kiln-sidekick":
+        print(c["address"], c["workspace"]["name"]); break')
+    if [ "${where#* }" != "special:sidekick" ]; then
+        hyprctl dispatch "hl.dsp.window.move({ workspace = \"special:sidekick\", window = \"address:${where%% *}\" })" >/dev/null
+    fi
     exec hyprctl dispatch 'hl.dsp.workspace.toggle_special("sidekick")'
 fi
 # Claude Code by its full path: the desktop's PATH does not include ~/.local/bin.
