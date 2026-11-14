@@ -120,3 +120,9 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 - Back out: copy the greetd backup back; for the keyring, with daemons stopped, `mv login.keyring Default_keyring.keyring` and `printf Default_keyring > default` (never copy the old folder back).
 - Hello CachyOS autostart: `Hidden=true` added to ~/.config/autostart/cachyos-hello.desktop; app not removed.
 - Later, separate reviewed change: /etc/pam.d/passwd has no pam_gnome_keyring line, so a login password change won't carry to the keyring.
+
+## 14 Nov 2026: next after the kernel work, the sentry (owner agreed)
+
+- A security watcher, built like `kiln-watch`: a script on a timer, read-only, never changes the machine; the operator fixes, with the reviewer. Icon on the bar: blue clear, amber update or setting due, red possible threat, plus a desktop notice. No AI on a timer, no reading the owner's email.
+- Daily: arch-audit (known holes in installed packages); ufw on and rules unchanged; new open ports (LLMNR on 5355 is open now: switch it off); new autostart entries, services, setuid files; changes to /etc/pam.d, sudoers, ssh keys; failed logins and sudo use not from the operator; new foreign packages (AUR, pip, npm). Weekly, when idle: ClamAV scan of ~/Downloads; new destinations per program; fwupd. DNS blocking of malware and phishing sites: owner to choose a service (e.g. Quad9). Skip rkhunter and OpenSnitch.
+- Sharing with other Kiln machines through GitHub (owner asked): share generic rules and fixes only, in the repo, never this machine's findings (public repo). Signed commits; other machines' watchers report "new rules", and their operator reviews them with the reviewer before applying. Never applied automatically. Each push asked as usual.
