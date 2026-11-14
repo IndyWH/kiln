@@ -140,7 +140,7 @@ hl.bind("mouse:274", hl.dsp.exec_cmd("kiln-sidekick"))
 -- It slides down to open and back up to hide.
 hl.animation({ leaf = "specialWorkspaceOut", enabled = true, speed = 2, bezier = "quick", style = "slide top" })
 
--- Mouse speed (owner, 14 Nov 2026): a little faster than the default 0, on a scale of -1 to 1,
--- with acceleration on trial ("adaptive": quick movements go further). Back to no
--- acceleration: delete the accel_profile here, and inputs.lua's "flat" applies again.
-hl.config({ input = { sensitivity = 0.2, accel_profile = "adaptive" } })
+-- Mouse (owner, 14 Nov 2026): speed 0.1, a touch above the default 0 on a scale of -1 to 1,
+-- with acceleration ("adaptive": quick movements go further). For no acceleration, delete
+-- the accel_profile here, and inputs.lua's "flat" applies again.
+hl.config({ input = { sensitivity = 0.1, accel_profile = "adaptive" } })
