@@ -21,6 +21,12 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 
 ## Log
 
+### 14 Nov 2026 — Claude Code, Chrome and Claude Desktop
+
+- Owner: Chrome (Google sync), accelerated on the WX 3200, never the 4090. AUR google-chrome 157.0.8103.78, reviewer CONCERNS answered; checked on the running browser. See lessons/browsers.md. kiln-watch reports newer AUR packages and Chrome versions.
+- Owner: Claude Desktop, from CachyOS's repository (claude-desktop 5.11492.0-1), with a system update. Cowork not set up (needs the kvm group).
+- Waiting: limine 12.9.6 to 12.10.0, held back with --ignore; reviewer first, then update.
+
 ### 14 Nov 2026 — Claude Code, one-command kernel rebuild and the sentry
 
 - Owner asked: the one-command rebuild, then the sentry.
