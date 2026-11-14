@@ -32,7 +32,11 @@ perf record -e BR_INST_RETIRED.NEAR_TAKEN:k -a -N -b -c 500009 -o "$out/kernel.d
 sysctl -q kernel.kptr_restrict="$restrict"
 echo "Converting, $(date +%T)"
 chown "$owner:" "$out"/*
-llvm-profgen --kernel --binary="$vmlinux" --perfdata="$out/kernel.data" -o "$out/kiln.afdo"
+# On the stage 2 kernel (14 Nov 2026) llvm-profgen rejected the recording ("Invalid perf
+# script input"), cause not yet known; the Propeller step below still worked, so carry on to it.
+# Stage 3 uses stage 1's AutoFDO profile, so this one is not needed.
+llvm-profgen --kernel --binary="$vmlinux" --perfdata="$out/kernel.data" -o "$out/kiln.afdo" ||
+    echo "AutoFDO conversion failed; going on to Propeller"
 # Propeller, from the same recording, when the tool is given (built from google/llvm-propeller;
 # see kernel/README.md). Run as the owner, never as root.
 if [ -n "${3:-}" ]; then
