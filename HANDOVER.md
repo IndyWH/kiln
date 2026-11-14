@@ -21,6 +21,13 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 
 ## Log
 
+### 14 Nov 2026 — Claude Code, Kiln's kernel, overnight
+
+- Stage 2 (AutoFDO from this machine's recording) booted cleanly at 00:45. One run: CPU same as stock; worst wake-up 2.07 ms and audio timing 0.03, like stage 1 and better than every stock run.
+- Found: with full LTO the kernel's own build rules apply AutoFDO only partly and give Propeller nothing to work with. `kernel/kiln-lto-profiles.patch` fixes it; reviewer: sound, untested upstream. Stage 2 rebuilt with it and checked (code map 8.1 MB; 612 split functions), not yet installed.
+- Propeller tool built: ~/.cache/kiln-kernel/propeller-src/build/propeller/generate_propeller_profiles. Its download checksums are in kernel/README.md.
+- Next, in the morning: install ~/.cache/kiln-kernel/stage2/*.pkg.tar.zst (four packages), owner restarts; `sudo kernel/profile.sh ~/.cache/kiln-kernel/profile-stage2 ~/.cache/kiln-kernel/stage2/src/cachyos-7.3.4-1 <tool>` (full paths); `kernel/build.sh 3 ~/.cache/kiln-kernel/profile-stage1/kiln.afdo ~/.cache/kiln-kernel/profile-stage2` (stage 3 must use the same AutoFDO profile as stage 2); install; owner restarts; measure; boot tests against stock 7.3.4.
+
 ### 13 Nov 2026 — Claude Code, Kiln's own kernel, stage 1
 
 - Owner asked for the full-fat kernel, as the boot default. `kernel/`: CachyOS's build script with Kiln's changes, reviewer checked (CONCERNS, all answered: the BORE patch's checksum added; the default set only after a good first boot; no hand edit of /boot/limine.conf; back-out written in kernel/README.md).
