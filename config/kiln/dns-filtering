@@ -1,0 +1,4 @@
+# Kiln: where bad sites are blocked, read by kiln-sentry. One word:
+#   network      the network already filters (a router such as OPNsense or a Pi-hole)
+#   filter-here  this machine uses a filtering service itself (config/systemd/resolved-kiln-quad9.conf)
+network

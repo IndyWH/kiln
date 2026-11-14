@@ -25,6 +25,7 @@ amber = [
   "~/.config/environment.d/*", "/usr/local/bin/*", "/usr/local/sbin/*", "/etc/udev/rules.d/*",
   "/etc/modprobe.d/*", "/etc/modules-load.d/*", "/etc/sysctl.d/*", "/etc/pacman.conf",
   "/etc/pacman.d/hooks/*", "/etc/resolv.conf", "/etc/hosts", "/etc/systemd/resolved.conf.d/*",
+  "/etc/kiln/*", "/etc/firefox/policies/*",
 ]
 
 [unowned]
@@ -52,3 +53,9 @@ ignore = [
   "/usr/lib/plymouth/plymouth-update-initrd",  # made a link by CachyOS's cachyos-plymouth-initramfs hook
   "/usr/lib/utempter/utempter",                # setgid utmp by libutempter's own tmpfiles.d rule
 ]
+
+[dns]
+# Public DNS services that block malware and phishing sites, for a machine set to filter-here.
+# Quad9's four addresses; Cloudflare's malware-blocking ones.
+filtering = ["9.9.9.9", "149.112.112.112", "2620:fe::fe", "2620:fe::9",
+             "1.1.1.2", "1.0.0.2", "2606:4700:4700::1112", "2606:4700:4700::1002"]

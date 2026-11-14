@@ -46,6 +46,7 @@ PACMAN_LOG = "/var/log/pacman.log"
 PACMAN_DB = "/var/lib/pacman/local"
 TRANSCRIPTS = HOME + "/.claude/projects"
 AGENT_STATUS = "/usr/local/bin/kiln-agent-status"
+DNS_CHOICE = "/etc/kiln/dns-filtering"  # this machine's choice: network or filter-here
 DAY, WEEK = 86400, 7 * 86400
 RED, AMBER = "POSSIBLE THREAT", "TO LOOK AT"
 
@@ -112,6 +113,8 @@ class Explain:
                         if m[3] in ("CHANGE", "OUTWARD"):
                             open_changes[m[2]] = [t, m[4].strip(), ""]
                             last = m[2]
+                        elif m[3] == "NOTRUN":
+                            open_changes.pop(m[2], None)
                         elif m[3] == "DONE" and m[2] in open_changes:
                             start, desc, cmd = open_changes.pop(m[2])
                             if t + 60 >= since:
@@ -121,6 +124,18 @@ class Explain:
                         open_changes[last][2] = line.split(":", 1)[1].strip()
         except OSError:
             pass
+        # The latest operator change, if it has no DONE yet: still running (such as the one
+        # running this check). Older ones without DONE were blocked or never ran.
+        if last in open_changes and open_changes[last][0] >= time.time() - 3 * 3600:
+            start, desc, cmd = open_changes[last]
+            self.windows.append((start, time.time() + 60, last, desc, cmd))
+        # The owner's own sudo commands from a terminal (sudo logs TTY= only for those).
+        self.owner_sudo = []  # (time, command)
+        for e in journal(since, "SYSLOG_IDENTIFIER=sudo"):
+            msg = str(e.get("MESSAGE", "")).strip()
+            if msg.startswith(OWNER + " : ") and " TTY=" in msg and "COMMAND=" in msg:
+                self.owner_sudo.append((int(e.get("__REALTIME_TIMESTAMP", 0)) / 1e6,
+                                        msg.split("COMMAND=", 1)[1][:120]))
 
     NOUNS = {"installed": "install", "upgraded": "update", "downgraded": "downgrade",
              "reinstalled": "reinstall", "removed": "removal"}
@@ -128,12 +143,30 @@ class Explain:
     def why(self, path, mtime, owner):
         if owner and owner in self.packages:
             return "from the %s of %s" % (self.NOUNS[self.packages[owner][1]], owner)
+        if mtime is not None:
+            # The latest operator change that had started by then (changes log by the minute).
+            within = [w for w in self.windows if w[0] <= mtime <= w[1]]
+            if within:
+                # Prefer one whose command names the file; then the latest to start.
+                name = os.path.basename(path)
+                start, end, number, desc, cmd = max(within, key=lambda w: (name in w[4], w[0], int(w[2])))
+                return "around operator change #%s: %s" % (number, desc)
         for start, end, number, desc, cmd in self.windows:
-            if mtime is not None and start <= mtime <= end:
-                return "during operator change #%s: %s" % (number, desc)
             if mtime is None and os.path.basename(path) in cmd:
                 return "removed by operator change #%s: %s" % (number, desc)
         return None
+
+    def by_owner(self, mtime):
+        """The owner's own terminal sudo command just before a change, if any."""
+        if mtime is None:
+            return None
+        before = [c for c in self.owner_sudo if c[0] - 1 <= mtime <= c[0] + 300]
+        if not before:
+            return None
+        # The last command started before the change; sudo logs whole seconds' worth of drift.
+        started = [c for c in before if c[0] <= mtime] or before[:1]
+        when, command = started[-1]
+        return "by your sudo command at %s: %s" % (ts(when), command)
 
 
 # ------------------------------------------------------------------------------ helpers
@@ -267,8 +300,14 @@ def check_files(r, state, explain, rules, owner_of):
                 mtime = None
             why = explain.why(path, mtime, owner)
             level = RED if (new or old)[2:3] == ["red"] else AMBER
+            yours = None if why else explain.by_owner(mtime)
             if why:
                 r.fact("%s %s, %s." % (path, what, why))
+            elif yours and level == RED:
+                # A program running as the owner could fake a terminal: shown, not trusted.
+                r.add(AMBER, "%s %s, %s. Was this you?" % (path, what, yours), key="file " + path)
+            elif yours:
+                r.fact("%s %s, %s." % (path, what, yours))
             else:
                 r.add(level, "%s %s, and no package update or operator change explains it." % (path, what),
                       key="file " + path)
@@ -390,7 +429,7 @@ def operator_times(since):
     return spans
 
 
-def check_logins(r, state, since):
+def check_logins(r, state, since, explain):
     failed_remote, failed_local = [], []
     pattern = re.compile(r"authentication failure|Failed password|Invalid user|incorrect password|"
                          r"NOT in sudoers|FAILED SU|Failed publickey|maximum authentication", re.I)
@@ -409,7 +448,7 @@ def check_logins(r, state, since):
               % (len(failed_local), failed_local[0]))
     r.fact("Failed logins since the last check: %d remote, %d local." % (len(failed_remote), len(failed_local)))
 
-    spans = operator_times(since)
+    spans = operator_times(since) + [(w[0], w[1]) for w in explain.windows]
     owner_tty = operator = root = 0
     others = []
     for e in journal(since, "SYSLOG_IDENTIFIER=sudo"):
@@ -457,10 +496,118 @@ def check_new_programs(r, state, owner_of):
         net[name]["reported"] = True
 
 
-def check_dns(r):
+def dns_servers():
+    """{'global': [...], 'links': [...]} from systemd-resolved, '#name' and '%if' parts dropped."""
     _, out = run("resolvectl", "dns")
-    servers = sorted(set(re.findall(r"(?<=\s)[0-9a-f.:]{7,}(?=\s|$)", out)))
-    r.fact("DNS servers: %s." % (", ".join(servers) or "unknown"))
+    found = {"global": [], "links": []}
+    for line in out.splitlines():
+        head, _, rest = line.partition(":") if line.startswith("Global") else line.partition("):")
+        kind = "global" if line.startswith("Global") else "links" if line.startswith("Link") else None
+        if kind:
+            found[kind] += [w.split("#")[0].split("%")[0] for w in rest.split()]
+    return {k: sorted(set(v)) for k, v in found.items()}
+
+
+def router_addresses():
+    """The default gateway, and every address of the same box (its IPv6 ones, by hardware address)."""
+    gateways, macs = set(), set()
+    _, out = run("ip", "route", "show", "default")
+    gateways |= set(re.findall(r"via (\S+)", out))
+    _, neigh = run("ip", "neigh", "show")
+    _, neigh6 = run("ip", "-6", "neigh", "show")
+    for line in (neigh + neigh6).splitlines():
+        parts = line.split()
+        mac = parts[parts.index("lladdr") + 1] if "lladdr" in parts else None
+        if parts and (parts[0] in gateways or " router" in line) and mac:
+            macs.add(mac)
+    for line in (neigh + neigh6).splitlines():
+        parts = line.split()
+        if "lladdr" in parts and parts[parts.index("lladdr") + 1] in macs:
+            gateways.add(parts[0])
+    return gateways
+
+
+def check_dns(r, state, rules):
+    """DNS is where bad sites are blocked: by the network (a filtering router) or by a
+    filtering service set on this machine. Which one is this machine's choice, in DNS_CHOICE."""
+    import ipaddress
+    dns = rules.get("dns", {})
+    filtering = set(dns.get("filtering", []))
+    servers = dns_servers()
+    every = servers["global"] + servers["links"]
+    routers = router_addresses()
+
+    def network_own(a):
+        try:
+            return a in routers or ipaddress.ip_address(a).is_private
+        except ValueError:
+            return False
+
+    try:
+        with open(DNS_CHOICE) as f:
+            choice = next((l.split()[0] for l in f if l.strip() and not l.startswith("#")), "")
+    except OSError:
+        choice = ""
+    used = servers["global"] or servers["links"]  # resolved prefers the global ones when set
+    if choice == "network":
+        if servers["global"] or not used or not all(network_own(a) for a in used):
+            r.add(AMBER, "DNS should go to this network's filtering router, but goes to: %s."
+                  % (", ".join(every) or "nothing"), key="dns-choice", live=True)
+    elif choice == "filter-here":
+        if not servers["global"] or not all(a in filtering for a in servers["global"]):
+            r.add(AMBER, "DNS should go to a filtering service set on this machine, but goes to: %s."
+                  % (", ".join(every) or "nothing"), key="dns-choice", live=True)
+    else:
+        r.add(AMBER, "No DNS filtering choice recorded in %s ('network' or 'filter-here'; see docs/INSTALL.md)."
+              % DNS_CHOICE, key="dns-choice", live=True)
+    if "dns" in state and state["dns"] != every:
+        r.add(AMBER, "The DNS servers changed from %s to %s." % (", ".join(state["dns"]) or "none",
+              ", ".join(every) or "none"), key="dns " + " ".join(every))
+    state["dns"] = every
+    r.fact("DNS: choice '%s'; servers %s." % (choice or "none", ", ".join(
+        "%s (%s)" % (a, "the network's" if network_own(a) else "filtering service" if a in filtering
+                     else "other") for a in every) or "none"))
+    check_browser_dns(r)
+
+
+def check_browser_dns(r):
+    """A browser with its own encrypted DNS skips the filtering above."""
+    notes = []
+    policy = False
+    for path in ("/etc/firefox/policies/policies.json", "/usr/lib/firefox/distribution/policies.json"):
+        try:
+            with open(path) as f:
+                doh = json.load(f).get("policies", {}).get("DNSOverHTTPS", {})
+            if doh.get("Enabled") is False:
+                policy = True
+        except (OSError, ValueError, AttributeError):
+            pass
+    profiles = glob.glob(HOME + "/.mozilla/firefox/*/prefs.js") + glob.glob(HOME + "/.config/mozilla/firefox/*/prefs.js")
+    if policy:
+        notes.append("Firefox: system DNS, by policy")
+    elif profiles:
+        for prefs in profiles:
+            try:
+                with open(prefs, errors="replace") as f:
+                    mode = re.search(r'"network\.trr\.mode",\s*(\d+)', f.read())
+            except OSError:
+                continue
+            if mode and mode[1] in ("2", "3"):
+                r.add(AMBER, "Firefox uses its own encrypted DNS, which skips the DNS filtering (%s)."
+                      % prefs, key="doh " + prefs, live=True)
+        notes.append("Firefox: no policy")
+    for name, folder in (("Chromium", "chromium"), ("Chrome", "google-chrome"),
+                         ("Brave", "BraveSoftware/Brave-Browser"), ("Vivaldi", "vivaldi")):
+        try:
+            with open("%s/.config/%s/Local State" % (HOME, folder)) as f:
+                mode = (json.load(f).get("dns_over_https") or {}).get("mode", "")
+        except (OSError, ValueError, AttributeError):
+            continue
+        if mode == "secure":
+            r.add(AMBER, "%s uses its own encrypted DNS, which skips the DNS filtering." % name,
+                  key="doh " + name, live=True)
+        notes.append("%s: %s" % (name, mode or "default"))
+    r.fact("Browsers' DNS: %s." % ("; ".join(notes) or "no browser found"))
 
 
 # ------------------------------------------------------------------------ weekly checks
@@ -620,8 +767,9 @@ def daily_steps(state, rules, explain, owner_of, since):
             lambda r: check_unowned(r, state, rules, owner_of),
             lambda r: check_setuid(r, state, rules, owner_of),
             lambda r: check_foreign(r, state, owner_of),
-            lambda r: check_logins(r, state, since),
-            lambda r: check_new_programs(r, state, owner_of), check_dns)
+            lambda r: check_logins(r, state, since, explain),
+            lambda r: check_new_programs(r, state, owner_of),
+            lambda r: check_dns(r, state, rules))
 
 
 def weekly_steps(state, rules):

@@ -29,7 +29,8 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 - kiln-watch says when CachyOS's stock kernel is newer than Kiln's (installed).
 - The sentry: `kiln-sentry`, timer every 10 minutes, daily and weekly checks when due, read-only. Fifth box on the bar (shield): blue clear, amber due, red possible threat. First run clear after the first findings were looked into and accepted (one sudo from the 13 Nov idle test; by-design package files now listed in the rules). Tested: a planted file in /etc/profile.d and a setuid file in /tmp were both flagged red, then removed.
 - Installed for it, official: arch-audit, clamav, fwupd; timers on for ClamAV's virus list and fwupd's list. LLMNR off (/etc/systemd/resolved.conf.d/kiln-no-llmnr.conf); port 5355 closed, DNS works.
-- Waiting for the owner: `sudo sidekick/install.sh`, so the session summary shows the sentry's report too (the rules hook is the owner's to install). DNS blocking of bad sites: the owner to choose (e.g. Quad9). Not built yet: sharing rules with other Kiln machines; the generic rules are kept apart in config/sentry/rules.toml for that.
+- Owner installed the rules hook; the session summary shows the sentry's report. The sentry caught the install itself and named the owner's command.
+- DNS (owner's decision, 14 Nov): mlrig relies on the OPNsense router's blocking; no public DNS on the machine, as it would skip the router. Firefox's own encrypted DNS off by policy. Choice recorded in /etc/kiln/dns-filtering; the sentry checks it and the browsers. Other Kiln machines choose at install: docs/INSTALL.md, Blocking bad sites. Optional: Quad9 as the router's upstream, set in OPNsense. Not built yet: sharing rules with other Kiln machines; the generic rules are kept apart in config/sentry/rules.toml for that.
 
 ### 14 Nov 2026 — Claude Code, Kiln's kernel, overnight
 

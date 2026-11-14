@@ -64,3 +64,15 @@ First start of Kiln v2. Read HANDOVER.md and take over.
 ```
 
 From here Claude Code takes over, in this order: its memory notes from claude-memory/, the disk guard, then automatic snapshots and `undo`, the rescue entry, the new machine rules in policy/CLAUDE.md, then NVIDIA, the Hyprland look, and a measured baseline. Plug the SATA disks back in only after the guard is installed.
+
+### Blocking bad sites (DNS)
+
+Claude asks the owner at first start: does this network already block malware and phishing sites, with a router such as OPNsense or a Pi-hole?
+
+- **Yes:** the machine uses the network's DNS. `config/kiln/dns-filtering` says `network`. Do not also set a public service on the machine: it would skip the router's blocking.
+- **No, or not sure, or a laptop that moves:** `filter-here`. Install `config/systemd/resolved-kiln-quad9.conf` as `/etc/systemd/resolved.conf.d/kiln-quad9.conf` (Quad9, encrypted) and restart systemd-resolved.
+
+Either way: `config/kiln/dns-filtering` to `/etc/kiln/dns-filtering`, and `config/firefox/policies.json` to `/etc/firefox/policies/policies.json`, so Firefox uses the system's DNS instead of its own. The sentry reports if the DNS stops matching the choice.
+
+mlrig: `network` (OPNsense), 14 Nov 2026.
+
