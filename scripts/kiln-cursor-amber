@@ -1,0 +1,100 @@
+#!/usr/bin/python3
+"""kiln-cursor-amber: make an amber-outlined copy of the Bibata-Modern-Ice cursor theme.
+
+  kiln-cursor-amber [COLOUR]      default #FFA000
+
+Reads ~/.local/share/icons/Bibata-Modern-Ice (left untouched) and writes
+~/.local/share/icons/Bibata-Modern-Ice-Amber:
+- hyprcursors (used by Hyprland): SVG drawings; black (#000000) strokes and fills become COLOUR.
+- cursors (XCursor, used by apps): pixel images; grey pixels are mapped from black..white to
+  COLOUR..white, keeping transparency and edge smoothing; coloured pixels (the busy spinner,
+  red no-entry signs) stay as they are.
+"""
+import os
+import re
+import shutil
+import struct
+import sys
+import zipfile
+
+HOME = os.path.expanduser("~")
+SRC = HOME + "/.local/share/icons/Bibata-Modern-Ice"
+DST = HOME + "/.local/share/icons/Bibata-Modern-Ice-Amber"
+NAME = "Bibata-Modern-Ice-Amber"
+
+
+def parse_colour(text):
+    m = re.fullmatch(r"#?([0-9A-Fa-f]{6})", text)
+    if not m:
+        sys.exit("colour must look like #FFA000")
+    v = m[1].upper()
+    return "#" + v, tuple(int(v[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def recolour_hlc(src, dst, hexcol):
+    with zipfile.ZipFile(src) as zin, zipfile.ZipFile(dst, "w", zipfile.ZIP_DEFLATED) as zout:
+        for info in zin.infolist():
+            data = zin.read(info.filename)
+            if info.filename.endswith(".svg"):
+                text = data.decode()
+                text = re.sub(r'(stroke|fill)="#000000"', lambda m: '%s="%s"' % (m[1], hexcol), text)
+                data = text.encode()
+            zout.writestr(info, data)
+
+
+def recolour_xcursor(path, rgb):
+    """XCursor: a header, a table of contents, then image chunks of premultiplied ARGB."""
+    data = bytearray(open(path, "rb").read())
+    if data[:4] != b"Xcur":
+        return
+    ntoc = struct.unpack_from("<I", data, 12)[0]
+    for i in range(ntoc):
+        ctype, _, pos = struct.unpack_from("<III", data, 16 + 12 * i)
+        if ctype != 0xFFFD0002:  # an image chunk
+            continue
+        header, _, _, _, width, height = struct.unpack_from("<IIIIII", data, pos)
+        start = pos + header
+        for p in range(start, start + 4 * width * height, 4):
+            b, g, r, a = data[p], data[p + 1], data[p + 2], data[p + 3]
+            if a == 0:
+                continue
+            ub, ug, ur = (min(255, c * 255 // a) for c in (b, g, r))  # un-premultiply
+            if max(ur, ug, ub) - min(ur, ug, ub) > 24:
+                continue  # a coloured pixel: leave it
+            t = (ur + ug + ub) / (3 * 255)  # 0 black (outline) .. 1 white (body)
+            nr, ng, nb = (round(c + (255 - c) * t) for c in rgb)
+            data[p], data[p + 1], data[p + 2] = (nb * a // 255, ng * a // 255, nr * a // 255)
+    with open(path, "wb") as f:
+        f.write(data)
+
+
+def main(argv):
+    hexcol, rgb = parse_colour(argv[1] if len(argv) > 1 else "#FFA000")
+    if not os.path.isdir(SRC):
+        sys.exit("missing " + SRC)
+    tmp = DST + ".new"
+    shutil.rmtree(tmp, ignore_errors=True)
+    shutil.copytree(SRC, tmp, symlinks=True)
+    for name in os.listdir(tmp + "/hyprcursors"):
+        if name.endswith(".hlc"):
+            path = tmp + "/hyprcursors/" + name
+            recolour_hlc(SRC + "/hyprcursors/" + name, path, hexcol)
+    for name in os.listdir(tmp + "/cursors"):
+        path = tmp + "/cursors/" + name
+        if not os.path.islink(path):
+            recolour_xcursor(path, rgb)
+    for meta in ("index.theme", "cursor.theme", "manifest.hl"):
+        path = tmp + "/" + meta
+        if os.path.exists(path):
+            text = open(path).read()
+            text = re.sub(r"(?m)^(\s*[Nn]ame\s*=\s*).*$", r"\g<1>" + NAME, text)
+            text = re.sub(r"(?m)^(\s*[Ii]nherits\s*=\s*).*$", r"\g<1>Bibata-Modern-Ice", text)
+            text = re.sub(r"(?m)^(\s*description\s*=\s*).*$", r"\g<1>Bibata Modern Ice with an %s outline" % hexcol, text)
+            open(path, "w").write(text)
+    shutil.rmtree(DST, ignore_errors=True)
+    os.rename(tmp, DST)
+    print("Made %s, outline %s." % (DST, hexcol))
+
+
+if __name__ == "__main__":
+    main(sys.argv)
