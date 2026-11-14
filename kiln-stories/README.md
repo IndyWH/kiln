@@ -5,3 +5,4 @@ Overfiring that went badly, and how it was troubleshot, with the real numbers an
 - [The compiler we downloaded was faster](the-compiler-we-downloaded-was-faster.md): Rust, 4 and 5 Nov 2026
 - [The pots were already fired](the-pots-were-already-fired.md): the CPU setting test, and the move to CachyOS, 11 to 13 Nov 2026
 - [The shelves, not the fire](the-shelves-not-the-fire.md): CachyOS against Gentoo, and a 21% gain from huge pages, 13 Nov 2026
+- [Three firings for two milliseconds](three-firings-for-two-milliseconds.md): Kiln's own kernel, BORE, full LTO and profiles, and the build hole on the way, 13 and 14 Nov 2026
