@@ -1,0 +1,15 @@
+#!/bin/sh
+# Kiln: start Chrome on the Radeon PRO WX 3200, never the RTX 4090, which stays free for
+# compute. Installed as /usr/local/bin/google-chrome-stable, ahead of the package's
+# /usr/bin/google-chrome-stable in PATH, so terminals and scripts get it too. Both menu
+# entries (google-chrome.desktop, com.google.Chrome.desktop) are copied to
+# ~/.local/share/applications with Exec pointing here. Not covered: web apps installed from
+# Chrome, which start /opt/google/chrome/google-chrome directly (only when one is the first
+# Chrome window does it matter, and then only Vulkan/WebGPU might choose the 4090).
+#   EGL and GLX: Mesa only, which drives the WX 3200 (NVIDIA's libraries are not offered).
+#   Vulkan: the Radeon driver only.  Video decode and encode: radeonsi (VA-API).
+export __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/50_mesa.json
+export __GLX_VENDOR_LIBRARY_NAME=mesa
+export VK_DRIVER_FILES=/usr/share/vulkan/icd.d/radeon_icd.json
+export LIBVA_DRIVER_NAME=radeonsi
+exec /usr/bin/google-chrome-stable "$@"

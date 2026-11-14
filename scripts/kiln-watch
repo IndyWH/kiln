@@ -10,7 +10,7 @@ Claude session, and sends a desktop notice when something needs attention.
 
 Checks: failed services, the Crucial P2's health (only that disk, by serial), btrfs errors,
 free space, the boot partition's free space, snapshots, the rescue entry and disk guard, Kiln's own kernel's NVIDIA module, pending updates, new Arch and
-CachyOS news, packages still generic. News is fetched as data and only its titles kept.
+CachyOS news, AUR packages behind (and Chrome against Google), packages still generic. News is fetched as data and only its titles kept.
 """
 import json
 import os
@@ -19,6 +19,7 @@ import shutil
 import subprocess
 import sys
 import time
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -232,6 +233,54 @@ def check_news(r, state):
     state["news_seen"] = sorted(seen)
 
 
+def check_foreign_updates(r):
+    """Packages from the AUR do not update with the system. Say when the AUR has a newer
+    version, and for Chrome when Google has (Google publishes first; its updates carry
+    security fixes). Kiln's own kernel is left out: kernel/rebuild.sh looks after it."""
+    _, out = run("pacman", "-Qm")
+    installed = dict(line.split()[:2] for line in out.splitlines() if len(line.split()) >= 2)
+    installed = {n: v for n, v in installed.items() if not n.startswith("linux-cachyos-kiln")}
+    if not installed:
+        return
+    query = "&".join("arg[]=" + urllib.parse.quote(n) for n in sorted(installed))
+    try:
+        request = urllib.request.Request("https://aur.archlinux.org/rpc/v5/info?" + query,
+                                         headers={"User-Agent": "kiln-watch"})
+        with urllib.request.urlopen(request, timeout=30) as reply:
+            results = json.loads(reply.read(2_000_000)).get("results", [])
+    except Exception:  # noqa: BLE001 - any failure is only reported
+        r.fact("AUR: could not be checked.")
+        results = []
+    behind = []
+    for p in results:
+        name, version = p.get("Name"), p.get("Version", "")
+        if name in installed:
+            _, newer = run("vercmp", version, installed[name])
+            if newer.strip().lstrip("-").isdigit() and int(newer) > 0:
+                behind.append("%s %s (installed %s)" % (name, version, installed[name]))
+    if behind:
+        r.bad("AUR updates waiting: %s. Ask Claude to update them; the reviewer reads each new "
+              "build script first." % ", ".join(behind))
+    if "google-chrome" in installed:
+        try:
+            request = urllib.request.Request(
+                "https://dl.google.com/linux/chrome/deb/dists/stable/main/binary-amd64/Packages",
+                headers={"User-Agent": "kiln-watch"})
+            with urllib.request.urlopen(request, timeout=30) as reply:
+                index = reply.read(5_000_000).decode("utf-8", "replace")
+            m = re.search(r"Package: google-chrome-stable\nVersion: (\S+?)-\d+\n", index)
+            google = m[1] if m else None
+        except Exception:  # noqa: BLE001
+            google = None
+        mine = installed["google-chrome"].split("-")[0]
+        if google and google != mine and not any(b.startswith("google-chrome ") for b in behind):
+            _, newer = run("vercmp", google, mine)
+            if newer.strip().lstrip("-").isdigit() and int(newer) > 0:
+                r.fact("Chrome: Google has %s, installed %s; the AUR has not caught up yet." % (google, mine))
+        r.fact("Chrome: installed %s, Google's latest %s." % (mine, google or "unknown"))
+    r.fact("AUR packages: %d, %d behind." % (len(installed), len(behind)))
+
+
 def check_v3(r):
     code, out = run("/usr/local/bin/kiln-v3")
     lines = [line for line in out.splitlines() if line and not line.startswith(" ")]
@@ -255,7 +304,7 @@ def main(argv):
     r = Report()
     for check in (check_services, lambda r: check_disk(r, state), check_btrfs, check_space, check_boot,
                   check_snapshots, check_rescue_and_guard, check_kiln_kernel, check_updates,
-                  lambda r: check_news(r, state), check_v3):
+                  lambda r: check_news(r, state), check_foreign_updates, check_v3):
         try:
             check(r)
         except Exception as why:  # noqa: BLE001 - one broken check must not stop the rest

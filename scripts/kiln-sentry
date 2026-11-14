@@ -596,8 +596,20 @@ def check_browser_dns(r):
                 r.add(AMBER, "Firefox uses its own encrypted DNS, which skips the DNS filtering (%s)."
                       % prefs, key="doh " + prefs, live=True)
         notes.append("Firefox: no policy")
-    for name, folder in (("Chromium", "chromium"), ("Chrome", "google-chrome"),
-                         ("Brave", "BraveSoftware/Brave-Browser"), ("Vivaldi", "vivaldi")):
+    for name, folder, policies in (("Chromium", "chromium", "/etc/chromium/policies/managed"),
+                                   ("Chrome", "google-chrome", "/etc/opt/chrome/policies/managed"),
+                                   ("Brave", "BraveSoftware/Brave-Browser", "/etc/brave/policies/managed"),
+                                   ("Vivaldi", "vivaldi", "/etc/vivaldi/policies/managed")):
+        forced = None
+        for path in glob.glob(policies + "/*.json"):
+            try:
+                with open(path) as f:
+                    forced = json.load(f).get("DnsOverHttpsMode") or forced
+            except (OSError, ValueError, AttributeError):
+                pass
+        if forced == "off":
+            notes.append("%s: system DNS, by policy" % name)
+            continue
         try:
             with open("%s/.config/%s/Local State" % (HOME, folder)) as f:
                 mode = (json.load(f).get("dns_over_https") or {}).get("mode", "")
