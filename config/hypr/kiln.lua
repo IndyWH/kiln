@@ -139,3 +139,7 @@ hl.window_rule({
 hl.bind("mouse:274", hl.dsp.exec_cmd("kiln-sidekick"))
 -- It slides down to open and back up to hide.
 hl.animation({ leaf = "specialWorkspaceOut", enabled = true, speed = 2, bezier = "quick", style = "slide top" })
+
+-- Mouse speed (owner, 14 Nov 2026): a little faster than the default 0, on a scale of -1 to 1.
+-- Acceleration stays off (flat, in inputs.lua), so the pointer moves in step with the hand.
+hl.config({ input = { sensitivity = 0.2 } })
