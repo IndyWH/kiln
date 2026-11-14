@@ -1,0 +1,1801 @@
+=== System, 2026-11-14 00:52:46
+OS: cachyos  Kernel: 7.3.4-1-cachyos-kiln
+model name	: 13th Gen Intel(R) Core(TM) i9-13900K
+Threads: 32  Load average: 1.27 2.82 1.38
+microcode	: 0x137
+Power mode: balanced
+Governor: powersave
+Boot options: quiet nowatchdog splash rw rootflags=subvol=/@ root=UUID=cfa7c9cb-c87b-4f18-8d19-fbfb942c456a
+Screen: 
+gcc (GCC) 16.2.1 20260810
+sysbench 1.0.20-1472a05
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+cyclictest V 2.11
+Compiled with libpipewire 1.6.11
+
+Audio output: alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+CPU speed: sysbench, 1 threads, run 1 of 3
+sysbench 1.0.20-1472a05 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 1
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second:  1722.36
+
+General statistics:
+    total time:                          30.0005s
+    total number of events:              51673
+
+Latency (ms):
+         min:                                    0.58
+         avg:                                    0.58
+         max:                                    1.64
+         95th percentile:                        0.59
+         sum:                                29997.52
+
+Threads fairness:
+    events (avg/stddev):           51673.0000/0.00
+    execution time (avg/stddev):   29.9975/0.00
+CPU speed: 7-Zip, 1 threads, run 1 of 3
+
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:4096, ASM
+
+ mt=1 d25
+Compiler:  ver:16.2.1 20260810 GCC 16.2.1 : AVX2
+Linux : 7.3.4-1-cachyos-kiln : #1 SMP PREEMPT_DYNAMIC Fri, 13 Nov 2026 23:57:09 +0000 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:always hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  4944  4978  5474  5472  5490  5487  5492
+
+RAM size:   96320 MB (LP),  # CPU hardware threads:  32
+RAM usage:    437 MB (LP),  # Benchmark threads:      1
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:      13701   100  13341  13329  |     121564   100  10396  10379
+23:      11401    99  11683  11617  |     121230   100  10522  10494
+24:       9228   100   9935   9922  |     119886    99  10589  10525
+25:       8112   100   9279   9263  |     119973   100  10665  10678
+22:      13829   100  13489  13454  |     121577   100  10396  10380
+23:      11072    99  11367  11281  |     121286   100  10522  10498
+24:       9266   100   9935   9963  |     120770   100  10589  10602
+25:       8102   100   9256   9251  |     119787    99  10744  10662
+22:      13901   100  13489  13523  |     121568   100  10396  10379
+23:      11283    98  11683  11497  |     121264   100  10458  10497
+24:       9230   100   9935   9925  |     120722    99  10660  10598
+25:       8078   100   9233   9224  |     119930   100  10665  10675
+22:      13866    99  13641  13490  |     121588   100  10396  10381
+23:      11236    99  11523  11449  |     121243   100  10458  10495
+24:       9226   100   9935   9920  |     120759    99  10660  10601
+25:       8096   100   9256   9244  |     119903    99  10744  10672
+22:      13787    99  13489  13413  |     121556   100  10333  10378
+23:      11503    99  11848  11721  |     121329   100  10458  10502
+24:       9283   100   9991   9981  |     120821   100  10589  10607
+25:       8112   100   9279   9263  |     119924    99  10744  10674
+22:      13516   101  13054  13149  |     121612   100  10396  10383
+23:      11186    99  11523  11398  |     121393   100  10522  10508
+24:       9253   100   9935   9950  |     120831   100  10589  10608
+25:       8123   100   9302   9275  |     120025   100  10665  10683
+22:      13929    99  13641  13551  |     121576   100  10396  10380
+23:      11479   100  11683  11696  |     121295   100  10522  10499
+24:       9150   100   9825   9838  |     120815    99  10660  10606
+25:       8094   100   9256   9242  |     120007   101  10588  10681
+22:      13967   100  13641  13587  |     121652    99  10459  10387
+23:      11394    98  11848  11610  |     121296   100  10458  10499
+24:       9273   100   9991   9971  |     120865   100  10660  10611
+25:       8108   100   9279   9258  |     120055   100  10665  10686
+22:      13874   100  13489  13498  |     121652   100  10396  10387
+23:      11436    98  11848  11653  |     121280   100  10458  10498
+24:       9266   100   9991   9963  |     120841   100  10589  10609
+25:       8107   100   9279   9257  |     119699   100  10665  10654
+22:      13863   100  13489  13486  |     121544   100  10396  10377
+23:      11260   100  11523  11473  |     121302   100  10522  10500
+24:       9207   100   9880   9900  |     120546   100  10589  10583
+25:       7991   100   9143   9124  |     118827   100  10588  10576
+----------------------------------  | ------------------------------
+Avr:     10620   100  11080  11040  |     120845   100  10544  10535
+Tot:             100  10812  10788
+CPU speed: sysbench, 32 threads, run 1 of 3
+sysbench 1.0.20-1472a05 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 32
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second: 39061.79
+
+General statistics:
+    total time:                          30.0007s
+    total number of events:              1171912
+
+Latency (ms):
+         min:                                    0.58
+         avg:                                    0.82
+         max:                                   14.18
+         95th percentile:                        1.16
+         sum:                               959881.20
+
+Threads fairness:
+    events (avg/stddev):           36622.2500/10222.86
+    execution time (avg/stddev):   29.9963/0.00
+CPU speed: 7-Zip, 32 threads, run 1 of 3
+
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:4096, ASM
+
+ mt=32 d25
+Compiler:  ver:16.2.1 20260810 GCC 16.2.1 : AVX2
+Linux : 7.3.4-1-cachyos-kiln : #1 SMP PREEMPT_DYNAMIC Fri, 13 Nov 2026 23:57:09 +0000 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:always hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  4290  4454  5475  5492  5490  5494  5493
+16T CPU Freq (MHz): 1439% 4386   1427% 4376  
+32T CPU Freq (MHz): 2932% 4283   2940% 4282  
+
+RAM size:   96320 MB (LP),  # CPU hardware threads:  32
+RAM usage:   7119 MB (LP),  # Benchmark threads:     32
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:     224669  2838   7702 218558  |    2663706  3117   7286 227106
+23:     202024  2858   7201 205839  |    2600828  3110   7235 225007
+24:     194639  2950   7093 209276  |    2576665  3162   7149 226094
+25:     186379  2932   7258 212800  |    2510444  3161   7065 223355
+22:     220639  2773   7739 214638  |    2676913  3150   7246 228232
+23:     201813  2840   7240 205623  |    2619591  3143   7211 226631
+24:     188931  2846   7138 203140  |    2558575  3142   7144 224507
+25:     186729  2918   7305 213200  |    2500595  3152   7059 222479
+22:     219117  2770   7696 213158  |    2652746  3124   7240 226171
+23:     201848  2859   7193 205659  |    2603998  3123   7214 225282
+24:     191072  2883   7126 205441  |    2540241  3125   7132 222898
+25:     182879  2893   7218 208804  |    2451895  3091   7057 218146
+22:     219640  2783   7678 213666  |    2659179  3143   7213 226720
+23:     202547  2854   7232 206372  |    2584656  3109   7193 223608
+24:     193736  2937   7093 208306  |    2566105  3168   7107 225167
+25:     185729  2921   7259 212059  |    2496991  3159   7033 222158
+22:     217282  2750   7687 211373  |    2637361  3113   7223 224859
+23:     199479  2822   7201 203246  |    2623730  3166   7169 226989
+24:     189262  2867   7097 203495  |    2571008  3176   7104 225598
+25:     184297  2889   7282 210424  |    2502052  3168   7026 222609
+22:     220486  2801   7657 214489  |    2680097  3173   7200 228503
+23:     200288  2819   7240 204070  |    2617875  3166   7154 226482
+24:     193288  2920   7118 207823  |    2556119  3157   7105 224291
+25:     185632  2930   7234 211948  |    2503233  3172   7021 222714
+22:     216275  2733   7699 210393  |    2634773  3110   7222 224639
+23:     201041  2835   7224 204837  |    2621400  3165   7166 226787
+24:     194593  2941   7113 209227  |    2568342  3178   7090 225364
+25:     186248  2934   7249 212651  |    2510008  3175   7034 223316
+22:     219966  2794   7660 213983  |    2680584  3174   7201 228545
+23:     204097  2897   7178 207951  |    2519588  3025   7205 217979
+24:     191493  2913   7067 205894  |    2529485  3122   7110 221954
+25:     187046  2935   7276 213563  |    2477110  3125   7053 220390
+22:     218157  2764   7678 212224  |    2671830  3164   7199 227798
+23:     204947  2917   7159 208817  |    2625085  3171   7161 227106
+24:     193821  2932   7108 208397  |    2558218  3165   7093 224475
+25:     185461  2914   7266 211752  |    2483293  3145   7026 220940
+22:     220270  2784   7696 214279  |    2649138  3130   7217 225864
+23:     201499  2843   7220 205304  |    2626544  3170   7168 227232
+24:     192436  2904   7124 206908  |    2521718  3119   7095 221273
+25:     185972  2923   7265 212336  |    2508093  3177   7024 223146
+----------------------------------  | ------------------------------
+Avr:    199893  2865   7317 209548  |    2578495  3145   7141 224560
+Tot:            3005   7229 217054
+CPU speed: sysbench, 1 threads, run 2 of 3
+sysbench 1.0.20-1472a05 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 1
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second:  1731.76
+
+General statistics:
+    total time:                          30.0005s
+    total number of events:              51955
+
+Latency (ms):
+         min:                                    0.57
+         avg:                                    0.58
+         max:                                    1.01
+         95th percentile:                        0.58
+         sum:                                29997.63
+
+Threads fairness:
+    events (avg/stddev):           51955.0000/0.00
+    execution time (avg/stddev):   29.9976/0.00
+CPU speed: 7-Zip, 1 threads, run 2 of 3
+
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:4096, ASM
+
+ mt=1 d25
+Compiler:  ver:16.2.1 20260810 GCC 16.2.1 : AVX2
+Linux : 7.3.4-1-cachyos-kiln : #1 SMP PREEMPT_DYNAMIC Fri, 13 Nov 2026 23:57:09 +0000 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:always hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  5267  5441  5466  5487  5489  5490  5494
+
+RAM size:   96320 MB (LP),  # CPU hardware threads:  32
+RAM usage:    437 MB (LP),  # Benchmark threads:      1
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:      14111   100  13796  13728  |     121549   100  10396  10378
+23:      11355   100  11523  11570  |     121242   100  10522  10495
+24:       9268   100   9991   9966  |     120554   100  10589  10583
+25:       8046   100   9210   9188  |     119974   100  10665  10678
+22:      13491    99  13196  13124  |     121565   100  10396  10379
+23:      11313   100  11523  11527  |     121299   100  10522  10500
+24:       9238   100   9935   9933  |     120673   100  10589  10594
+25:       8087   100   9233   9233  |     120005    99  10744  10681
+22:      14154   100  13796  13770  |     121588   100  10396  10381
+23:      11340    99  11683  11555  |     121328   100  10458  10502
+24:       9228   100   9935   9923  |     120821    99  10660  10607
+25:       8081   100   9233   9227  |     119973   100  10665  10678
+22:      13602    99  13341  13233  |     121472   100  10396  10371
+23:      10998   101  11068  11206  |     121285   100  10522  10498
+24:       9085   100   9771   9769  |     120740    99  10660  10600
+25:       8061   100   9233   9205  |     119755   100  10665  10659
+22:      13974   100  13641  13594  |     121612   100  10396  10383
+23:      11111   100  11367  11321  |     121295   100  10458  10499
+24:       8635   100   9308   9285  |     120684   100  10589  10595
+25:       8076   100   9233   9221  |     119110    99  10665  10602
+22:      13675   101  13196  13303  |     121574   100  10396  10380
+23:      11275   100  11523  11489  |     121296   100  10522  10499
+24:       9200   100   9880   9892  |     120844   100  10660  10609
+25:       8131   100   9302   9284  |     119753   100  10665  10659
+22:      13896   100  13489  13518  |     121614   100  10396  10383
+23:      11370    99  11683  11586  |     121331   100  10522  10502
+24:       9275    99  10048   9973  |     120813   100  10589  10606
+25:       8105   100   9256   9254  |     119974    99  10744  10678
+22:      13992   100  13641  13612  |     121576   100  10396  10380
+23:      11464   101  11523  11681  |     121327   100  10522  10502
+24:       9234   100   9935   9929  |     120861   100  10660  10610
+25:       8140   100   9325   9294  |     120077    99  10744  10688
+22:      14129   101  13641  13745  |     121604   100  10396  10383
+23:      11515   100  11683  11733  |     121357   100  10522  10505
+24:       9323   100  10048  10025  |     120869   100  10589  10611
+25:       8037   100   9210   9176  |     118044   100  10512  10507
+22:      12216   100  11902  11884  |     121448   100  10396  10369
+23:       9968   100  10135  10157  |     120900   100  10458  10465
+24:       8263    99   8932   8885  |     119581   100  10519  10498
+25:       7497   100   8559   8561  |     117890   100  10512  10493
+----------------------------------  | ------------------------------
+Avr:     10499   100  10923  10914  |     120731   100  10542  10525
+Tot:             100  10733  10719
+CPU speed: sysbench, 32 threads, run 2 of 3
+sysbench 1.0.20-1472a05 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 32
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second: 39215.48
+
+General statistics:
+    total time:                          30.0011s
+    total number of events:              1176538
+
+Latency (ms):
+         min:                                    0.58
+         avg:                                    0.82
+         max:                                    5.91
+         95th percentile:                        1.16
+         sum:                               959894.90
+
+Threads fairness:
+    events (avg/stddev):           36766.8125/10539.37
+    execution time (avg/stddev):   29.9967/0.00
+CPU speed: 7-Zip, 32 threads, run 2 of 3
+
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:4096, ASM
+
+ mt=32 d25
+Compiler:  ver:16.2.1 20260810 GCC 16.2.1 : AVX2
+Linux : 7.3.4-1-cachyos-kiln : #1 SMP PREEMPT_DYNAMIC Fri, 13 Nov 2026 23:57:09 +0000 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:always hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  4291  4555  5479  5488  5491  5493  5494
+16T CPU Freq (MHz): 1420% 4365   1403% 4289  
+32T CPU Freq (MHz): 2933% 4284   2622% 3826  
+
+RAM size:   96320 MB (LP),  # CPU hardware threads:  32
+RAM usage:   7119 MB (LP),  # Benchmark threads:     32
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:     218851  2759   7717 212898  |    2668071  3120   7290 227478
+23:     198098  2794   7224 201839  |    2648061  3169   7230 229094
+24:     194630  2946   7104 209266  |    2575853  3157   7160 226023
+25:     185856  2915   7281 212204  |    2516068  3165   7073 223856
+22:     221996  2804   7702 215958  |    2703401  3170   7271 230490
+23:     201943  2850   7220 205756  |    2621708  3142   7218 226814
+24:     191614  2905   7092 206024  |    2583240  3167   7156 226671
+25:     186886  2941   7256 213380  |    2516344  3166   7071 223880
+22:     216566  2753   7654 210676  |    2679840  3161   7227 228481
+23:     203881  2858   7267 207731  |    2623943  3151   7204 227007
+24:     192317  2914   7097 206780  |    2555743  3137   7148 224258
+25:     181730  2875   7218 207492  |    2509499  3162   7061 223271
+22:     221047  2801   7678 215035  |    2614638  3057   7292 222922
+23:     204522  2922   7132 208384  |    2631640  3168   7187 227673
+24:     191308  2888   7122 205695  |    2560894  3152   7130 224710
+25:     185870  2915   7280 212220  |    2509654  3166   7054 223285
+22:     221926  2802   7705 215890  |    2676951  3162   7219 228235
+23:     201576  2837   7240 205383  |    2593176  3120   7191 224346
+24:     192684  2916   7106 207175  |    2527199  3109   7132 221754
+25:     186144  2918   7284 212532  |    2505278  3166   7040 222896
+22:     219817  2786   7675 213838  |    2686327  3175   7213 229034
+23:     202776  2874   7190 206605  |    2622935  3165   7171 226920
+24:     193194  2939   7067 207723  |    2563742  3165   7107 224960
+25:     185627  2900   7307 211942  |    2448113  3088   7053 217810
+22:     219656  2778   7693 213682  |    2684231  3172   7215 228856
+23:     205604  2903   7217 209487  |    2627014  3172   7166 227273
+24:     192264  2903   7120 206723  |    2558485  3157   7110 224499
+25:     186303  2932   7256 212714  |    2505121  3169   7033 222882
+22:     211167  2646   7764 205424  |    2615459  3073   7256 222992
+23:     204990  2902   7197 208861  |    2616406  3155   7174 226355
+24:     195285  2942   7136 209971  |    2568860  3175   7100 225409
+25:     186408  2918   7293 212834  |    2481787  3138   7037 220806
+22:     221054  2813   7645 215042  |    2603824  3073   7225 222000
+23:     203501  2884   7190 207344  |    2597976  3129   7183 224761
+24:     190083  2886   7081 204378  |    2570605  3172   7111 225562
+25:     185979  2915   7285 212344  |    2503123  3166   7033 222704
+22:     212429  2690   7681 206652  |    2684786  3174   7211 228903
+23:     205123  2915   7170 208996  |    2610470  3147   7176 225842
+24:     190712  2869   7147 205054  |    2571143  3175   7105 225610
+25:     185253  2913   7260 211515  |    2499270  3160   7038 222361
+----------------------------------  | ------------------------------
+Avr:    199917  2865   7319 209586  |    2586022  3149   7152 225217
+Tot:            3007   7235 217402
+CPU speed: sysbench, 1 threads, run 3 of 3
+sysbench 1.0.20-1472a05 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 1
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second:  1728.44
+
+General statistics:
+    total time:                          30.0002s
+    total number of events:              51855
+
+Latency (ms):
+         min:                                    0.58
+         avg:                                    0.58
+         max:                                    0.82
+         95th percentile:                        0.58
+         sum:                                29997.46
+
+Threads fairness:
+    events (avg/stddev):           51855.0000/0.00
+    execution time (avg/stddev):   29.9975/0.00
+CPU speed: 7-Zip, 1 threads, run 3 of 3
+
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:4096, ASM
+
+ mt=1 d25
+Compiler:  ver:16.2.1 20260810 GCC 16.2.1 : AVX2
+Linux : 7.3.4-1-cachyos-kiln : #1 SMP PREEMPT_DYNAMIC Fri, 13 Nov 2026 23:57:09 +0000 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:always hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  5475  5463  5464  5490  5492  5494  5492
+
+RAM size:   96320 MB (LP),  # CPU hardware threads:  32
+RAM usage:    437 MB (LP),  # Benchmark threads:      1
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:      14166   100  13796  13781  |     121565   100  10396  10379
+23:      11424   100  11683  11640  |     121293   100  10522  10499
+24:       9274   100   9991   9972  |     120851   100  10589  10609
+25:       8152   100   9325   9308  |     120035    99  10744  10684
+22:      13930    99  13641  13551  |     121550   100  10396  10378
+23:      11547    99  11848  11766  |     121362   100  10522  10505
+24:       9278   100   9991   9976  |     120834   100  10660  10608
+25:       8138   100   9279   9293  |     119872    99  10744  10669
+22:      13492   101  13054  13126  |     121589   100  10396  10381
+23:      10914   100  11068  11121  |     121316   100  10522  10501
+24:       9281    99  10048   9979  |     120791   100  10589  10604
+25:       8150   100   9302   9306  |     119955    99  10744  10677
+22:      13829   100  13489  13454  |     121615   100  10396  10383
+23:      11452   101  11523  11669  |     121323   100  10522  10502
+24:       9312   100  10048  10013  |     120837   100  10660  10608
+25:       8136   100   9279   9290  |     120003    99  10744  10681
+22:      14136   100  13796  13752  |     121586   100  10396  10381
+23:      11499   100  11683  11716  |     121351   100  10522  10504
+24:       9342    99  10106  10045  |     120842   100  10589  10609
+25:       8138   100   9325   9292  |     120058   100  10665  10686
+22:      13915   100  13489  13537  |     121604   100  10396  10383
+23:      11613   100  11848  11833  |     121355   100  10522  10504
+24:       9326   100  10048  10028  |     120855   100  10589  10610
+25:       8135   100   9302   9288  |     119985   100  10665  10679
+22:      13717    99  13489  13344  |     121604   100  10396  10383
+23:      10980   100  11216  11187  |     121371   100  10522  10506
+24:       9316   100   9991  10017  |     120726    99  10660  10599
+25:       8154   100   9302   9310  |     119903    99  10744  10672
+22:      14172   100  13796  13787  |     121592   100  10396  10382
+23:      11302   101  11367  11515  |     121305   100  10522  10500
+24:       9323    99  10106  10024  |     120909   100  10589  10615
+25:       8142   100   9302   9297  |     120024    99  10744  10683
+22:      14009   100  13641  13629  |     121592   100  10396  10382
+23:      11352   102  11367  11567  |     121353   100  10522  10504
+24:       9333   100  10048  10036  |     120851   100  10660  10610
+25:       8147   100   9302   9302  |     120079    99  10744  10688
+22:      13430   100  13054  13066  |     121658   100  10396  10387
+23:      11509    99  11848  11727  |     121364   100  10522  10505
+24:       9265   100   9935   9962  |     120867   100  10589  10611
+25:       8143   100   9325   9298  |     119964   100  10665  10678
+----------------------------------  | ------------------------------
+Avr:     10672   100  11101  11095  |     120940   100  10564  10543
+Tot:             100  10833  10819
+CPU speed: sysbench, 32 threads, run 3 of 3
+sysbench 1.0.20-1472a05 (using system LuaJIT 2.1.1720049189)
+
+Running the test with following options:
+Number of threads: 32
+Initializing random number generator from current time
+
+
+Prime numbers limit: 20000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second: 39300.62
+
+General statistics:
+    total time:                          30.0009s
+    total number of events:              1179088
+
+Latency (ms):
+         min:                                    0.58
+         avg:                                    0.81
+         max:                                   10.49
+         95th percentile:                        1.16
+         sum:                               959892.07
+
+Threads fairness:
+    events (avg/stddev):           36846.5000/9988.29
+    execution time (avg/stddev):   29.9966/0.00
+CPU speed: 7-Zip, 32 threads, run 3 of 3
+
+7-Zip 26.06 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-11-06
+ 64-bit locale=C.UTF-8 Threads:32 OPEN_MAX:4096, ASM
+
+ mt=32 d25
+Compiler:  ver:16.2.1 20260810 GCC 16.2.1 : AVX2
+Linux : 7.3.4-1-cachyos-kiln : #1 SMP PREEMPT_DYNAMIC Fri, 13 Nov 2026 23:57:09 +0000 : x86_64
+PageSize:4KB HPS:2MB THPS:2MB THP:always hwcap:2 hwcap2:2
+13th Gen Intel(R) Core(TM) i9-13900K
+(B0671)  (LP)
+
+1T CPU Freq (MHz):  4549  5453  5474  5487  5494  5492  5492
+16T CPU Freq (MHz): 1416% 4329   1430% 4398  
+32T CPU Freq (MHz): 2556% 3743   2656% 3877  
+
+RAM size:   96320 MB (LP),  # CPU hardware threads:  32
+RAM usage:   7119 MB (LP),  # Benchmark threads:     32
+
+                       Compressing  |                  Decompressing
+Dict     Speed Usage    R/U Rating  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+
+22:     221402  2782   7742 215380  |    2650047  3100   7288 225941
+23:     199106  2817   7201 202865  |    2622876  3134   7241 226915
+24:     190147  2867   7131 204447  |    2572870  3152   7161 225761
+25:     183510  2878   7281 209525  |    2507123  3157   7066 223060
+22:     222043  2801   7711 216004  |    2677561  3137   7277 228287
+23:     203100  2898   7140 206935  |    2644469  3165   7228 228783
+24:     188479  2865   7072 202653  |    2572195  3155   7154 225702
+25:     182919  2881   7250 208850  |    2481854  3120   7077 220812
+22:     197967  2476   7779 192582  |    2695018  3163   7265 229775
+23:     205452  2891   7240 209331  |    2636340  3165   7207 228080
+24:     190875  2888   7106 205229  |    2573119  3166   7132 225783
+25:     185583  2907   7289 211892  |    2485963  3130   7066 221177
+22:     221333  2821   7633 215314  |    2685469  3163   7240 228961
+23:     204784  2888   7224 208651  |    2631639  3164   7196 227673
+24:     183986  2762   7163 197822  |    2553912  3143   7129 224098
+25:     185921  2909   7297 212278  |    2476507  3122   7057 220336
+22:     214293  2716   7675 208465  |    2681377  3166   7221 228612
+23:     201546  2853   7197 205351  |    2623205  3158   7187 226943
+24:     169833  2519   7248 182605  |    2554275  3138   7143 224129
+25:     185658  2931   7232 211977  |    2506050  3166   7043 222964
+22:     221282  2828   7612 215263  |    2685221  3172   7219 228940
+23:     177884  2472   7331 181243  |    2637100  3177   7181 228146
+24:     190148  2876   7110 204447  |    2545918  3159   7072 223396
+25:     185344  2911   7269 211619  |    2470388  3115   7057 219791
+22:     192898  2436   7702 187652  |    2649676  3126   7227 225909
+23:     187591  2653   7205 191133  |    2598264  3123   7199 224786
+24:     189807  2857   7144 204081  |    2564773  3166   7109 225051
+25:     167907  2602   7366 191710  |    2511569  3165   7061 223455
+22:     214577  2717   7684 208741  |    2663978  3147   7218 227129
+23:     203951  2892   7186 207802  |    2631525  3175   7170 227663
+24:     181835  2726   7171 195510  |    2567566  3167   7114 225296
+25:     184832  2899   7280 211035  |    2510589  3174   7038 223368
+22:     219204  2753   7745 213242  |    2630187  3100   7233 224248
+23:     205501  2912   7190 209382  |    2630557  3174   7171 227579
+24:     193886  2950   7067 208467  |    2557564  3157   7109 224418
+25:     184139  2899   7252 210243  |    2502347  3163   7038 222635
+22:     207807  2607   7754 202155  |    2676723  3162   7217 228215
+23:     198118  2799   7213 201859  |    2625031  3167   7172 227101
+24:     191992  2917   7076 206430  |    2552599  3145   7121 223982
+25:     183738  2878   7289 209785  |    2502701  3163   7039 222666
+----------------------------------  | ------------------------------
+Avr:    195509  2798   7331 204999  |    2588654  3151   7154 225439
+Tot:            2975   7242 215219
+Starting the compile load on all 32 threads
+R   58   1024  48000  10.4us  14.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  30.6us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  12.8us  12.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  16.5us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  13.7us  12.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  15.8us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.6us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  79.6us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.9us  12.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  84.2us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.2us  12.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  82.1us   8.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  13.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  92.7us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  12.4us  13.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  14.4us  10.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  13.3us  13.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  17.0us  10.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.9us  13.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  74.3us   7.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.6us  12.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  84.2us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  12.1us  12.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  17.2us  10.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.1us  13.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  17.4us   9.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  15.5us  12.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  17.0us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  13.1us  12.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  16.9us   9.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.7us  12.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  16.2us  10.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.8us  12.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  16.2us   9.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  12.7us  13.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  17.2us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.7us  12.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  18.4us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.0us  12.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  86.0us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  12.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  84.9us   8.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  12.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  83.4us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.2us  12.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  85.4us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.2us  12.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  83.2us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.9us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  89.0us  10.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.5us  12.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  85.1us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.1us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  84.3us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  13.9us  12.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  84.0us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.1us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  82.5us   9.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.2us  11.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  91.5us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.2us  12.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  83.2us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.9us  11.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  82.9us   8.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.0us  12.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  83.5us   8.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.0us  12.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  84.8us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  12.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  80.6us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.8us  12.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  80.7us   8.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  84.1us  10.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.0us  12.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  83.4us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  12.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  83.5us   8.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.2us  12.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  84.5us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.0us  12.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  83.3us   8.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.1us  12.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  86.2us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.7us  12.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  85.9us   8.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.7us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  81.8us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  12.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  88.1us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.6us  13.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  82.7us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  13.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000   1.2ms  11.2us  0.06  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.1us  12.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  79.4us   8.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.9us  12.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  84.9us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  11.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  88.5us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.2us  13.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  83.1us  10.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.8us  12.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  86.0us   9.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.2us  11.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  80.4us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  12.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  83.3us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.7us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  85.5us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.9us  13.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  81.8us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.0us  12.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  85.7us  10.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.2us  12.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  82.8us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  84.5us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.7us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  86.6us   8.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.1us  13.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  85.9us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.5us  12.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  83.8us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  88.0us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  12.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  85.3us   8.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.9us  13.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  86.7us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  13.1us  12.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  19.9us  11.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  12.3us  12.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  18.7us  10.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  13.9us  12.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  20.2us  11.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.6us  12.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  16.5us  10.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.9us  15.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  81.9us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  12.9us  13.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  14.8us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.4us  13.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  15.7us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.8us  13.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  16.1us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.8us  12.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  15.6us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  12.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  82.8us   8.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.6us  12.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  84.1us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.4us  13.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  88.2us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  12.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  82.0us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.7us  13.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  86.0us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.5us  11.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  80.1us   8.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.5us  12.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  85.2us   9.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  12.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  85.6us   9.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.3us  12.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  85.7us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  13.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  85.9us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  11.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  84.0us   9.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.3us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.4us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.0us  13.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  60.9us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.2us  12.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  58.4us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.5us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000   2.1ms  11.6us  0.10  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.5us  13.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.5us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  13.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.5us   8.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.7us  12.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.0us   9.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.7us  12.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.0us   9.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  11.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  59.3us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.7us  12.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.0us   8.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.1us  14.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  82.7us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.6us  12.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.9us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.7us  12.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  61.7us   9.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.8us  13.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.7us   8.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.1us  12.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  67.4us   9.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  12.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  65.9us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.1us  14.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.7us  10.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  12.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.6us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.2us  12.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.2us   9.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.0us  12.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  81.9us   9.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  12.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.6us  10.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  12.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.0us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.2us  11.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  66.8us   9.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.7us  12.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  62.1us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.5us  13.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  70.1us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.9us  12.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  65.6us   9.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  12.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  64.9us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  13.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  63.8us   9.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.5us  13.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  65.3us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.4us  12.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  19.5us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  10.0us  11.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  17.5us  11.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000   9.8us  13.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  20.1us  10.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  12.3us  12.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  19.4us  10.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  12.5us  13.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  18.8us  10.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58   1024  48000  11.8us  12.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85   1024  48000  17.9us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+Audio: buffer 1024, used 1024, dropouts 0, every core 99.7% busy: clean
+R   58    512  48000   8.8us  10.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  28.4us   7.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.6us  10.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  39.9us   8.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.9us  10.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  39.5us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.4us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  39.8us  10.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.3us   9.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  38.5us   7.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.7us   9.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  40.4us   7.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.8us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  63.5us   7.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.0us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  66.9us   8.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.2us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  67.1us  10.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.7us  11.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  78.9us   9.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.8us  10.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  64.1us   9.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.8us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  17.0us  10.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.3us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  66.3us   8.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.6us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  62.2us   8.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.9us  10.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  70.0us   8.1us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.0us  10.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  61.5us   6.6us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.0us  10.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  16.9us  10.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.4us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  18.7us  10.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  13.9us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  19.1us  10.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.7us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  66.5us   8.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.6us  10.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  62.9us   7.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.9us  11.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  65.0us   7.6us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.3us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  63.5us   7.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.4us  10.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  67.0us   8.1us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.3us  12.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  67.4us  10.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.4us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  64.6us   9.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.5us  10.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  62.9us   9.6us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.9us  11.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  18.2us  11.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.7us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  60.5us   8.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.0us  10.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  64.4us   8.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.1us  10.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  67.6us   8.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.6us  10.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  61.4us   7.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.3us  11.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  37.4us  10.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.1us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  61.8us   9.6us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.9us  10.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  63.8us   8.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.3us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  71.5us   9.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.6us  10.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  68.6us   7.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.3us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  16.7us   7.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.5us  10.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  15.0us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.6us  10.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  18.6us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.7us  11.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  19.2us  11.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  14.1us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  62.9us   9.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.5us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  64.8us   9.6us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.7us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  66.0us  10.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.5us   9.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  66.9us   8.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.9us   9.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  63.1us   7.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.7us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  64.2us   8.1us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.7us  10.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  63.8us   7.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.2us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  67.4us   9.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.5us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  64.5us   8.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.4us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  20.1us  10.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.3us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  19.2us  15.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.8us  10.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  18.5us   9.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.5us  10.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  17.6us   8.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.6us  11.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  18.1us   8.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.6us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  66.7us   7.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.9us  10.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  83.6us   7.7us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.8us  10.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  61.6us   9.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.8us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  66.1us  10.7us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.5us   9.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  66.0us  10.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.0us   9.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  62.5us   9.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  13.3us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  16.8us   8.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.2us  10.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  62.6us   8.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.6us  10.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  61.8us   7.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.0us  10.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  64.1us   8.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.1us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000 413.0us  10.6us  0.04  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.1us  10.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  71.2us   9.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.3us  10.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  63.0us   8.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.0us  10.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  64.9us  10.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.4us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  65.6us   8.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.8us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  58.4us   7.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  13.5us  11.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  21.8us  10.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.2us  10.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  17.6us   8.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.5us  10.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  20.4us  11.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.9us  10.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000 360.4us   9.0us  0.03  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.3us  10.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  59.3us   8.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.5us  11.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  17.8us  10.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.1us  10.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  80.8us   7.1us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.9us  10.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  87.2us   7.1us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.1us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  87.0us   8.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.3us  11.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  16.5us   8.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.7us  10.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  17.8us  10.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.6us  10.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  79.9us   9.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.5us   9.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  20.1us  12.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.5us  10.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  19.0us  10.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.2us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  80.0us   7.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.6us  10.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  16.0us   8.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  13.5us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  19.1us   9.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.3us  11.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  19.5us   9.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.5us  11.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  17.3us  10.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.9us  15.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  40.8us  10.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.5us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  39.3us  10.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.3us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  40.5us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.9us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  40.7us   8.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.4us   9.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  41.3us   7.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.2us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  39.0us   7.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.7us  10.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  40.5us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.8us  11.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  84.1us  10.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.5us  10.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  19.2us  10.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.5us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  18.5us  10.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.9us  11.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  81.1us   7.7us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.7us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  84.0us   7.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.8us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  85.3us   7.6us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.5us  10.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  81.2us   7.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.5us   9.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  15.9us  10.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.6us  12.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  15.5us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.9us  11.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  16.9us   9.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.5us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  16.9us  10.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  11.9us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  15.7us   7.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  13.2us  11.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  17.9us   8.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.9us  10.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  16.9us   8.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  12.4us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  16.9us   1.0ms  0.00  0.10    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.0us   9.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  80.6us   8.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.1us  10.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  63.7us   8.7us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.6us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  59.6us   8.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.6us  12.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  82.0us   7.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.9us   9.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  63.5us   7.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.7us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  63.1us   8.1us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000  10.5us  11.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  64.6us   8.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    512  48000   9.1us  11.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    512  48000  62.6us   9.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+Audio: buffer 512, used 512, dropouts 0, every core 99.8% busy: clean
+R   58    256  48000   5.5us   9.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  27.9us   7.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.8us   9.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  54.1us   7.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.8us   8.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  54.9us   7.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.8us   9.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  18.3us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.0us   9.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  72.7us   8.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.0us   9.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  74.1us   6.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.8us   8.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  15.1us   7.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.3us   9.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  15.1us   8.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.1us   8.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  15.2us   7.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.0us   9.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  14.5us   7.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.2us   9.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  15.6us   6.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.6us   8.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  14.5us   7.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.3us   8.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  63.2us   9.1us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.7us  11.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  18.3us  10.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.5us   8.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  56.3us   7.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.0us   8.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.2us   8.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.5us   9.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  19.6us   8.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.2us   9.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  18.1us   8.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.3us   8.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  17.3us   7.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.5us   9.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  17.0us   7.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.5us   9.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  56.9us   6.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.0us   9.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  62.2us   9.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.4us   8.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  50.5us   7.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.8us   9.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  55.4us   6.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.0us   8.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  72.0us   7.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.6us  10.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  82.6us   6.7us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.5us   9.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  59.4us   7.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.1us   9.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  62.3us   6.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.8us   9.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  14.9us   8.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.9us   8.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  82.7us   9.5us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.2us   9.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  68.5us   9.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.4us   9.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  75.7us   6.7us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  13.5us   9.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.6us   7.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.7us   9.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  14.9us   7.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.3us   8.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.9us   7.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.9us   9.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.5us   7.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.6us   9.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  63.8us   7.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.6us   9.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  56.6us   7.7us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.5us   8.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  56.8us   9.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.4us   9.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  55.2us   6.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.3us   9.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  17.3us   6.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  15.3us   9.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  18.1us   8.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.1us   9.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.5us   7.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.1us   9.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  19.7us   8.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.6us   8.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  17.3us   7.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  14.0us   9.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  18.5us   9.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.6us   9.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  14.5us   7.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.4us   9.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.6us   6.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.5us   8.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.2us   7.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.4us   8.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.6us   8.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.5us   8.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.8us   8.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  13.3us   9.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  20.4us   8.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.4us   9.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  15.9us   9.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   7.9us   7.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  51.6us   7.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.6us   8.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  73.2us   6.6us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.5us  10.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  60.9us   6.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.1us   8.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  54.4us   6.7us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.7us   8.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  73.0us   5.6us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.2us   9.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  58.0us   6.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.9us   8.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  17.8us   6.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.4us   7.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.0us   8.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.2us   9.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  13.9us   9.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.3us   8.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  53.5us   6.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.5us  10.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  64.4us   6.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   7.8us   8.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  55.3us   6.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.7us   7.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  58.2us   6.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.1us   8.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  55.6us   7.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.1us   8.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  84.2us   7.0us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.9us   8.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  60.3us  10.1us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.4us   8.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  58.2us   9.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.6us   8.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  15.7us   6.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.8us   8.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  15.9us   6.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.3us  10.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  69.4us   7.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.3us   9.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  17.5us   7.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.6us   8.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  14.8us   6.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.6us   8.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  15.0us   7.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.5us   8.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  15.7us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.8us   8.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  53.2us   8.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.9us   9.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  58.1us   5.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.1us   8.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  55.3us   6.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.6us   9.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  59.4us   5.6us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.8us   7.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  71.6us   6.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.6us  10.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  58.8us   6.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.7us   9.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  58.8us   6.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.3us   8.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  56.8us   8.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.7us   8.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  57.9us   8.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.2us   8.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  17.1us   6.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.0us   7.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  56.0us   6.7us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.1us   8.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  80.3us   7.0us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.1us   9.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  56.2us   6.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.6us  10.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  17.4us   8.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.7us   8.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.5us   6.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.9us   7.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.3us   9.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.0us  10.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  17.0us   9.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.1us   8.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  71.9us   6.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.8us   9.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  75.9us   6.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.7us   8.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  56.5us   6.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.6us   8.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  53.8us   6.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.3us   9.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  75.1us   6.6us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.8us   9.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  67.3us   5.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.1us   8.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.9us  10.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.0us   9.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  21.2us  10.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.1us   9.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.5us   7.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.6us   8.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  18.0us   8.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.3us   9.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  17.5us   7.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.6us   9.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  76.0us   5.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.8us   9.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  15.3us   7.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.4us   8.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  15.8us   6.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.8us   9.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  14.8us  11.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  13.4us   9.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  14.3us   8.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.5us   9.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  37.9us   6.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.2us   9.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000 377.9us   6.7us  0.07  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.3us   8.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  55.0us   7.1us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.8us   9.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  22.0us   7.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.5us   9.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  82.3us   7.2us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   8.7us   7.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  75.8us   6.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  10.4us   9.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  84.7us   9.4us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000   9.7us   8.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  74.4us   8.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  12.0us   9.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  16.8us   8.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    256  48000  11.8us   9.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    256  48000  17.3us   7.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+Audio: buffer 256, used 256, dropouts 0, every core 99.7% busy: clean
+R   58    128  48000   7.0us   6.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  20.5us   5.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.4us   7.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  42.0us   4.7us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.9us   5.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  48.8us   3.8us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.1us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  50.2us   4.2us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.9us   5.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  53.4us   6.0us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.8us   5.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.5us   5.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  10.5us   7.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  13.1us   6.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.0us   5.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  14.8us   6.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.9us   5.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.6us   6.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  10.5us   6.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  15.3us   6.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  10.4us   6.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  13.6us   5.7us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.4us   6.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  13.0us   5.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  10.2us   6.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  14.2us   8.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.3us   5.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.8us   5.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.2us   6.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.7us   5.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.6us   5.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.7us   6.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  11.9us   6.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  14.1us   5.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.2us   6.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.7us   5.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.7us   5.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.6us   4.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.0us   4.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  13.6us   5.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.5us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.9us   6.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.5us   5.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.6us   4.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.2us   5.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.3us   4.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.5us   5.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.4us   4.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.4us   6.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  51.4us   4.0us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.5us   5.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  40.0us   3.4us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.7us   6.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  16.0us   8.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  10.0us   6.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  13.8us   5.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.1us   6.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.9us   7.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.3us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.3us   5.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.8us   5.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  13.6us   5.1us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.0us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.3us   5.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.2us   6.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  41.9us   3.6us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.7us   6.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.7us   4.9us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.8us   5.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  10.3us   4.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.7us   6.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.3us   5.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.9us   6.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000   9.8us   5.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.8us   6.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  46.0us   5.5us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.0us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  39.1us   4.1us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.7us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.3us   5.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.3us   5.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  39.8us   4.7us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.9us   6.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  10.3us   5.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.8us   5.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  52.9us   4.6us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.8us   6.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.7us   4.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.2us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.0us   5.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  10.0us   7.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  19.1us   8.2us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.8us   5.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  45.6us   5.2us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.9us   6.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  40.1us   3.9us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  10.7us   9.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  16.9us   8.0us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.3us   6.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.9us   5.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.4us   5.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  14.3us   5.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.4us   6.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  64.4us   5.8us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.6us   6.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.5us   6.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.1us   6.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.6us   5.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.6us   6.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.1us   5.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.1us   5.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.7us   5.3us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.5us   5.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  26.1us   4.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.4us   5.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  40.9us   4.0us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.9us   6.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  42.1us   5.1us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.1us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.2us   4.1us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.3us   6.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.6us   6.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  10.7us   8.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  15.8us   6.9us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.2us   5.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  13.1us   5.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.8us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  15.0us   5.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.6us   5.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.7us   5.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.1us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  14.8us   5.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.5us   6.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  57.8us   4.7us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.7us   5.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  53.3us   5.6us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.0us   6.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  58.2us   4.8us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.3us   5.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  48.8us   3.6us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.1us   5.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  54.9us   4.5us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.2us   5.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  39.8us   4.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.6us   5.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  41.1us   4.0us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   5.9us   5.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  53.0us   4.5us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.5us   6.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  46.1us   4.8us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.1us   5.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  40.6us   5.6us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.8us   5.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  40.0us   3.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.7us   6.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.2us   4.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.6us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  38.5us   4.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.3us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  45.0us   4.9us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.2us   6.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  42.9us   4.7us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.1us   6.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  65.3us   4.5us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.6us   8.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  57.0us   4.7us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   5.9us   6.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  40.0us   6.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.8us   6.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.6us   4.5us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.9us   5.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.5us   5.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.5us   5.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  38.5us   4.3us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.1us   6.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  13.2us   5.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.3us   5.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  39.5us   4.1us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.6us   5.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  38.1us   4.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.2us   6.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  10.2us   4.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.7us   6.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.6us   6.0us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  10.4us   7.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.3us   5.6us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.6us   5.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.9us   4.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.7us   6.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.1us   5.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  10.9us   6.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  16.3us   8.6us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.8us   5.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.3us   4.8us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.9us   8.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  68.8us   5.8us  0.03  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.2us   5.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  42.7us   4.8us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.9us   5.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  39.2us   5.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.4us   5.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  50.2us   4.3us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.3us   6.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  55.1us   4.8us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  10.8us   7.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  17.8us   7.4us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.2us   6.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  13.7us   4.6us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.8us   6.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  11.1us   4.7us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.9us   5.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  13.9us   5.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.1us   6.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  12.7us   5.4us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.7us   6.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  13.3us   6.2us  0.00  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000  10.2us   7.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  18.4us   7.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.4us   5.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  14.3us  10.7us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.8us   6.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  17.5us   4.8us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.7us   5.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  13.7us   5.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.6us   6.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  18.7us   5.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.2us   7.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  49.9us   5.1us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   8.9us   8.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  67.6us   5.3us  0.03  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.6us   5.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  45.9us   6.7us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.6us   7.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  52.7us   6.5us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   7.0us   6.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  41.5us   3.9us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   6.6us   5.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  52.5us   4.0us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+R   58    128  48000   9.1us   7.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85    128  48000  46.1us   4.8us  0.02  0.00    0    S16LE 2 48000  = kiln-measure
+Audio: buffer 128, used 128, dropouts 0, every core 100.0% busy: clean
+R   58     64  48000   4.4us   5.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  12.5us   3.5us  0.01  0.00    0    S16LE 2 48000  = kiln-measure
+R   58     64  48000   4.7us   3.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  39.2us   3.1us  0.03  0.00    0    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.2us   3.8us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  11.8us   3.7us  0.01  0.00    2    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.1us   3.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.9us   3.6us  0.01  0.00    2    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.7us   4.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  11.1us   3.7us  0.01  0.00    2    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.3us   3.9us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  11.6us   3.5us  0.01  0.00    2    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.0us   4.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  11.0us   3.7us  0.01  0.00    2    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.8us   4.6us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.1us   4.5us  0.01  0.00    2    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.9us   3.9us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   8.7us   3.0us  0.01  0.00    4    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.6us   4.0us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.1us   2.9us  0.01  0.00    4    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.6us   3.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   8.5us   3.0us  0.01  0.00    4    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.7us   4.6us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.3us   3.1us  0.01  0.00    6    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.3us   4.3us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.1us   3.5us  0.01  0.00    7    S16LE 2 48000  = kiln-measure
+R   58     64  48000   9.5us   3.7us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.3us   3.1us  0.01  0.00    7    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.2us   4.3us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.9us   5.6us  0.01  0.00    8    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.8us   4.6us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.4us   3.6us  0.01  0.00    8    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.2us   4.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  41.1us   3.0us  0.03  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.1us   3.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  40.4us   3.2us  0.03  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.4us   3.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.5us   4.1us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.8us   4.9us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  11.0us   3.4us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.6us   4.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  47.3us   3.6us  0.04  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.0us   4.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  11.5us   4.0us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.2us   3.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  50.9us   3.1us  0.04  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.6us   3.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  11.8us   4.1us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.8us   4.3us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.9us   3.6us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.7us   3.8us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  12.1us   4.7us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.2us   3.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  39.2us   2.9us  0.03  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.1us   3.7us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.2us   3.4us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.6us   3.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  11.4us   3.5us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.4us   5.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  11.5us   4.6us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.9us   4.2us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.1us   3.2us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.3us   4.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.1us   2.4us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.7us   3.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.1us   3.2us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.6us   3.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.8us   3.0us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.0us   3.9us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   7.9us   3.3us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.4us   3.9us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.6us   3.3us  0.01  0.00   10    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.1us   3.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  21.6us   3.4us  0.02  0.00   11    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.9us   3.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  22.0us   3.3us  0.02  0.00   12    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.0us   3.8us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  15.6us   4.1us  0.01  0.00   14    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.1us   4.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.5us   3.2us  0.01  0.00   14    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.9us   4.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  19.1us   3.6us  0.01  0.00   16    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.5us   3.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  20.8us   3.7us  0.02  0.00   16    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.0us   4.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  21.4us   4.0us  0.02  0.00   16    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.5us   4.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.7us   4.0us  0.01  0.00   16    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.5us   3.9us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.6us   3.8us  0.01  0.00   16    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.6us   4.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  20.9us   3.4us  0.02  0.00   16    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.6us   3.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  21.0us   3.6us  0.02  0.00   16    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.0us   3.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  20.5us   3.1us  0.02  0.00   16    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.0us   4.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  20.1us   3.1us  0.02  0.00   16    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.6us   5.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  23.6us   4.3us  0.02  0.00   16    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.1us   3.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  19.2us   3.2us  0.01  0.00   16    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.8us   4.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  19.7us   2.9us  0.01  0.00   16    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.4us   4.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  19.3us   4.5us  0.01  0.00   18    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.1us   4.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  23.9us   3.8us  0.02  0.00   20    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.2us   4.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  19.6us   3.2us  0.01  0.00   20    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.6us   3.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  20.0us   2.9us  0.02  0.00   20    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.6us   3.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  19.6us   3.1us  0.01  0.00   20    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.9us   4.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000 128.1us   3.1us  0.10  0.00   22    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.3us   4.5us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  20.4us   5.1us  0.02  0.00   26    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.9us   4.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  20.2us   3.0us  0.02  0.00   26    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.9us   4.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  19.1us   3.2us  0.01  0.00   28    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.4us   4.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  22.2us   3.6us  0.02  0.00   30    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.1us   3.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  21.7us   3.4us  0.02  0.00   30    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.3us   3.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  15.8us   2.6us  0.01  0.00   30    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.8us   3.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  19.7us   2.9us  0.01  0.00   30    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.0us   3.5us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.8us   3.9us  0.01  0.00   30    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.2us   4.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  20.2us   3.2us  0.02  0.00   30    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.4us   4.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  18.3us   3.3us  0.01  0.00   30    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.3us   4.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  19.4us   3.0us  0.01  0.00   30    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.8us   4.4us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  20.5us   3.5us  0.02  0.00   30    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.4us   4.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  21.0us   2.9us  0.02  0.00   30    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.7us   3.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  20.9us   3.0us  0.02  0.00   30    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.9us   4.3us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   8.9us   4.4us  0.01  0.00   32    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.6us   3.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.6us   3.5us  0.01  0.00   32    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.6us   3.6us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   8.7us   3.7us  0.01  0.00   32    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.3us   4.1us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   8.7us   3.5us  0.01  0.00   32    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.6us   4.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  30.8us   2.9us  0.02  0.00   34    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.1us   3.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  40.2us   2.9us  0.03  0.00   34    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.7us   3.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  45.7us   3.4us  0.03  0.00   34    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.4us   4.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  30.7us   3.6us  0.02  0.00   34    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.3us   3.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  42.9us   3.4us  0.03  0.00   34    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.9us   3.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  30.2us   2.8us  0.02  0.00   36    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.8us   4.0us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  42.3us   3.2us  0.03  0.00   36    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.5us   3.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  42.1us   3.2us  0.03  0.00   36    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.4us   4.2us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  33.6us   2.7us  0.03  0.00   45    S16LE 2 48000  = kiln-measure
+R   58     64  48000   8.3us   4.2us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  30.5us   4.5us  0.02  0.00   45    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.2us   3.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   7.6us   2.9us  0.01  0.00   45    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.6us   4.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.7us   3.0us  0.01  0.00   45    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.9us   5.3us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.8us   3.7us  0.01  0.00   45    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.0us   4.1us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   8.3us   3.4us  0.01  0.00   45    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.7us   4.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  43.0us   3.7us  0.03  0.00   47    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.2us   4.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  39.5us   3.1us  0.03  0.00   47    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.2us   4.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  43.1us   3.2us  0.03  0.00   47    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.5us   3.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  42.3us   3.1us  0.03  0.00   47    S16LE 2 48000  = kiln-measure
+R   58     64  48000   8.9us   7.0us  0.01  0.01    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  13.7us   5.2us  0.01  0.00   51    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.0us   3.7us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  12.1us   3.8us  0.01  0.00   51    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.6us   4.7us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  12.2us   3.9us  0.01  0.00   51    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.4us   4.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  40.6us   3.6us  0.03  0.00   51    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.3us   4.1us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  39.8us   3.8us  0.03  0.00   51    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.4us   3.6us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  33.4us   3.1us  0.03  0.00   58    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.8us   4.2us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.5us   3.2us  0.01  0.00   58    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.3us   3.9us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.3us   3.6us  0.01  0.00   60    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.9us   4.1us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   8.7us   3.2us  0.01  0.00   60    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.9us   3.6us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.5us   3.6us  0.01  0.00   60    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.6us   3.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.3us   3.5us  0.01  0.00   60    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.8us   3.6us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.0us   3.6us  0.01  0.00   60    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.4us   4.2us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.4us   4.1us  0.01  0.00   60    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.0us   3.8us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.0us   4.0us  0.01  0.00   60    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.8us   3.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  11.2us   3.7us  0.01  0.00   60    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.0us   4.0us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.3us   3.4us  0.01  0.00   60    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.3us   4.1us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.3us   4.3us  0.01  0.00   62    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.6us   4.4us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.9us   3.5us  0.01  0.00   62    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.1us   3.9us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.5us   3.0us  0.01  0.00   62    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.5us   3.8us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.2us   5.3us  0.01  0.00   62    S16LE 2 48000  = kiln-measure
+R   58     64  48000   5.4us   3.9us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.3us   3.5us  0.01  0.00   64    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.8us   3.7us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   9.6us   3.0us  0.01  0.00   64    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.8us   3.7us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.2us   3.3us  0.01  0.00   64    S16LE 2 48000  = kiln-measure
+R   58     64  48000   7.3us   4.2us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   8.8us   3.0us  0.01  0.00   64    S16LE 2 48000  = kiln-measure
+R   58     64  48000   8.2us   5.3us  0.01  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000  10.8us   4.1us  0.01  0.00   64    S16LE 2 48000  = kiln-measure
+R   58     64  48000   6.5us   4.3us  0.00  0.00    0    S24LE 2 48000 alsa_output.usb-Generic_USB_Audio-00.HiFi__SPDIF__sink
+R   85     64  48000   8.8us   3.0us  0.01  0.00   64    S16LE 2 48000  = kiln-measure
+Audio: buffer 64, used 64, dropouts 64, every core 99.9% busy: dropouts
+Responsiveness: 8 waiting tasks for 120 seconds
+
+Finished, 2026-11-14 01:22:51

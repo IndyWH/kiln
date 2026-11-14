@@ -33,3 +33,9 @@ Most likely result: no measurable gain on these tests. The test that might show 
 | Kiln stage 1 | 1727 / 39264 | 10804 / 216937 | 128, 0.03 | 2.08 ms |
 
 CPU: the same, as predicted. Worst wake-up and audio timing: better than every stock run today, but one run; repeats against stock 7.3.4 come with the boot tests.
+
+## Stage 2, AutoFDO partly applied (`results/cachyos-2026-11-14`)
+
+Booted cleanly at 00:45 on 14 Nov. One run: sysbench 1728 / 39215, 7-Zip 10788 / 217054, audio 128 with worst timing 0.03, worst wake-up 2.07 ms. Level with stage 1 on everything.
+
+Found after: the kernel passes the linker its AutoFDO and Propeller settings only with thin LTO. With full LTO the code is generated in the linker, so this stage got only the compile-time part of the profile, and its Propeller code map was 460 bytes instead of megabytes. Google's tool refused it ("Fewer than 0.05% recorded jumps are converted"). `kernel/kiln-lto-profiles.patch` passes the same settings for full LTO; stage 2 is rebuilt with it. Upstream supports profiles only with thin LTO; full LTO with profiles is untested upstream, so Kiln goes beyond what CachyOS and the kernel test.
