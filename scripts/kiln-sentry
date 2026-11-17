@@ -91,6 +91,7 @@ class Explain:
     def __init__(self, since):
         self.since = since
         self.packages = {}  # name -> (time, verb)
+        self.transactions = []  # (time, package): every package change, for files their hooks write
         self.windows = []   # (start, end, number, description, command)
         try:
             with open(PACMAN_LOG, errors="replace") as f:
@@ -100,6 +101,7 @@ class Explain:
                         t = datetime.fromisoformat(m[1]).timestamp()
                         if t >= since - 120:
                             self.packages[m[3]] = (t, m[2])
+                            self.transactions.append((t, m[3]))
         except OSError:
             pass
         try:
@@ -143,6 +145,13 @@ class Explain:
     def why(self, path, mtime, owner):
         if owner and owner in self.packages:
             return "from the %s of %s" % (self.NOUNS[self.packages[owner][1]], owner)
+        if mtime is not None:
+            # A file the package hooks write, such as /etc/passwd from systemd-sysusers:
+            # changed within two minutes after packages were installed or updated.
+            near = [p for t, p in self.transactions if t - 5 <= mtime <= t + 120]
+            if near:
+                return "during the package changes at %s (%s%s)" % (
+                    ts(mtime), ", ".join(near[:4]), ", ..." if len(near) > 4 else "")
         if mtime is not None:
             # The latest operator change that had started by then (changes log by the minute).
             within = [w for w in self.windows if w[0] <= mtime <= w[1]]
