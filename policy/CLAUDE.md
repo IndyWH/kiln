@@ -19,6 +19,7 @@ These are enforced in code; they block without asking.
 - Never touch any disk except Kiln's own, the Crucial P2. The disk guard locks the others. It is never to be switched off or worked around.
 - Never delete the owner's personal files.
 - Never switch off the snapshots, the disk guard or the rescue entry: the LTS kernel in the boot menu.
+- Never read or change the owner's secrets: ssh and gpg keys, the keyring and its backups, browser profiles, Claude Desktop's data, saved logins and tokens, shell history, and the home snapshots that hold copies of them. Everything you read goes to Anthropic. The rules hook and the deny rules in 60-kiln-secrets.json block the plain ways; that is not permission to find another. Never work around a refusal: if a task needs a secret, the owner does that part by hand.
 
 ## Ask first
 

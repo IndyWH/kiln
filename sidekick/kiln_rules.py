@@ -17,6 +17,7 @@ as a change, which only means one more snapshot. The disk guard runs beside it a
 does not depend on it.
 """
 import fcntl
+import fnmatch
 import json
 import os
 import re
@@ -92,6 +93,37 @@ RESCUE_UNITS = ("limine-snapper-sync", "limine-snapper-watcher", "snapper-cleanu
 RESCUE_KERNEL = "/boot/vmlinuz-linux-cachyos-lts"
 BOOT_MENU = "/boot/limine.conf"
 REMOVERS = {"rm", "shred", "unlink", "rmdir", "trash", "trash-put", "gio"}
+# The owner's secrets, relative to their home. Everything Claude reads goes to Anthropic as
+# part of the conversation, so Claude neither reads nor changes these (owner, 17 Nov 2026).
+SECRET_PATHS = (".ssh", ".gnupg", ".local/share/keyrings", ".password-store", ".netrc",
+                ".git-credentials", ".pki", ".aws", ".kube", ".docker/config.json",
+                ".config/gh", ".config/google-chrome", ".config/chromium",
+                ".config/BraveSoftware", ".mozilla", ".config/mozilla", ".config/Claude",
+                # Copies and other places that hold secrets (reviewer, 17 Nov 2026)
+                ".cache/kiln-keyring-backup", ".claude/.credentials.json", ".claude.json",
+                ".local/share/fish/fish_history", ".bash_history", ".zsh_history", ".histfile")
+# Outside the home folder: every home snapshot holds a copy of all of the above; and the
+# system's own secrets, which sudo reaches (owner, 17 Nov 2026): password hashes, Wi-Fi
+# passwords, this machine's ssh host keys, and root's folder.
+SECRET_ABSOLUTE = ("/home/.snapshots", "/etc/shadow", "/etc/shadow-", "/etc/gshadow",
+                   "/etc/gshadow-", "/etc/NetworkManager/system-connections",
+                   "/etc/ssh/ssh_host_ed25519_key", "/etc/ssh/ssh_host_rsa_key",
+                   "/etc/ssh/ssh_host_ecdsa_key", "/root")
+READ_TOOLS = ("Read", "Grep", "Glob", "NotebookRead")
+# Programs that read whole folders: given a parent of a secret, they read the secret too.
+FOLDER_READERS = {"grep", "egrep", "fgrep", "zgrep", "ugrep", "rg", "ag", "ack", "tar", "bsdtar",
+                  "cp", "rsync", "scp", "zip", "7z", "rclone", "find", "diff"}
+# Flags whose value is a separate word, so that word is not taken as the pattern or a folder.
+_GREP_VALUE = {"-A", "-B", "-C", "-m", "-e", "-f", "-d", "-D", "--include", "--exclude",
+               "--exclude-dir", "--regexp", "--file", "--max-count", "--context"}
+VALUE_FLAGS = {"grep": _GREP_VALUE, "egrep": _GREP_VALUE, "fgrep": _GREP_VALUE,
+               "zgrep": _GREP_VALUE, "ugrep": _GREP_VALUE,
+               "rg": {"-A", "-B", "-C", "-m", "-e", "-f", "-g", "-t", "-T", "-j", "-M",
+                      "--glob", "--type", "--type-not", "--max-count", "--regexp", "--file"},
+               "tar": {"-f", "-C", "-I", "-T", "-X", "--file", "--directory", "--exclude"},
+               "cp": {"-t", "--target-directory"}}
+SHELLS = ("sh", "bash", "zsh", "fish", "dash", "ksh")
+FEEDERS = ("xargs", "parallel")  # take the names another command prints and open them
 
 
 class Refused(Exception):
@@ -318,14 +350,346 @@ def check_personal_files(text, cwd):
                 raise Refused(why)
 
 
+SECRETS_WHY = ("This names the owner's secrets (ssh or gpg keys, the keyring, a browser "
+               "profile, Claude Desktop's data or saved credentials). Claude neither reads "
+               "nor changes them, as everything Claude reads goes to Anthropic. If it is "
+               "really needed, the owner does it by hand.")
+
+
+SECRET_PROGRAMS_WHY = ("This program hands out secrets (tokens, passwords, keys or "
+                       "snapshot contents) without naming a file. " + SECRETS_WHY.split(". ", 1)[1])
+GLOB_CHARS = re.compile(r"[*?\[{]")
+
+
+def secrets_full():
+    return [OWNER_HOME + "/" + s for s in SECRET_PATHS] + list(SECRET_ABSOLUTE)
+
+
+def full_path(path, cwd):
+    path = path.replace("${HOME}", OWNER_HOME).replace("$HOME", OWNER_HOME)
+    if path == "~" or path.startswith("~/"):
+        path = OWNER_HOME + path[1:]
+    return os.path.normpath(path if os.path.isabs(path) else os.path.join(cwd or ".", path))
+
+
+def secret_path(path, cwd):
+    """True if the path is one of the owner's secrets, or inside one."""
+    full = full_path(path, cwd)
+    for p in (full, os.path.realpath(full)):
+        for s in secrets_full():
+            if p == s or p.startswith(s + "/"):
+                return True
+    return False
+
+
+def holds_secret(path, cwd):
+    """True if the folder is a parent of a secret: reading it whole reads the secret."""
+    full = full_path(path, cwd)
+    for p in (full, os.path.realpath(full)):
+        prefix = p.rstrip("/") + "/"
+        if any(s.startswith(prefix) for s in secrets_full()):
+            return True
+    return False
+
+
+BRACE_LIMIT = 64
+
+
+def braces(word):
+    """Brace expansion, as the shell does it: a{b,c}d is abd and acd. Past BRACE_LIMIT
+    results the word is left as it is, so a long command cannot stall the hook; it is
+    then still checked as a wildcard pattern."""
+    out, todo = [], [word]
+    while todo:
+        w = todo.pop()
+        m = re.search(r"\{([^{}]*,[^{}]*)\}", w)
+        if not m:
+            out.append(w)
+        else:
+            todo += [w[:m.start()] + c + w[m.end():] for c in m[1].split(",")]
+        if len(out) + len(todo) > BRACE_LIMIT:
+            return [word]
+    return out
+
+
+def glob_reaches_secret(pattern, cwd):
+    """True if a wildcard pattern could name a secret or something inside one."""
+    for p in braces(pattern):
+        full = full_path(p, cwd)
+        if not GLOB_CHARS.search(full):
+            if secret_path(full, cwd):
+                return True
+            continue
+        parts = full.strip("/").split("/")
+        for s in secrets_full():
+            sparts = s.strip("/").split("/")
+            if "**" in parts:
+                # ** reaches any depth: if the parts before it could match the start of the
+                # secret's path, the pattern can reach into it (wildcards in those parts too).
+                head = parts[:parts.index("**")]
+                n = min(len(head), len(sparts))
+                if all(fnmatch.fnmatchcase(sparts[i], head[i]) for i in range(n)):
+                    return True
+                continue
+            if len(parts) >= len(sparts) and all(
+                    fnmatch.fnmatchcase(a, b) for a, b in zip(sparts, parts)):
+                return True
+    return False
+
+
+def secret_tails():
+    """The last parts of each secret, as named from inside its parent folders: for
+    .config/gh, both gh and .config/gh."""
+    tails = set()
+    for s in SECRET_PATHS:
+        parts = s.split("/")
+        for i in range(len(parts)):
+            tails.add("/".join(parts[i:]))
+    return tails
+
+
+def names_secret_relative(word):
+    """After a cd the hook cannot follow: does a relative word start with a secret's tail?"""
+    if word.startswith(("/", "~", "$", "-")):
+        return False
+    w = word[2:] if word.startswith("./") else word
+    return any(w == t or w.startswith(t + "/") for t in secret_tails())
+
+
+def gives_out_secrets(words):
+    """Programs that print secrets without naming a file."""
+    name, args = words[0], words[1:]
+    if name == "gh" and args[:2] == ["auth", "token"]:
+        return True
+    if name == "gh" and args[:2] == ["auth", "status"] and \
+            any(a in ("-t", "--show-token") for a in args):
+        return True
+    if name == "secret-tool" and args[:1] in (["lookup"], ["search"]):
+        return True
+    if name == "pass" or (name == "gopass" and args[:1] != ["--version"]):
+        return True
+    if name in ("gpg", "gpg2") and any(a.startswith(("--export-secret", "--decrypt")) or a == "-d"
+                                       for a in args):
+        return True
+    if name == "git" and "credential" in args and any(a in ("fill", "get") for a in args):
+        return True
+    if name == "kubectl" and "config" in args and "--raw" in args:
+        return True
+    if name == "snapper" and any(a in ("diff", "xadiff") for a in args):
+        # Prints the contents of changed files. The home config holds the owner's secrets;
+        # the root config (snapper's default) does not.
+        for i, a in enumerate(args):
+            if a in ("-c", "--config") and i + 1 < len(args) and args[i + 1] == "home":
+                return True
+            if a in ("-chome", "--config=home"):
+                return True
+        return False
+    if name in ("printenv", "history"):
+        return True  # tokens can sit in the environment; history holds typed passwords
+    if name == "env" and all(a.startswith("-") for a in args):
+        return True  # env with no command prints the whole environment
+    if name == "fish" and "-c" in args and any("history" in a for a in args):
+        return True
+    return False
+
+
+def folder_reader_targets(words):
+    """The folders a whole-folder reader would read, or [] if it does not read whole folders.
+    "." stands for the folder the command runs in."""
+    name, args = words[0], words[1:]
+    if name not in FOLDER_READERS:
+        return []
+    takes_value = VALUE_FLAGS.get(name, set())
+    flags, plain, skip = [], [], False
+    for i, a in enumerate(args):
+        if skip:
+            skip = False
+            continue
+        if a.startswith("-") and a != "-":
+            flags.append(a)
+            if a in takes_value:
+                skip = True  # its value is not a folder or the pattern
+                if a in ("-e", "-f", "--regexp", "--file"):
+                    flags.append("-e")
+        else:
+            plain.append(a)
+    if name in ("grep", "egrep", "fgrep", "zgrep", "ugrep", "diff"):
+        if not any(f in ("--recursive", "--dereference-recursive") or
+                   (not f.startswith("--") and re.search(r"[rR]", f)) for f in flags):
+            return []
+        if name == "diff":
+            return plain
+        uses_e = any(f in ("-e", "-f") or f.startswith(("--regexp", "--file")) for f in flags)
+        return (plain if uses_e else plain[1:]) or ["."]
+    if name in ("rg", "ag", "ack"):
+        uses_e = any(f in ("-e", "-f") or f.startswith(("--regexp", "--file")) for f in flags)
+        return (plain if uses_e else plain[1:]) or ["."]
+    if name == "find":
+        reads = any(a in ("-exec", "-execdir", "-ok", "-okdir") for a in args)
+        start, opening = [], True
+        for a in args:
+            if opening and (a in ("-L", "-H", "-P") or a.startswith(("-O", "-D"))):
+                continue  # options before the start folders
+            opening = False
+            if a.startswith(("-", "(", "!")):
+                break
+            start.append(a)
+        return (start or ["."]) if reads else []
+    if name in ("tar", "bsdtar"):
+        creates = "--create" in args or any(
+            a.startswith("-") and not a.startswith("--") and "c" in a[1:] for a in args) or (
+            bool(args) and not args[0].startswith("-") and "c" in args[0])
+        if not creates:
+            return []
+        files = [a for i, a in enumerate(plain) if not (i == 0 and not args[0].startswith("-"))]
+        return files or ["."]
+    if name == "cp":
+        if not any(f in ("-r", "-R", "-a", "--recursive", "--archive") or
+                   (not f.startswith("--") and re.search(r"[rRa]", f)) for f in flags):
+            return []
+        if "-t" in args or any(f.startswith("--target-directory") for f in flags):
+            return plain  # -t names the destination, so every plain word is a source
+        return plain[:-1]
+    if name in ("rsync", "scp", "rclone"):
+        return plain[:-1] or plain
+    if name == "zip":
+        return plain[1:] if any(f in ("-r", "--recurse-paths") for f in flags) else []
+    if name == "7z":
+        return plain[2:] if plain[:1] == ["a"] else []
+    return []
+
+
+def each_command_with_folder(text, cwd, depth=0, feeds=False):
+    """Every simple command as (words, redirect targets, folder it runs in, folder known?,
+    piped in?, output used?), following cd where the guard's own moved_to can, and looking
+    inside $( ), sh -c and eval. "Output used" is true inside $( ), whose output becomes
+    another command's words."""
+    if depth > 6:
+        return
+    try:
+        commands = tokenize(text)
+    except CannotParse:
+        return
+    here, known = cwd, True
+    for words, redirects, piped in commands:
+        for word in words + [d for op, d in redirects if op != "<<text"]:
+            for inner in substitutions(word):
+                yield from each_command_with_folder(inner, here, depth + 1, feeds=True)
+        # A wrapper with nothing to wrap (env alone prints the environment) is itself the command.
+        real = strip_wrappers(words) or [w for w in words if not re.match(r"^\w+=", w)]
+        if real:
+            name = base(real[0])
+            yield [name] + real[1:], [d for op, d in redirects if op not in (
+                "<<body", "<<text")], here, known, piped, feeds
+            if name in SHELLS and "-c" in real[1:-1]:
+                inner = real[real.index("-c") + 1]
+                yield from each_command_with_folder(inner, here, depth + 1, feeds)
+            elif name == "eval":
+                yield from each_command_with_folder(" ".join(real[1:]), here, depth + 1, feeds)
+        if real and base(real[0]) in ("cd", "pushd", "popd"):
+            args = real[1:]
+            # A cd the hook can follow: a plain folder, or none (home). Otherwise the
+            # folder is unknown from here on, and relative names are checked against
+            # every place a secret could be named from.
+            plain = base(real[0]) != "popd" and len(args) <= 1 and not (
+                args and (re.search(r"[$`*?\[{]", args[0]) or args[0] == "-"))
+            here = kiln_guard.moved_to(words, here, cwd) or cwd
+            known = known and plain
+
+
+def check_secrets(text, cwd):
+    """Refuse a command that could read or change one of the owner's secrets: by naming it,
+    by wildcards or braces that reach it, by reading a whole parent folder, by a cd into a
+    parent first, or with a program that hands secrets out. Not airtight: a script that
+    builds the path itself, or a program not listed, can still get there. It is a fence
+    against accidents and the obvious ways, not a wall; the deny rules in
+    60-kiln-secrets.json are the second layer."""
+    folder_why = ("Reading or copying a whole folder that holds the owner's secrets reads "
+                  "them too. Search a folder below it. " + SECRETS_WHY.split(". ", 1)[1])
+    last_find_holds = False
+    for words, redirects, here, known, piped, feeds in each_command_with_folder(text, cwd):
+        if gives_out_secrets(words):
+            raise Refused(SECRET_PROGRAMS_WHY)
+        # find lists names; fed to xargs or into $( ) the names are opened. So a find over a
+        # folder that holds secrets must not feed another command.
+        if words[0] == "find":
+            start = []
+            for a in words[1:]:
+                if a in ("-L", "-H", "-P") or (not start and a.startswith(("-O", "-D"))):
+                    continue
+                if a.startswith(("-", "(", "!")):
+                    break
+                start.append(a)
+            holds = any(holds_secret(s, here) or secret_path(s, here) or
+                        (GLOB_CHARS.search(s) and glob_reaches_secret(s, here))
+                        for s in (start or ["."]))
+            # The tokenizer splits $( ) into separate commands, so any $( or backtick in
+            # the text counts as feeding (careful: it may refuse a harmless find too).
+            if holds and (feeds or "$(" in text or "`" in text):
+                raise Refused(folder_why)
+            last_find_holds = holds
+        elif piped and words[0] in FEEDERS and last_find_holds:
+            raise Refused(folder_why)
+        elif not piped:
+            last_find_holds = False
+        for w in words[1:] + redirects:
+            for part in [w] + re.split(r"[=:,]", w):
+                if not part:
+                    continue
+                if GLOB_CHARS.search(part):
+                    if glob_reaches_secret(part, here):
+                        raise Refused(SECRETS_WHY)
+                elif secret_path(part, here) or (not known and names_secret_relative(part)):
+                    raise Refused(SECRETS_WHY)
+        for target in folder_reader_targets(words):
+            if GLOB_CHARS.search(target):
+                if glob_reaches_secret(target, here) or any(
+                        holds_secret(GLOB_CHARS.split(full_path(t, here))[0].rsplit("/", 1)[0]
+                                     or "/", "/")
+                        for t in braces(target)):
+                    raise Refused(folder_why)
+            elif holds_secret(target, here) or secret_path(target, here):
+                raise Refused(folder_why)
+    end = r"($|[\s/\"';|&)])"
+    for secret in SECRET_PATHS:  # home-relative: named from ~, $HOME or a parent folder
+        if re.search(r"(^|[\s/\"'=:~])" + re.escape(secret) + end, text):
+            raise Refused(SECRETS_WHY)
+    for secret in SECRET_ABSOLUTE:  # system paths: only with their leading slash, so the
+        if re.search(r"(^|[\s\"'=:])" + re.escape(secret) + end, text):  # word root is fine
+            raise Refused(SECRETS_WHY)
+
+
 # ---------------------------------------------------------------- judging
 
 def judge(payload):
     """Returns (kind, plain English text, command to log)."""
     tool_input = payload.get("tool_input") or {}
     cwd = payload.get("cwd")
+    tool = payload.get("tool_name")
+    if tool in READ_TOOLS:
+        # Reading changes nothing: only the secrets rule applies.
+        for key in ("file_path", "notebook_path"):
+            value = tool_input.get(key)
+            if isinstance(value, str) and secret_path(value, cwd):
+                raise Refused(SECRETS_WHY)
+        if tool in ("Grep", "Glob"):
+            # Both search a whole folder: it must not be, or hold, a secret.
+            folder = tool_input.get("path") or cwd or "."
+            if not isinstance(folder, str) or secret_path(folder, cwd) or holds_secret(folder, cwd):
+                raise Refused("Searching a folder that holds the owner's secrets reads them "
+                              "too. Search a folder below it. " + SECRETS_WHY.split(". ", 1)[1])
+            for key in ("pattern", "glob"):
+                value = tool_input.get(key)
+                if tool == "Grep" and key == "pattern":
+                    continue  # Grep's pattern is the text searched for, not a path
+                if isinstance(value, str) and value and (
+                        glob_reaches_secret(value, folder) or
+                        any(s in value for s in SECRET_PATHS)):
+                    raise Refused(SECRETS_WHY)
+        return READ, "", ""
     command = tool_input.get("command")
     if isinstance(command, str):
+        check_secrets(command, cwd)
         check_rescue_command(command)
         check_personal_files(command, cwd)
         kind = text_kind(command, cwd)
@@ -339,6 +703,8 @@ def judge(payload):
     path = tool_input.get("file_path") or tool_input.get("notebook_path")
     if not isinstance(path, str):
         return READ, "", ""
+    if secret_path(path, cwd):
+        raise Refused(SECRETS_WHY)
     full = resolve(path, cwd)
     if full.startswith(("/boot/", "/.snapshots/")):
         raise Refused("Files in /boot and /.snapshots are not edited by hand. The boot "
@@ -649,7 +1015,9 @@ def hook_session(payload):
 
 # ---------------------------------------------------------------- undo
 
-BROWSERS = re.compile(r"^/home/[^/]+/\.config/(?:mozilla|chromium|google-chrome)(?:/|$)")
+# undo never rolls back files inside the owner's secrets (browser profiles, keys, Claude
+# Desktop's data): the same list the secrets rule uses, so the two cannot drift apart.
+BROWSERS = re.compile(r"^/home/[^/]+/(?:%s)(?:/|$)" % "|".join(re.escape(s) for s in SECRET_PATHS))
 SETTINGS = re.compile(r"^/home/[^/]+/\.config/")
 
 

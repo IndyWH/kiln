@@ -13,6 +13,11 @@ GUARD=/usr/local/lib/kiln-guard
 echo "1. Tests"
 sudo -u "$OWNER" python3 -B "$REPO/tests/sidekick/test_rules.py" >/dev/null 2>&1 || {
     echo "The tests failed, so nothing was installed."; exit 1; }
+# A settings file that is not valid JSON stops Claude Code from starting: check before
+# anything is installed.
+for f in rules-settings.json secrets-settings.json; do
+    python3 -m json.tool "$HERE/$f" >/dev/null || { echo "Not valid JSON: $f. Nothing was installed."; exit 1; }
+done
 
 echo "2. Hook, undo and restore commands"
 install -m 755 "$HERE/kiln_rules.py" "$GUARD/kiln_rules.py"
@@ -37,9 +42,12 @@ echo "5. Machine rules and hook settings"
 install -m 644 "$REPO/policy/CLAUDE.md" /etc/claude-code/CLAUDE.md
 install -d -m 755 /etc/claude-code/managed-settings.d
 install -m 644 "$HERE/rules-settings.json" /etc/claude-code/managed-settings.d/50-kiln-rules.json
+# Claude may not read or change the owner's secrets (17 Nov 2026). The rules hook checks the same list.
+install -m 644 "$HERE/secrets-settings.json" /etc/claude-code/managed-settings.d/60-kiln-secrets.json
 
 echo "6. Reading it back"
 python3 -m json.tool /etc/claude-code/managed-settings.d/50-kiln-rules.json >/dev/null
+python3 -m json.tool /etc/claude-code/managed-settings.d/60-kiln-secrets.json >/dev/null
 cmp "$HERE/kiln_rules.py" "$GUARD/kiln_rules.py"
 snapper -c home list >/dev/null
 sudo -u "$OWNER" sudo -n snapper -c home list >/dev/null

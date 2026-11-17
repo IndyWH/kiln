@@ -98,6 +98,111 @@ class Commands(unittest.TestCase):
             r.check_personal_files(c, REPO)
 
 
+    def test_secrets(self):
+        for c, cwd in (("cat ~/.ssh/id_ed25519", REPO), ("ls /home/indy/.ssh", REPO),
+                       ("cat .ssh/known_hosts", HOME), ("cd ~ && cat .ssh/config", REPO),
+                       ("sudo cp $HOME/.gnupg/pubring.kbx /tmp/", REPO),
+                       ("tar czf /tmp/k.tgz ~/.local/share/keyrings", REPO),
+                       ("sqlite3 '/home/indy/.config/google-chrome/Default/Login Data' .dump", REPO),
+                       ("grep -r token ~/.config/Claude", REPO), ("cat ${HOME}/.netrc", REPO),
+                       ("echo key >> ~/.ssh/authorized_keys", REPO),
+                       ("python3 -c \"print(open('/home/indy/.mozilla/x').read())\"", REPO),
+                       ("rsync -a ~/.config/gh/ /tmp/gh/", REPO), ("ls -la ~/.aws", REPO),
+                       # The reviewer's cases, 17 Nov 2026: parent folders, cd, wildcards,
+                       # braces, programs that hand secrets out, and the extra places.
+                       ("grep -r token ~/.config", REPO), ("grep -rn x ~", REPO),
+                       ("grep -R password .", HOME), ("rg token", HOME + "/.config"),
+                       ("tar czf /tmp/h.tgz ~", REPO), ("cp -r ~/.config /tmp/c", REPO),
+                       ("sudo rsync -a /home/ /tmp/h/", REPO),
+                       ("find ~/.local -name '*' -exec cat {} +", REPO),
+                       ("cd ~/.config && cat gh/hosts.yml", REPO),
+                       ("cd \"$X\" && cat keyrings/login.keyring", REPO),
+                       ("cat ~/.ssh*/id_ed25519", REPO), ("cat ~/.s?h/x", REPO),
+                       ("cat ~/{.ssh,.gnupg}/x", REPO), ("cat < ~/.netrc", REPO),
+                       ("gh auth token", REPO), ("gh auth status --show-token", REPO),
+                       ("sudo snapper -c home diff 10..11", REPO),
+                       ("secret-tool lookup service x", REPO), ("pass show email", REPO),
+                       ("gpg --export-secret-keys -a", REPO), ("git credential fill", REPO),
+                       ("ls ~/.cache/kiln-keyring-backup", REPO), ("cat ~/.claude.json", REPO),
+                       ("cat ~/.claude/.credentials.json", REPO),
+                       ("tail ~/.local/share/fish/fish_history", REPO),
+                       ("sudo ls /home/.snapshots/12/snapshot/indy", REPO),
+                       ("echo $(cat ~/.ssh/id_ed25519)", REPO),
+                       # Second review, 17 Nov 2026
+                       ("cat ~/.s*/**", REPO), ("sudo sh -c 'grep -r token ~/.config'", REPO),
+                       ("bash -c \"cd ~/.config && cat gh/hosts.yml\"", REPO),
+                       ("eval grep -r token ~", REPO),
+                       ("find ~/.config -type f | xargs grep token", REPO),
+                       ("grep token $(find ~/.config -type f)", REPO),
+                       ("tar --zstd -cf /tmp/h.tar.zst ~", REPO),
+                       ("tar -I zstd -cf /tmp/h.tar.zst ~/.config", REPO),
+                       ("find -L ~/.config -exec cat {} +", REPO),
+                       ("cp -r -t /tmp/d ~/.config", REPO), ("diff -r ~/.config /tmp/c", REPO),
+                       ("printenv", REPO), ("env", REPO), ("history", REPO),
+                       ("fish -c 'history search x'", REPO),
+                       ("snapper -c home diff 1..2 /home/indy/x", REPO),
+                       # The system's own secrets (owner, 17 Nov 2026)
+                       ("sudo cat /etc/shadow", REPO), ("sudo cat /etc/gshadow-", REPO),
+                       ("sudo ls /etc/NetworkManager/system-connections", REPO),
+                       ("sudo cat /etc/ssh/ssh_host_ed25519_key", REPO),
+                       ("sudo ls -la /root", REPO), ("sudo grep -r psk= /etc", REPO),
+                       ("sudo cat /etc/ssh/ssh_host_*_key", REPO)):
+            with self.assertRaises(r.Refused, msg=c):
+                r.check_secrets(c, cwd)
+        for c in ("ls ~/.config/hypr", "cat /etc/ssh/sshd_config", "systemctl status sshd",
+                  "pacman -Q openssh gnupg", "cat ~/.config/chrome-flags.conf",
+                  "ls /etc/opt/chrome/policies/managed", "git push origin v2",
+                  "cat ~/.local/share/applications/google-chrome.desktop", "echo sshd",
+                  "grep -rn kiln .", "grep -r x ~/Projects/kiln", "rg token sidekick",
+                  "find ~ -name '*.md'", "tar czf /tmp/k.tgz ~/Projects/kiln",
+                  "cd kernel && cat build.sh", "cat ~/.config/hypr/config/*.lua",
+                  "cp -r config/hypr /tmp/h", "sudo snapper -c root list",
+                  "snapper -c home status 10..11", "gh pr list", "grep x file.txt",
+                  "cp ~/.config/chrome-flags.conf /tmp/", "du -sh ~/.cache/kiln-kernel",
+                  # Second review: ordinary searches that the first rework refused
+                  "grep -rn -C 2 \"/home/indy\" sidekick/",
+                  "grep -r --include '*.py' /home/indy .", "rg -g '*.py' /home/indy",
+                  "sudo snapper -c root diff 5..6 /etc/hosts", "snapper status 5..6",
+                  "find ~/.cache/kiln-kernel -name '*.log' | xargs grep -l error",
+                  "env LC_ALL=C sort file", "sh -c 'ls /tmp'", "echo {a,b}{c,d}{e,f}{g,h}" * 4,
+                  "sudo cat /etc/ssh/sshd_config", "cat /etc/ssh/ssh_host_ed25519_key.pub",
+                  "sudo grep -rn auth /etc/pam.d", "cat /etc/NetworkManager/NetworkManager.conf",
+                  "cat /etc/passwd", "sudo ls /etc/sudoers.d"):
+            r.check_secrets(c, REPO)
+
+    def test_deny_rules_match_the_list(self):
+        """The deny rules in secrets-settings.json are built from the hook's own list."""
+        with open(os.path.join(REPO, "sidekick", "secrets-settings.json")) as f:
+            deny = json.load(f)["permissions"]["deny"]
+        want = []
+        for full in [HOME + "/" + s for s in r.SECRET_PATHS] + list(r.SECRET_ABSOLUTE):
+            for tool in ("Read", "Edit"):
+                want += ["%s(/%s)" % (tool, full), "%s(/%s/**)" % (tool, full)]
+        self.assertEqual(deny, want)
+
+    def test_secret_files_and_read_tools(self):
+        for tool, ti in (("Read", {"file_path": HOME + "/.ssh/id_ed25519"}),
+                         ("Read", {"file_path": "~/.gnupg/trustdb.gpg"}),
+                         ("Grep", {"pattern": "password", "path": HOME + "/.config/Claude"}),
+                         ("Glob", {"pattern": "**/*", "path": HOME + "/.mozilla"}),
+                         ("Glob", {"pattern": HOME + "/.ssh/*"}),
+                         ("Write", {"file_path": HOME + "/.ssh/authorized_keys", "content": "x"}),
+                         ("Edit", {"file_path": HOME + "/.config/google-chrome/Local State"}),
+                         ("Grep", {"pattern": "token", "path": HOME}),
+                         ("Grep", {"pattern": "token", "path": HOME + "/.config"}),
+                         ("Grep", {"pattern": "x", "path": REPO, "glob": HOME + "/.ssh/*"}),
+                         ("Glob", {"pattern": "**/*.json", "path": HOME + "/.config"}),
+                         ("Glob", {"pattern": HOME + "/.s?h/*"})):
+            with self.assertRaises(r.Refused, msg="%s %s" % (tool, ti)):
+                r.judge({"tool_name": tool, "tool_input": ti, "cwd": REPO})
+        for tool, ti in (("Read", {"file_path": "/etc/ssh/sshd_config"}),
+                         ("Read", {"file_path": HOME + "/.config/hypr/hyprland.lua"}),
+                         ("Grep", {"pattern": "ssh", "path": REPO}),
+                         ("Glob", {"pattern": "**/*.md", "path": REPO})):
+            self.assertEqual(r.judge({"tool_name": tool, "tool_input": ti, "cwd": REPO})[0],
+                             r.READ, msg="%s %s" % (tool, ti))
+
+
 class Judge(unittest.TestCase):
     def test_description_needed(self):
         with self.assertRaises(r.Refused):
