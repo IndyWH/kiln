@@ -33,4 +33,6 @@ then check out the commit before this change in ~/Projects/kiln and run `sudo si
 
 ## Checking it works
 
+Tested 17 Nov 2026 after the owner installed it, with a test file holding a made-up word in ~/.ssh: the owner's @-mention of it came through with no contents (deny rules alone); Claude's Read tool, `grep -r` of the word from the home folder, and a helper agent's `grep -r` from the home folder were all refused by the hook. The word stayed unknown. On this machine helper agents have no Grep or Glob tools; they search with Bash, so the hook covers them.
+
 After installing: `/status` should name the machine-wide settings file as a source, and `/permissions` list the deny rules. The owner puts a small text file with a made-up word in one secret folder; then Claude is asked to read it by an @-mention (tests the deny rules alone), to `grep -r` the word from the home folder (tests the hook), and a helper agent to search the home folder. All three must be refused. Then the file is deleted. If the account ever gets settings from claude.ai's console, those win and the machine-wide files are skipped: check `/status` again then.
