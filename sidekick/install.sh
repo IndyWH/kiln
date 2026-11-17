@@ -30,6 +30,7 @@ if ! snapper list-configs | grep -q '^home '; then
     snapper -c home create-config /home
 fi
 install -m 640 "$REPO/config/snapper/home" /etc/snapper/configs/home
+install -m 644 "$REPO/config/snapper/root" /etc/snapper/configs/root  # NUMBER_LIMIT 50-500: see lessons/snapshots.md
 systemctl enable --now snapper-cleanup.timer limine-snapper-sync.service
 
 echo "5. Machine rules and hook settings"
