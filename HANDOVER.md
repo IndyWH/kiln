@@ -21,6 +21,14 @@ Copied from `stage1-guards` on 13 Nov 2026, to be checked on CachyOS before use:
 
 ## Log
 
+### 17 Nov 2026 — Claude Code, snapshots, updates, secrets block, the forum
+
+- Snapshots: real changes were deleted within an hour (limit 50 counted empty pairs). Now 50-500 with the free-space fallback; boot menu shows "before" snapshots, max 30. Reviewer: CONCERNS, answered. lessons/snapshots.md. Known: `undo` fails if the last change's pair was tidied away; the root fix (hook deletes its own empty pairs) is for a reviewed change.
+- 84 updates, limine still held until about 21 Nov; restart clean. btop 1.4.8 now shows the WX 3200 (it reads amdgpu directly); nvtop installed too.
+- Secrets block, owner's request after the CachyOS forum thread: rules hook plus 136 machine-wide deny rules; owner installed it; tested four ways, all refused. Reviewer: CONCERNS twice, answered. lessons/secrets.md: what it covers, its gaps (a fence, not a wall), costs and back-out.
+- The forum thread (discuss.cachyos.org, topic 39075) and the Kiln story "The pitchforks were a free review". GitHub's default branch is now v2; main is still v1.
+- Sentry: credits files that package hooks write to the package install.
+
 ### 14 Nov 2026 — Claude Code, Chrome and Claude Desktop
 
 - Owner: Chrome (Google sync), accelerated on the WX 3200, never the 4090. AUR google-chrome 157.0.8103.78, reviewer CONCERNS answered; checked on the running browser. See lessons/browsers.md. kiln-watch reports newer AUR packages and Chrome versions.
