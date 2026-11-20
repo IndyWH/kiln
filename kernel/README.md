@@ -12,7 +12,7 @@
 
 ## Costs
 
-- After an nvidia-utils update, the 4090 does not work on this kernel until it is rebuilt. The desktop's card and the stock kernels are not affected. `kiln-watch` reports it.
+- After an nvidia-utils update, the 4090 does not work on this kernel until it is rebuilt. The desktop's card and the stock kernels are not affected. `kiln-watch` warns when a new driver is among the waiting updates, before it is installed, so the update and `kernel/rebuild.sh` can be done in one sitting; and again after, if the module and driver differ.
 - This kernel does not update with `pacman -Syu`; the stock one does. `kiln-watch` says when the stock one is newer; then `kernel/rebuild.sh`.
 
 ## Backing out

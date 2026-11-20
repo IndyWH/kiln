@@ -9,7 +9,7 @@ Claude session, and sends a desktop notice when something needs attention.
   kiln-watch --print   check now and print, without writing or notifying
 
 Checks: failed services, the Crucial P2's health (only that disk, by serial), btrfs errors,
-free space, the boot partition's free space, snapshots, the rescue entry and disk guard, Kiln's own kernel's NVIDIA module, pending updates, new Arch and
+free space, the boot partition's free space, snapshots, the rescue entry and disk guard, Kiln's own kernel's NVIDIA module, pending updates (and a new NVIDIA driver among them), new Arch and
 CachyOS news, AUR packages behind (and Chrome against Google), packages still generic. News is fetched as data and only its titles kept.
 """
 import json
@@ -206,6 +206,25 @@ def check_updates(r):
     lines = [line for line in out.splitlines() if line.strip()]
     big = sorted({line.split()[0] for line in lines if BIG_PACKAGES.match(line)})
     r.fact("Updates: %d waiting%s." % (len(lines), ", including " + ", ".join(big) if big else ""))
+    check_driver_waiting(r, lines)
+
+
+def check_driver_waiting(r, lines):
+    """Warn before, not after: a new NVIDIA driver among the waiting updates means Kiln's kernel
+    needs rebuilding in the same sitting, or the 4090 stops working on it. Only the driver
+    version counts; a new package release of the same driver (620.70.06-2 to -3) needs no
+    rebuild, because the module checks the version alone."""
+    if not any(n.endswith("-cachyos-kiln") for n in os.listdir("/usr/lib/modules")):
+        return
+    for line in lines:
+        parts = line.split()
+        if len(parts) >= 4 and parts[0] == "nvidia-utils" and parts[2] == "->":
+            old, new = parts[1].split("-")[0], parts[3].split("-")[0]
+            if old != new:
+                r.bad("New NVIDIA driver waiting: %s, installed %s. Once it is installed, the 4090 "
+                      "stops working on Kiln's kernel until it is rebuilt. Ask Claude to do the "
+                      "update and kernel/rebuild.sh in the same sitting (the desktop and the stock "
+                      "kernel are fine meanwhile)." % (new, old))
 
 
 def check_news(r, state):
